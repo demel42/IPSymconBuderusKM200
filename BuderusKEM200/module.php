@@ -104,9 +104,8 @@ class BuderusKM200 extends IPSModule
             return;
         }
 
-		$msg = '';
+        $msg = '';
 
         echo $msg;
     }
-
 }
