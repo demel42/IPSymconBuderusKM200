@@ -1,0 +1,22 @@
+{
+	"translations": {
+		"de": {
+			"Instance is disabled": "Instanz ist deaktiviert",
+			"instance is inactive": "Instanz ist inaktiv",
+
+			"Host": "Host",
+
+			"Verify access": "Zugriff prüfen",
+			"Update data": "Aktualisiere Daten",
+			"Module description": "Modulbeschreibung",
+
+			"Instance getting created": "Instanz wird erstellt",
+			"Instance is active": "Instanz ist aktiv",
+			"Instance is deleted": "Instanz wird gelöscht",
+			"Instance is inactive": "Instanz ist inaktiv",
+			"Instance is not created": "Instanz wurde nicht erzeugt",
+
+			"Instance is inactive (invalid configuration)": "Instanz ist inaktiv (ungültige Konfiguration)",
+		}
+	}
+}
