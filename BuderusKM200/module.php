@@ -245,6 +245,7 @@ class BuderusKM200 extends IPSModule
             $result = $this->GetData($datapoint);
 
             $vartype = $this->GetArrayElem($field, 'vartype', -1);
+            $varprofile = $this->GetArrayElem($field, 'varprofile', '');
             $type = $this->GetArrayElem($result, 'type', '');
             $value = $this->GetArrayElem($result, 'value', '');
 
@@ -258,55 +259,60 @@ class BuderusKM200 extends IPSModule
 
             $this->SendDebug(__FUNCTION__, 'datapoint=' . $datapoint . ', result=' . print_r($result, true), 0);
 
-            if ($do_convert) {
-                if ($convert_script > 0) {
-                    $info = [
-                            'InstanceID'    => $this->InstanceID,
-                            'datapoint'     => $datapoint,
-                            'vartype'       => $vartype,
-                            'varprofile'    => $varprofile,
-                            'result'        => $result,
-                        ];
-                    $value = IPS_RunScriptWaitEx($convert_script, $info);
-                } else {
-                    switch ($vartype) {
-                        case VARIABLETYPE_BOOLEAN:
-                            if (isset($result['allowedValues'])) {
-								$orgval = $value;
-								$allowedValues = $result['allowedValues'];
-                                foreach ($allowedValues as $val => $txt) {
-                                    if ($txt == $value) {
-                                        $value = $val;
-                                        break;
-                                    }
-                                }
-								$this->SendDebug(__FUNCTION__, 'string2bool: orgval=' . $orgval . ', value=' . $value . ', allowedValues=' . print_r($allowedValues, true), 0);
-                            }
-                            break;
-                        case VARIABLETYPE_INTEGER:
-                            switch ($datapoint) {
-                                case '/gateway/DateTime':
-                                case '/heatSources/energyMonitoring/startDateTime':
-                                    $value = strtotime($value);
-                                    break;
-                                default:
-                                    if (isset($result['allowedValues'])) {
-										$orgval = $value;
-										$allowedValues = $result['allowedValues'];
-                                        foreach ($allowedValues as $val => $txt) {
-                                            if ($txt == $value) {
-                                                $value = $val;
-                                                break;
-                                            }
-                                        }
-										$this->SendDebug(__FUNCTION__, 'string2int: orgval=' . $orgval . ', value=' . $value . ', allowedValues=' . print_r($allowedValues, true), 0);
-                                    }
-                                    break;
-                            }
-                            break;
-                    }
-                }
-            }
+            if ($do_convert && $convert_script > 0) {
+				$info = [
+						'InstanceID'    => $this->InstanceID,
+						'datapoint'     => $datapoint,
+						'vartype'       => $vartype,
+						'varprofile'    => $varprofile,
+						'value'         => $value,
+						'result'        => json_encode($result),
+					];
+				$r = IPS_RunScriptWaitEx($convert_script, $info);
+				$this->SendDebug(__FUNCTION__, 'convert: datapoint=' . $datapoint . ', orgval=' . $value . ', value=' . ($r == false ? '<nop>' : $r), 0);
+				if ($r != false) {
+					$value = $r;
+					$do_convert = false;
+				}
+			}
+			if ($do_convert) {
+				switch ($vartype) {
+					case VARIABLETYPE_BOOLEAN:
+						if (isset($result['allowedValues'])) {
+							$orgval = $value;
+							$allowedValues = $result['allowedValues'];
+							foreach ($allowedValues as $val => $txt) {
+								if ($txt == $value) {
+									$value = $val;
+									break;
+								}
+							}
+							$this->SendDebug(__FUNCTION__, 'string2bool: datapoint=' . $datapoint . ', orgval=' . $orgval . ', value=' . $value . ', allowedValues=' . print_r($allowedValues, true), 0);
+						}
+						break;
+					case VARIABLETYPE_INTEGER:
+						switch ($datapoint) {
+							case '/gateway/DateTime':
+							case '/heatSources/energyMonitoring/startDateTime':
+								$value = strtotime($value);
+								break;
+							default:
+								if (isset($result['allowedValues'])) {
+									$orgval = $value;
+									$allowedValues = $result['allowedValues'];
+									foreach ($allowedValues as $val => $txt) {
+										if ($txt == $value) {
+											$value = $val;
+											break;
+										}
+									}
+									$this->SendDebug(__FUNCTION__, 'string2int: datapoint=' . $datapoint . ', orgval=' . $orgval . ', value=' . $value . ', allowedValues=' . print_r($allowedValues, true), 0);
+								}
+								break;
+						}
+						break;
+				}
+			}
 
             $ident = 'DP' . str_replace('/', '_', $datapoint);
             $this->SetValue($ident, $value);
