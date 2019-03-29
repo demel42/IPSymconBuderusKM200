@@ -42,6 +42,7 @@ class BuderusKM200 extends IPSModule
         $this->CreateVarProfile('BuderusKM200.Pascal', VARIABLETYPE_FLOAT, ' Pascal', 0, 0, 0, 1, '');
         $this->CreateVarProfile('BuderusKM200.bar', VARIABLETYPE_FLOAT, ' bar', 0, 0, 0, 1, '');
         $this->CreateVarProfile('BuderusKM200.Percent', VARIABLETYPE_FLOAT, ' %', 0, 0, 0, 0, '');
+        $this->CreateVarProfile('BuderusKM200.l_min', VARIABLETYPE_FLOAT, ' l/min', 0, 0, 0, 0, '');
 
         $associations = [];
         $associations[] = ['Wert' => 0, 'Name' => $this->Translate('Error'), 'Farbe' => 0xEE0000];
@@ -55,8 +56,8 @@ class BuderusKM200 extends IPSModule
         $this->CreateVarProfile('BuderusKM200.Status', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations);
 
         $associations = [];
-        $associations[] = ['Wert' => 0, 'Name' => $this->Translate('manual'), 'Farbe' => -1];
-        $associations[] = ['Wert' => 1, 'Name' => $this->Translate('automatic'), 'Farbe' => -1];
+        $associations[] = ['Wert' => 0, 'Name' => $this->Translate('automatic'), 'Farbe' => -1];
+        $associations[] = ['Wert' => 1, 'Name' => $this->Translate('manual'), 'Farbe' => -1];
         $this->CreateVarProfile('BuderusKM200.Hc_OperationMode', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations);
 
         $associations[] = ['Wert' => false, 'Name' => $this->Translate('Off'), 'Farbe' => -1];
@@ -244,8 +245,8 @@ class BuderusKM200 extends IPSModule
             $result = $this->GetData($datapoint);
 
             $vartype = $this->GetArrayElem($field, 'vartype', -1);
-            $type = $this->GetArrayElem($result, 'type', -1);
-            $value = $this->GetArrayElem($result, 'value', -1);
+            $type = $this->GetArrayElem($result, 'type', '');
+            $value = $this->GetArrayElem($result, 'value', '');
 
             $do_convert = false;
             if ($type == 'floatValue' && $vartype != VARIABLETYPE_FLOAT) {
@@ -271,12 +272,15 @@ class BuderusKM200 extends IPSModule
                     switch ($vartype) {
                         case VARIABLETYPE_BOOLEAN:
                             if (isset($result['allowedValues'])) {
-                                foreach ($result['allowedValues'] as $val => $txt) {
+								$orgval = $value;
+								$allowedValues = $result['allowedValues'];
+                                foreach ($allowedValues as $val => $txt) {
                                     if ($txt == $value) {
                                         $value = $val;
                                         break;
                                     }
                                 }
+								$this->SendDebug(__FUNCTION__, 'string2bool: orgval=' . $orgval . ', value=' . $value . ', allowedValues=' . print_r($allowedValues, true), 0);
                             }
                             break;
                         case VARIABLETYPE_INTEGER:
@@ -287,12 +291,15 @@ class BuderusKM200 extends IPSModule
                                     break;
                                 default:
                                     if (isset($result['allowedValues'])) {
-                                        foreach ($result['allowedValues'] as $val => $txt) {
+										$orgval = $value;
+										$allowedValues = $result['allowedValues'];
+                                        foreach ($allowedValues as $val => $txt) {
                                             if ($txt == $value) {
                                                 $value = $val;
                                                 break;
                                             }
                                         }
+										$this->SendDebug(__FUNCTION__, 'string2int: orgval=' . $orgval . ', value=' . $value . ', allowedValues=' . print_r($allowedValues, true), 0);
                                     }
                                     break;
                             }
