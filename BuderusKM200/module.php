@@ -113,88 +113,90 @@ class BuderusKM200 extends IPSModule
         }
 
         $msg = '';
-		$r = $this->GetData('/system/healthStatus');
-		if ($r == false) {
-			$msg = $this->Translate('access failed') . ':' . PHP_EOL;
-		} else {
-			$msg = $this->Translate('access ok') . ':' . PHP_EOL;
-			$msg .= '  ' . $this->Translate('system health') . ': ' . $r['value'] . PHP_EOL;
-			$r = $this->GetData('/gateway/DateTime');
-			if ($r != false) {
-				$ts = strtotime($r['value']);
-				$msg .= '  ' . $this->Translate('system time') . ': ' . date('d.m.Y H:i:s', $ts) . PHP_EOL;
-			}
-		}
+        $r = $this->GetData('/system/healthStatus');
+        if ($r == false) {
+            $msg = $this->Translate('access failed') . ':' . PHP_EOL;
+        } else {
+            $msg = $this->Translate('access ok') . ':' . PHP_EOL;
+            $msg .= '  ' . $this->Translate('system health') . ': ' . $r['value'] . PHP_EOL;
+            $r = $this->GetData('/gateway/DateTime');
+            if ($r != false) {
+                $ts = strtotime($r['value']);
+                $msg .= '  ' . $this->Translate('system time') . ': ' . date('d.m.Y H:i:s', $ts) . PHP_EOL;
+            }
+        }
 
         echo $msg;
     }
 
-    private function traverseService($service, &$entList) 
-	{ 
-		$jdata = $this->GetData( $service ); 
-		if( $jdata == false) { 
-			return; 
-		} 
-		
-		$ent = [];
-		
-		switch( $jdata['type'] ) { 
-		case 'refEnum': 
-			foreach( $jdata['references'] as $subService ) 
-					$this->traverseService( $subService['id'], $entList );
-				break; 
-		case 'moduleList': 
-				foreach( $jdata['values'] as $Modules )
-					echo $jdata['type'] . '=' . print_r($Modules, true) . PHP_EOL;
-				break; 
-		case 'floatValue':
-				$ent['type'] = $jdata['type'];
-				$ent['value'] = $jdata['value'];
-				$ent['unit'] = $jdata['unitOfMeasure'];
-				//echo $jdata['type'] . ' ' . print_r($jdata, true) . PHP_EOL;
-				if (isset($jdata['minValue']) && isset($jdata['maxValue'])) {
-					$ent['range'] = $jdata['minValue'] . ' ... ' . $jdata['maxValue'];
-				} else if (isset($jdata['minValue'])) {
-					$ent['range'] = $jdata['minValue'] . ' ... ';
-				} else if (isset($jdata['maxValue'])) {
-					$ent['range'] = ' ... ' . $jdata['maxValue'];
-				}
-				if (isset($jdata['state'])) {
-					$r = [];
-					foreach ($jdata['state'] as $s) {
-						foreach ($s as $var => $val) {
-							$r[] = $var . '=' . $val;
-						}
-					}
-					if ($r != []) {
-						$ent['range'] = join($r, ', ');
-					}
-				}
-				break; 
-		case 'stringValue':
-				$ent['type'] = $jdata['type'];
-				$ent['value'] = $jdata['value'];
-				if (isset($jdata['allowedValues'])) {
-					$ent['range'] = join($jdata['allowedValues'], ', ');
-				}
-				break; 
-			case 'switchProgram': 
-			case 'errorList':
-			case 'systeminfo':
-			case 'arrayData':
-			case 'yRecording':
-				$ent['type'] = $jdata['type'];
-				$ent['value'] = ' --- ' . $this->Translate('not useable') . ' --- ';
-				break;
-			default: 
-				break; 
-		}
-		if ($ent != []) {
-			$ent['name'] = $service;
-			$ent['writeable'] = isset($jdata['writeable']) && $jdata['writeable'] ? true : false;
-			$entList[] = $ent;
-		}
-	}
+    private function traverseService($service, &$entList)
+    {
+        $jdata = $this->GetData($service);
+        if ($jdata == false) {
+            return;
+        }
+
+        $ent = [];
+
+        switch ($jdata['type']) {
+        case 'refEnum':
+            foreach ($jdata['references'] as $subService) {
+                $this->traverseService($subService['id'], $entList);
+            }
+                break;
+        case 'moduleList':
+                foreach ($jdata['values'] as $Modules) {
+                    echo $jdata['type'] . '=' . print_r($Modules, true) . PHP_EOL;
+                }
+                break;
+        case 'floatValue':
+                $ent['type'] = $jdata['type'];
+                $ent['value'] = $jdata['value'];
+                $ent['unit'] = $jdata['unitOfMeasure'];
+                //echo $jdata['type'] . ' ' . print_r($jdata, true) . PHP_EOL;
+                if (isset($jdata['minValue']) && isset($jdata['maxValue'])) {
+                    $ent['range'] = $jdata['minValue'] . ' ... ' . $jdata['maxValue'];
+                } elseif (isset($jdata['minValue'])) {
+                    $ent['range'] = $jdata['minValue'] . ' ... ';
+                } elseif (isset($jdata['maxValue'])) {
+                    $ent['range'] = ' ... ' . $jdata['maxValue'];
+                }
+                if (isset($jdata['state'])) {
+                    $r = [];
+                    foreach ($jdata['state'] as $s) {
+                        foreach ($s as $var => $val) {
+                            $r[] = $var . '=' . $val;
+                        }
+                    }
+                    if ($r != []) {
+                        $ent['range'] = implode($r, ', ');
+                    }
+                }
+                break;
+        case 'stringValue':
+                $ent['type'] = $jdata['type'];
+                $ent['value'] = $jdata['value'];
+                if (isset($jdata['allowedValues'])) {
+                    $ent['range'] = implode($jdata['allowedValues'], ', ');
+                }
+                break;
+            case 'switchProgram':
+            case 'errorList':
+            case 'systeminfo':
+            case 'arrayData':
+            case 'yRecording':
+                $ent['type'] = $jdata['type'];
+                $ent['value'] = ' --- ' . $this->Translate('not useable') . ' --- ';
+                break;
+            default:
+                break;
+        }
+        if ($ent != []) {
+            $ent['name'] = $service;
+            $ent['writeable'] = isset($jdata['writeable']) && $jdata['writeable'] ? true : false;
+            $entList[] = $ent;
+        }
+    }
 
     public function DatapointSheet()
     {
@@ -205,55 +207,55 @@ class BuderusKM200 extends IPSModule
             return;
         }
 
-$urls = array(
-		'/gateway', 
-		'/system', 
-		'/heatSources',
-		'/heatingCircuits', 
-		'/solarCircuits', 
-		'/dhwCircuits',
-		/*
-		'/notifications',
-		'/recordings'
-		*/
-	); 
+        $urls = [
+        '/gateway',
+        '/system',
+        '/heatSources',
+        '/heatingCircuits',
+        '/solarCircuits',
+        '/dhwCircuits',
+        /*
+        '/notifications',
+        '/recordings'
+        */
+    ];
 
-		$entList = [];
-		foreach( $urls as $url ) 
-			$this->traverseService( $url, $entList ) ;
+        $entList = [];
+        foreach ($urls as $url) {
+            $this->traverseService($url, $entList);
+        }
 
-		$title = [];
-		$title[] = $this->Translate('Name');
-		$title[] = $this->Translate('Type');
-		$title[] = $this->Translate('Unit');
-		$title[] = $this->Translate('writeable?');
-		$title[] = $this->Translate('current value');
-		$title[] = $this->Translate('possible values');
-		$buf = join($title, ';') . PHP_EOL;
+        $title = [];
+        $title[] = $this->Translate('Name');
+        $title[] = $this->Translate('Type');
+        $title[] = $this->Translate('Unit');
+        $title[] = $this->Translate('writeable?');
+        $title[] = $this->Translate('current value');
+        $title[] = $this->Translate('possible values');
+        $buf = implode($title, ';') . PHP_EOL;
 
-		foreach ($entList as $ent) {
-			$row = [];
-			$row[] = '"' . $ent['name'] .'"';
-			$row[] = $ent['type'];
-			$row[] = isset($ent['unit']) ? '"' . $ent['unit'] . '"': '';
-			$row[] = isset($ent['writeable']) && $ent['writeable'] ? 'Ja' : 'Nein';
-			$row[] = isset($ent['value']) ? '"' . $ent['value'] . '"': '';
-			$row[] = isset($ent['range']) ? '"' . $ent['range'] . '"': '';
-			$buf .= join($row, ';') . PHP_EOL;
-		}
+        foreach ($entList as $ent) {
+            $row = [];
+            $row[] = '"' . $ent['name'] . '"';
+            $row[] = $ent['type'];
+            $row[] = isset($ent['unit']) ? '"' . $ent['unit'] . '"' : '';
+            $row[] = isset($ent['writeable']) && $ent['writeable'] ? 'Ja' : 'Nein';
+            $row[] = isset($ent['value']) ? '"' . $ent['value'] . '"' : '';
+            $row[] = isset($ent['range']) ? '"' . $ent['range'] . '"' : '';
+            $buf .= implode($row, ';') . PHP_EOL;
+        }
 
-		$mediaName = $this->Translate('Buderus KM200 Datapoints');
-		@$mediaID = IPS_GetMediaIDByName ($mediaName, $this->InstanceID);
-		if ($mediaID == false) {
-			$mediaID = IPS_CreateMedia(MEDIATYPE_DOCUMENT);
-			$filename = 'media' . DIRECTORY_SEPARATOR . 'Buderus_KM200.csv';
-			IPS_SetMediaFile($mediaID, $filename, false); 
-			IPS_SetName($mediaID, $mediaName);
-			IPS_SetParent($mediaID, $this->InstanceID);
-		}
-		IPS_SetMediaContent($mediaID, base64_encode($buf));
+        $mediaName = $this->Translate('Buderus KM200 Datapoints');
+        @$mediaID = IPS_GetMediaIDByName($mediaName, $this->InstanceID);
+        if ($mediaID == false) {
+            $mediaID = IPS_CreateMedia(MEDIATYPE_DOCUMENT);
+            $filename = 'media' . DIRECTORY_SEPARATOR . 'Buderus_KM200.csv';
+            IPS_SetMediaFile($mediaID, $filename, false);
+            IPS_SetName($mediaID, $mediaName);
+            IPS_SetParent($mediaID, $this->InstanceID);
+        }
+        IPS_SetMediaContent($mediaID, base64_encode($buf));
     }
-
 
     private function Encrypt($encryptData)
     {
@@ -276,7 +278,7 @@ $urls = array(
     private function Decrypt($decryptData)
     {
         $key = $this->ReadPropertyString('key');
-		$this->SendDebug(__FUNCTION__, 'key=' . $key, 0);
+        $this->SendDebug(__FUNCTION__, 'key=' . $key, 0);
 
         $decrypt = openssl_decrypt(
             base64_decode($decryptData),
@@ -313,7 +315,7 @@ $urls = array(
             'http' => [
             'method' => 'GET',
             'header' => "Accept: application/json\r\n" .
-						"User-Agent: TeleHeater/2.2.3\r\n"
+                        "User-Agent: TeleHeater/2.2.3\r\n"
             ]
         ];
         $context = stream_context_create($options);
@@ -322,13 +324,13 @@ $urls = array(
             false,
             $context
         );
-		$this->SendDebug(__FUNCTION__, 'options=' . print_r($options, true), 0);
-		$this->SendDebug(__FUNCTION__, 'content=' . print_r($content, true), 0);
+        $this->SendDebug(__FUNCTION__, 'options=' . print_r($options, true), 0);
+        $this->SendDebug(__FUNCTION__, 'content=' . print_r($content, true), 0);
         if ($content == false) {
             return false;
         }
-		$data = $this->Decrypt($content);
-		$this->SendDebug(__FUNCTION__, 'decrypt content=' . print_r($data, true), 0);
+        $data = $this->Decrypt($content);
+        $this->SendDebug(__FUNCTION__, 'decrypt content=' . print_r($data, true), 0);
         return json_decode($data, true);
     }
 
