@@ -5,7 +5,7 @@ $value = $_IPS['value'];
 
 $ret = '';
 if ($datapoint == '/heatSources/workingTime/totalSystem') {
-	$m = $value;
+    $m = $value;
     if ($m > 60) {
         $h = floor($m / 60);
         $m = $m % 60;
