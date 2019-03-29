@@ -5,6 +5,9 @@
 			"instance is inactive": "Instanz ist inaktiv",
 
 			"Host": "Host",
+			"Port": "Port",
+
+			"Key": "Key",
 
 			"Verify access": "Zugriff prüfen",
 			"Update data": "Aktualisiere Daten",
@@ -16,7 +19,7 @@
 			"Instance is inactive": "Instanz ist inaktiv",
 			"Instance is not created": "Instanz wurde nicht erzeugt",
 
-			"Instance is inactive (invalid configuration)": "Instanz ist inaktiv (ungültige Konfiguration)",
+			"Instance is inactive (invalid configuration)": "Instanz ist inaktiv (ungültige Konfiguration)"
 		}
 	}
 }
