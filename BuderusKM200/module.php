@@ -64,14 +64,15 @@ class BuderusKM200 extends IPSModule
         $formElements[] = ['type' => 'Label', 'label' => 'Buderus KM200'];
         $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'host', 'caption' => 'Host'];
         $formElements[] = ['type' => 'NumberSpinner', 'name' => 'port', 'caption' => 'Port'];
-        $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'key', 'caption' => 'key'];
+        $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'key', 'caption' => 'Key'];
 
-        $formElements[] = ['type' => 'Label', 'label' => 'Update status every X minutes'];
+        $formElements[] = ['type' => 'Label', 'label' => 'Update data every X minutes'];
         $formElements[] = ['type' => 'NumberSpinner', 'name' => 'update_interval', 'caption' => 'Minutes'];
 
         $formActions = [];
         $formActions[] = ['type' => 'Button', 'label' => 'Verify access', 'onClick' => 'BuderusKM200_VerifyAccess($id);'];
         $formActions[] = ['type' => 'Button', 'label' => 'Update data', 'onClick' => 'BuderusKM200_UpdateData($id);'];
+        $formActions[] = ['type' => 'Button', 'label' => 'Datapoint-sheet', 'onClick' => 'BuderusKM200_DatapointSheet($id);'];
         $formActions[] = ['type' => 'Label', 'label' => '____________________________________________________________________________________________________'];
         $formActions[] = [
                             'type'    => 'Button',
@@ -107,14 +108,152 @@ class BuderusKM200 extends IPSModule
         $inst = IPS_GetInstance($this->InstanceID);
         if ($inst['InstanceStatus'] == IS_INACTIVE) {
             $this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
-            echo $this->translate('Instance is inactive') . PHP_EOL;
+            echo $this->Translate('Instance is inactive') . PHP_EOL;
             return;
         }
 
         $msg = '';
+		$r = $this->GetData('/system/healthStatus');
+		if ($r == false) {
+			$msg = $this->Translate('access failed') . ':' . PHP_EOL;
+		} else {
+			$msg = $this->Translate('access ok') . ':' . PHP_EOL;
+			$msg .= '  ' . $this->Translate('system health') . ': ' . $r['value'] . PHP_EOL;
+			$r = $this->GetData('/gateway/DateTime');
+			if ($r != false) {
+				$ts = strtotime($r['value']);
+				$msg .= '  ' . $this->Translate('system time') . ': ' . date('d.m.Y H:i:s', $ts) . PHP_EOL;
+			}
+		}
 
         echo $msg;
     }
+
+    private function traverseService($service, &$entList) 
+	{ 
+		$jdata = $this->GetData( $service ); 
+		if( $jdata == false) { 
+			return; 
+		} 
+		
+		$ent = [];
+		
+		switch( $jdata['type'] ) { 
+		case 'refEnum': 
+			foreach( $jdata['references'] as $subService ) 
+					$this->traverseService( $subService['id'], $entList );
+				break; 
+		case 'moduleList': 
+				foreach( $jdata['values'] as $Modules )
+					echo $jdata['type'] . '=' . print_r($Modules, true) . PHP_EOL;
+				break; 
+		case 'floatValue':
+				$ent['type'] = $jdata['type'];
+				$ent['value'] = $jdata['value'];
+				$ent['unit'] = $jdata['unitOfMeasure'];
+				//echo $jdata['type'] . ' ' . print_r($jdata, true) . PHP_EOL;
+				if (isset($jdata['minValue']) && isset($jdata['maxValue'])) {
+					$ent['range'] = $jdata['minValue'] . ' ... ' . $jdata['maxValue'];
+				} else if (isset($jdata['minValue'])) {
+					$ent['range'] = $jdata['minValue'] . ' ... ';
+				} else if (isset($jdata['maxValue'])) {
+					$ent['range'] = ' ... ' . $jdata['maxValue'];
+				}
+				if (isset($jdata['state'])) {
+					$r = [];
+					foreach ($jdata['state'] as $s) {
+						foreach ($s as $var => $val) {
+							$r[] = $var . '=' . $val;
+						}
+					}
+					if ($r != []) {
+						$ent['range'] = join($r, ', ');
+					}
+				}
+				break; 
+		case 'stringValue':
+				$ent['type'] = $jdata['type'];
+				$ent['value'] = $jdata['value'];
+				if (isset($jdata['allowedValues'])) {
+					$ent['range'] = join($jdata['allowedValues'], ', ');
+				}
+				break; 
+			case 'switchProgram': 
+			case 'errorList':
+			case 'systeminfo':
+			case 'arrayData':
+			case 'yRecording':
+				$ent['type'] = $jdata['type'];
+				$ent['value'] = ' --- ' . $this->Translate('not useable') . ' --- ';
+				break;
+			default: 
+				break; 
+		}
+		if ($ent != []) {
+			$ent['name'] = $service;
+			$ent['writeable'] = isset($jdata['writeable']) && $jdata['writeable'] ? true : false;
+			$entList[] = $ent;
+		}
+	}
+
+    public function DatapointSheet()
+    {
+        $inst = IPS_GetInstance($this->InstanceID);
+        if ($inst['InstanceStatus'] == IS_INACTIVE) {
+            $this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
+            echo $this->Translate('Instance is inactive') . PHP_EOL;
+            return;
+        }
+
+$urls = array(
+		'/gateway', 
+		'/system', 
+		'/heatSources',
+		'/heatingCircuits', 
+		'/solarCircuits', 
+		'/dhwCircuits',
+		/*
+		'/notifications',
+		'/recordings'
+		*/
+	); 
+
+		$entList = [];
+		foreach( $urls as $url ) 
+			$this->traverseService( $url, $entList ) ;
+
+		$title = [];
+		$title[] = $this->Translate('Name');
+		$title[] = $this->Translate('Type');
+		$title[] = $this->Translate('Unit');
+		$title[] = $this->Translate('writeable?');
+		$title[] = $this->Translate('current value');
+		$title[] = $this->Translate('possible values');
+		$buf = join($title, ';') . PHP_EOL;
+
+		foreach ($entList as $ent) {
+			$row = [];
+			$row[] = '"' . $ent['name'] .'"';
+			$row[] = $ent['type'];
+			$row[] = isset($ent['unit']) ? '"' . $ent['unit'] . '"': '';
+			$row[] = isset($ent['writeable']) && $ent['writeable'] ? 'Ja' : 'Nein';
+			$row[] = isset($ent['value']) ? '"' . $ent['value'] . '"': '';
+			$row[] = isset($ent['range']) ? '"' . $ent['range'] . '"': '';
+			$buf .= join($row, ';') . PHP_EOL;
+		}
+
+		$mediaName = $this->Translate('Buderus KM200 Datapoints');
+		@$mediaID = IPS_GetMediaIDByName ($mediaName, $this->InstanceID);
+		if ($mediaID == false) {
+			$mediaID = IPS_CreateMedia(MEDIATYPE_DOCUMENT);
+			$filename = 'media' . DIRECTORY_SEPARATOR . 'Buderus_KM200.csv';
+			IPS_SetMediaFile($mediaID, $filename, false); 
+			IPS_SetName($mediaID, $mediaName);
+			IPS_SetParent($mediaID, $this->InstanceID);
+		}
+		IPS_SetMediaContent($mediaID, base64_encode($buf));
+    }
+
 
     private function Encrypt($encryptData)
     {
@@ -128,7 +267,7 @@ class BuderusKM200 extends IPSModule
             openssl_encrypt(
                 $encryptData,
                 'aes-256-ecb',
-                $key,
+                hex2bin($key),
                 OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING
             )
         );
@@ -137,11 +276,12 @@ class BuderusKM200 extends IPSModule
     private function Decrypt($decryptData)
     {
         $key = $this->ReadPropertyString('key');
+		$this->SendDebug(__FUNCTION__, 'key=' . $key, 0);
 
         $decrypt = openssl_decrypt(
             base64_decode($decryptData),
             'aes-256-ecb',
-            $key,
+            hex2bin($key),
             OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING
         );
 
@@ -173,7 +313,7 @@ class BuderusKM200 extends IPSModule
             'http' => [
             'method' => 'GET',
             'header' => "Accept: application/json\r\n" .
-                            "User-Agent: TeleHeater/2.2.3\r\n"
+						"User-Agent: TeleHeater/2.2.3\r\n"
             ]
         ];
         $context = stream_context_create($options);
@@ -182,10 +322,14 @@ class BuderusKM200 extends IPSModule
             false,
             $context
         );
-        if (false === $content) {
+		$this->SendDebug(__FUNCTION__, 'options=' . print_r($options, true), 0);
+		$this->SendDebug(__FUNCTION__, 'content=' . print_r($content, true), 0);
+        if ($content == false) {
             return false;
         }
-        return json_decode($this->Decrypt($content));
+		$data = $this->Decrypt($content);
+		$this->SendDebug(__FUNCTION__, 'decrypt content=' . print_r($data, true), 0);
+        return json_decode($data, true);
     }
 
     private function SetData($url, $Value)

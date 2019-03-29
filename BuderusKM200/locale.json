@@ -9,9 +9,30 @@
 
 			"Key": "Key",
 
+			"Update data every X minutes": "Aktualisieren Daten alle X Minuten",
+			"Minutes": "Minuten",
+
 			"Verify access": "Zugriff prüfen",
 			"Update data": "Aktualisiere Daten",
+			"Datapoint-sheet": "Datenpunkt-Tabelle",
 			"Module description": "Modulbeschreibung",
+
+			"access ok": "Zugriff in Ordnung",
+            "access failed": "Zugriff fehlgeschlagen",
+			"system health": "Systemzustand",
+			"system time": "Systemzeit",
+
+			"Name": "Name",
+			"Type": "Type",
+			"Unit": "Einheit",
+			"writeable?": "beschreibbar?",
+			"current value": "aktueller Wert",
+			"possible values": "Wertemenge",
+			"not useable": "nicht verwendbar",
+
+			"Buderus KM200 Datapoints": "Buderus KM200 Datenpunkte",
+
+			"Last update": "letzte Aktualisierung",
 
 			"Instance getting created": "Instanz wird erstellt",
 			"Instance is active": "Instanz ist aktiv",
