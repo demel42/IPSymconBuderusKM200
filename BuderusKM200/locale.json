@@ -30,6 +30,33 @@
 			"possible values": "Wertemenge",
 			"not useable": "nicht verwendbar",
 
+			"Datapoint": "Datenpunkt",
+			"Title": "Titel",
+			"Variable type": "Variablentyp",
+			"Variable profile": "Variablenprofil",
+
+			"Fields": "Felder",
+
+			"convert values": "Werte konvertieren",
+
+			"Error": "Fehler",
+			"Maintenance": "Wartung",
+			"Ok": "in Ordnung",
+
+			"manual": "manuell",
+			"automatic": "automatisch",
+
+			"Off": "Aus",
+			"High": "Hoch",
+			"HC-Program": "HC-Programm",
+			"Own program": "eigenes Programm",
+
+			"Off": "Aus",
+			"On": "Ein",
+
+			"Stop": "Stop",
+			"Start": "Start",
+
 			"Buderus KM200 Datapoints": "Buderus KM200 Datenpunkte",
 
 			"Last update": "letzte Aktualisierung",
