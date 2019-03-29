@@ -116,7 +116,7 @@ class BuderusKM200 extends IPSModule
         echo $msg;
     }
 
-	privat function Encrypt( $encryptData ) 
+	private function Encrypt( $encryptData ) 
 	{ 
 		$key = $this->ReadPropertyString('key');
 
@@ -134,7 +134,7 @@ class BuderusKM200 extends IPSModule
 		);
 	}
 
-	function Decrypt( $decryptData ) 
+	private function Decrypt( $decryptData ) 
 	{ 
 		$key = $this->ReadPropertyString('key');
 
@@ -163,7 +163,7 @@ class BuderusKM200 extends IPSModule
 			); 
 	}
 
-	function GetData( $url ) 
+	private function GetData( $url ) 
 	{ 
 		$host = $this->ReadPropertyString('host');
 		$port = $this->ReadPropertyInteger('port');
@@ -186,7 +186,7 @@ class BuderusKM200 extends IPSModule
 		return json_decode( $this->Decrypt( $content ) ); 
 	} 
 
-	function SetData( $url, $Value ) 
+	private function SetData( $url, $Value ) 
 	{ 
 		$host = $this->ReadPropertyString('host');
 		$port = $this->ReadPropertyInteger('port');
