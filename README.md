@@ -128,7 +128,7 @@ GUIDs
 - Instanzen:
   - BuderusKM200: `{3A2FE2B9-EB88-4B14-B144-2A3839A761CA}`
 
-Folgende Datenpunkte meine ich identifiziert zu haben: `docs/datapoints.csv`
+Folgende Datenpunkte meine ich identifiziert zu haben: siehe `docs/datapoints.csv`
 
 ## 7. Versions-Historie
 
