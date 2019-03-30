@@ -20,9 +20,7 @@ class BuderusKM200 extends IPSModule
         $fields = [
                 [
                     'datapoint'  => '/system/healthStatus',
-                    'title'      => $this->Translate('system health'),
                     'vartype'    => VARIABLETYPE_INTEGER,
-                    'varprofíle' => 'BuderusKM200.HealthStatus'
                 ],
             ];
         $this->RegisterPropertyString('fields', json_encode($fields));
@@ -33,48 +31,50 @@ class BuderusKM200 extends IPSModule
 
         $this->RegisterTimer('UpdateData', 0, 'BuderusKM200_UpdateData(' . $this->InstanceID . ');');
 
-        $this->CreateVarProfile('BuderusKM200.min', VARIABLETYPE_INTEGER, ' min', 0, 0, 0, 0, '');
-
-        $this->CreateVarProfile('BuderusKM200.C', VARIABLETYPE_FLOAT, ' °C', 0, 0, 0, 1, 'Temperature');
-        $this->CreateVarProfile('BuderusKM200.kWh', VARIABLETYPE_FLOAT, ' kWh', 0, 0, 0, 1, '');
-        $this->CreateVarProfile('BuderusKM200.Wh', VARIABLETYPE_FLOAT, ' Wh', 0, 0, 0, 1, '');
-        $this->CreateVarProfile('BuderusKM200.kW', VARIABLETYPE_FLOAT, ' kW', 0, 0, 0, 1, '');
-        $this->CreateVarProfile('BuderusKM200.Pascal', VARIABLETYPE_FLOAT, ' Pascal', 0, 0, 0, 1, '');
-        $this->CreateVarProfile('BuderusKM200.bar', VARIABLETYPE_FLOAT, ' bar', 0, 0, 0, 1, '');
-        $this->CreateVarProfile('BuderusKM200.Percent', VARIABLETYPE_FLOAT, ' %', 0, 0, 0, 0, '');
-        $this->CreateVarProfile('BuderusKM200.l_min', VARIABLETYPE_FLOAT, ' l/min', 0, 0, 0, 0, '');
-
-        $associations = [];
-        $associations[] = ['Wert' => 0, 'Name' => $this->Translate('Error'), 'Farbe' => 0xEE0000];
-        $associations[] = ['Wert' => 1, 'Name' => $this->Translate('Maintenance'), 'Farbe' => 0xFFFF00];
-        $associations[] = ['Wert' => 2, 'Name' => $this->Translate('Ok'), 'Farbe' => 0x228B22];
-        $this->CreateVarProfile('BuderusKM200.HealthStatus', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations);
-
-        $associations = [];
-        $associations[] = ['Wert' => 0, 'Name' => $this->Translate('Inactive'), 'Farbe' => -1];
-        $associations[] = ['Wert' => 1, 'Name' => $this->Translate('Active'), 'Farbe' => -1];
-        $this->CreateVarProfile('BuderusKM200.Status', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations);
-
-        $associations = [];
-        $associations[] = ['Wert' => 0, 'Name' => $this->Translate('automatic'), 'Farbe' => -1];
-        $associations[] = ['Wert' => 1, 'Name' => $this->Translate('manual'), 'Farbe' => -1];
-        $this->CreateVarProfile('BuderusKM200.Hc_OperationMode', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations);
-
-        $associations[] = ['Wert' => false, 'Name' => $this->Translate('Off'), 'Farbe' => -1];
-        $associations[] = ['Wert' => true, 'Name' => $this->Translate('On'), 'Farbe' => -1];
+        $associations = [
+					['Wert' => false, 'Name' => $this->Translate('Stop'), 'Farbe' => -1],
+					['Wert' => true, 'Name' => $this->Translate('Start'), 'Farbe' => -1],
+				];
+        $this->CreateVarProfile('BuderusKM200.Charge', VARIABLETYPE_BOOLEAN, '', 0, 0, 0, 1, '', $associations);
+        $associations = [
+					['Wert' => false, 'Name' => $this->Translate('Off'), 'Farbe' => -1],
+					['Wert' => true, 'Name' => $this->Translate('On'), 'Farbe' => -1],
+				];
         $this->CreateVarProfile('BuderusKM200.OnOff', VARIABLETYPE_BOOLEAN, '', 0, 0, 0, 1, '', $associations);
 
-        $associations = [];
-        $associations[] = ['Wert' => 0, 'Name' => $this->Translate('Off'), 'Farbe' => -1];
-        $associations[] = ['Wert' => 1, 'Name' => $this->Translate('High'), 'Farbe' => -1];
-        $associations[] = ['Wert' => 1, 'Name' => $this->Translate('HC-Program'), 'Farbe' => -1];
-        $associations[] = ['Wert' => 1, 'Name' => $this->Translate('Own program'), 'Farbe' => -1];
+        $associations = [
+					['Wert' => 0, 'Name' => $this->Translate('Off'), 'Farbe' => -1],
+					['Wert' => 1, 'Name' => $this->Translate('High'), 'Farbe' => -1],
+					['Wert' => 1, 'Name' => $this->Translate('HC-Program'), 'Farbe' => -1],
+					['Wert' => 1, 'Name' => $this->Translate('Own program'), 'Farbe' => -1],
+				];
         $this->CreateVarProfile('BuderusKM200.Dwh_OperationMode', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations);
+        $associations = [
+					['Wert' => 0, 'Name' => $this->Translate('automatic'), 'Farbe' => -1],
+					['Wert' => 1, 'Name' => $this->Translate('manual'), 'Farbe' => -1],
+				];
+        $this->CreateVarProfile('BuderusKM200.Hc_OperationMode', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations);
+        $associations = [
+					['Wert' => 0, 'Name' => $this->Translate('Error'), 'Farbe' => 0xEE0000],
+					['Wert' => 1, 'Name' => $this->Translate('Maintenance'), 'Farbe' => 0xFFFF00],
+					['Wert' => 2, 'Name' => $this->Translate('Ok'), 'Farbe' => 0x228B22],
+				];
+        $this->CreateVarProfile('BuderusKM200.HealthStatus', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations);
+        $this->CreateVarProfile('BuderusKM200.min', VARIABLETYPE_INTEGER, ' min', 0, 0, 0, 0, '');
+        $associations = [
+					['Wert' => 0, 'Name' => $this->Translate('Inactive'), 'Farbe' => -1],
+					['Wert' => 1, 'Name' => $this->Translate('Active'), 'Farbe' => -1],
+				];
+        $this->CreateVarProfile('BuderusKM200.Status', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations);
 
-        $associations = [];
-        $associations[] = ['Wert' => 0, 'Name' => $this->Translate('Stop'), 'Farbe' => -1];
-        $associations[] = ['Wert' => 1, 'Name' => $this->Translate('Start'), 'Farbe' => -1];
-        $this->CreateVarProfile('BuderusKM200.Charge', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations);
+        $this->CreateVarProfile('BuderusKM200.bar', VARIABLETYPE_FLOAT, ' bar', 0, 0, 0, 1, '');
+        $this->CreateVarProfile('BuderusKM200.Celsius', VARIABLETYPE_FLOAT, ' °C', 0, 0, 0, 1, 'Temperature');
+        $this->CreateVarProfile('BuderusKM200.kWh', VARIABLETYPE_FLOAT, ' kWh', 0, 0, 0, 1, '');
+        $this->CreateVarProfile('BuderusKM200.kW', VARIABLETYPE_FLOAT, ' kW', 0, 0, 0, 1, '');
+        $this->CreateVarProfile('BuderusKM200.l_min', VARIABLETYPE_FLOAT, ' l/min', 0, 0, 0, 0, '');
+        $this->CreateVarProfile('BuderusKM200.Pascal', VARIABLETYPE_FLOAT, ' Pascal', 0, 0, 0, 1, '');
+        $this->CreateVarProfile('BuderusKM200.Percent', VARIABLETYPE_FLOAT, ' %', 0, 0, 0, 0, '');
+        $this->CreateVarProfile('BuderusKM200.Wh', VARIABLETYPE_FLOAT, ' Wh', 0, 0, 0, 1, '');
     }
 
     private function findVariables($objID, &$objList)
@@ -103,26 +103,24 @@ class BuderusKM200 extends IPSModule
 
         $fields = json_decode($this->ReadPropertyString('fields'), true);
 
-        $vpos = 0;
+        $vpos = 1000;
 
         $varList = [];
         foreach ($fields as $field) {
             $this->SendDebug(__FUNCTION__, 'field=' . print_r($field, true), 0);
             $datapoint = $this->GetArrayElem($field, 'datapoint', '');
-            $title = $this->GetArrayElem($field, 'title', '');
             $vartype = $this->GetArrayElem($field, 'vartype', -1);
-            $varprofile = $this->GetArrayElem($field, 'varprofile', '');
 
-            if ($datapoint == '' || $title == '' || $vartype == -1) {
-                $this->SendDebug(__FUNCTION__, 'ignore field: datapoint=' . $datapoint . ', title=' . $title . ', vartype=' . $vartype, 0);
+            if ($datapoint == '' || $vartype == -1) {
+                $this->SendDebug(__FUNCTION__, 'ignore field: datapoint=' . $datapoint . ', vartype=' . $vartype, 0);
                 continue;
             }
 
             $ident = 'DP' . str_replace('/', '_', $datapoint);
 
-            $this->SendDebug(__FUNCTION__, 'register variable: ident=' . $ident . ', title=' . $title . ', vartype=' . $vartype . ', varprofile=' . $varprofile, 0);
+            $this->SendDebug(__FUNCTION__, 'register variable: ident=' . $ident . ', vartype=' . $vartype, 0);
 
-            $this->MaintainVariable($ident, $this->Translate($title), $vartype, $varprofile, $vpos++, true);
+            $this->MaintainVariable($ident, $datapoint, $vartype, '', $vpos++, true);
             $varList[] = $ident;
         }
 
@@ -138,7 +136,6 @@ class BuderusKM200 extends IPSModule
             }
         }
 
-        $vpos = 100;
         $this->MaintainVariable('LastUpdate', $this->Translate('Last update'), VARIABLETYPE_INTEGER, '~UnixTimestamp', $vpos++, true);
 
         $module_disable = $this->ReadPropertyBoolean('module_disable');
@@ -177,11 +174,7 @@ class BuderusKM200 extends IPSModule
         $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'key', 'caption' => 'Key'];
 
         $columns = [];
-        $columns[] = ['caption' => 'Datapoint', 'name' => 'datapoint', 'add' => '', 'width' => '250px', 'edit' => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ];
-        $columns[] = ['caption' => 'Title', 'name' => 'title', 'add' => '', 'width' => '250px', 'edit' => [
+        $columns[] = ['caption' => 'Datapoint', 'name' => 'datapoint', 'add' => '', 'width' => 'auto', 'edit' => [
                                 'type' => 'ValidationTextBox'
                             ]
                         ];
@@ -191,15 +184,11 @@ class BuderusKM200 extends IPSModule
                 ['caption' => 'Float', 'value' => VARIABLETYPE_FLOAT],
                 ['caption' => 'String', 'value' => VARIABLETYPE_STRING],
             ];
-        $columns[] = ['caption' => 'Variable type', 'name' => 'vartype', 'add' => VARIABLETYPE_FLOAT, 'width' => '80px', 'edit' => [
+        $columns[] = ['caption' => 'Variable type', 'name' => 'vartype', 'add' => VARIABLETYPE_FLOAT, 'width' => '150px', 'edit' => [
                                 'caption' => 'Field', 'type' => 'Select', 'name' => 'field', 'options' => $options
                             ]
                         ];
-        $columns[] = ['caption' => 'Variable profile', 'name' => 'varprofile', 'add' => '', 'width' => 'auto', 'edit' => [
-                                'type' => 'ValidationTextBox'
-                            ]
-                        ];
-        $formElements[] = ['type' => 'List', 'name' => 'fields', 'caption' => 'Fields', 'rowCount' => 10, 'add' => true, 'delete' => true, 'columns' => $columns];
+        $formElements[] = ['type' => 'List', 'name' => 'fields', 'caption' => 'Fields', 'rowCount' => 15, 'add' => true, 'delete' => true, 'columns' => $columns];
 
         $formElements[] = ['type' => 'SelectScript', 'name' => 'convert_script', 'caption' => 'convert values'];
 
@@ -245,7 +234,6 @@ class BuderusKM200 extends IPSModule
             $result = $this->GetData($datapoint);
 
             $vartype = $this->GetArrayElem($field, 'vartype', -1);
-            $varprofile = $this->GetArrayElem($field, 'varprofile', '');
             $type = $this->GetArrayElem($result, 'type', '');
             $value = $this->GetArrayElem($result, 'value', '');
 
@@ -264,7 +252,6 @@ class BuderusKM200 extends IPSModule
                         'InstanceID'    => $this->InstanceID,
                         'datapoint'     => $datapoint,
                         'vartype'       => $vartype,
-                        'varprofile'    => $varprofile,
                         'value'         => $value,
                         'result'        => json_encode($result),
                     ];
