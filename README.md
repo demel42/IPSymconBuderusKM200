@@ -131,6 +131,7 @@ GUIDs
 Folgende Datenpunkte meine ich identifiziert zu haben:
 
 | Datenpunkt | Bedeutung | Variablentyp | Variablenprofil |
+| :--------: | :------:  | :----------: | :-------------: |
 | /dhwCircuits/dhw1/actualTemp | Warmwasser-Temperatur - Ist | Float | BuderusKM200.Celsius |
 | /dhwCircuits/dhw1/currentSetpoint | Warmwasser-Temperatur - Soll | Float | BuderusKM200.Celsius |
 | /dhwCircuits/dhw1/temperatureLevels/highg | Warmwasser-Temperatur - Soll | Float | BuderusKM200.Celsius |
