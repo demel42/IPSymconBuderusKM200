@@ -32,39 +32,39 @@ class BuderusKM200 extends IPSModule
         $this->RegisterTimer('UpdateData', 0, 'BuderusKM200_UpdateData(' . $this->InstanceID . ');');
 
         $associations = [
-					['Wert' => false, 'Name' => $this->Translate('Stop'), 'Farbe' => -1],
-					['Wert' => true, 'Name' => $this->Translate('Start'), 'Farbe' => -1],
-				];
+                    ['Wert' => false, 'Name' => $this->Translate('Stop'), 'Farbe' => -1],
+                    ['Wert' => true, 'Name' => $this->Translate('Start'), 'Farbe' => -1],
+                ];
         $this->CreateVarProfile('BuderusKM200.Charge', VARIABLETYPE_BOOLEAN, '', 0, 0, 0, 1, '', $associations);
         $associations = [
-					['Wert' => false, 'Name' => $this->Translate('Off'), 'Farbe' => -1],
-					['Wert' => true, 'Name' => $this->Translate('On'), 'Farbe' => -1],
-				];
+                    ['Wert' => false, 'Name' => $this->Translate('Off'), 'Farbe' => -1],
+                    ['Wert' => true, 'Name' => $this->Translate('On'), 'Farbe' => -1],
+                ];
         $this->CreateVarProfile('BuderusKM200.OnOff', VARIABLETYPE_BOOLEAN, '', 0, 0, 0, 1, '', $associations);
 
         $associations = [
-					['Wert' => 0, 'Name' => $this->Translate('Off'), 'Farbe' => -1],
-					['Wert' => 1, 'Name' => $this->Translate('High'), 'Farbe' => -1],
-					['Wert' => 1, 'Name' => $this->Translate('HC-Program'), 'Farbe' => -1],
-					['Wert' => 1, 'Name' => $this->Translate('Own program'), 'Farbe' => -1],
-				];
+                    ['Wert' => 0, 'Name' => $this->Translate('Off'), 'Farbe' => -1],
+                    ['Wert' => 1, 'Name' => $this->Translate('High'), 'Farbe' => -1],
+                    ['Wert' => 1, 'Name' => $this->Translate('HC-Program'), 'Farbe' => -1],
+                    ['Wert' => 1, 'Name' => $this->Translate('Own program'), 'Farbe' => -1],
+                ];
         $this->CreateVarProfile('BuderusKM200.Dwh_OperationMode', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations);
         $associations = [
-					['Wert' => 0, 'Name' => $this->Translate('automatic'), 'Farbe' => -1],
-					['Wert' => 1, 'Name' => $this->Translate('manual'), 'Farbe' => -1],
-				];
+                    ['Wert' => 0, 'Name' => $this->Translate('automatic'), 'Farbe' => -1],
+                    ['Wert' => 1, 'Name' => $this->Translate('manual'), 'Farbe' => -1],
+                ];
         $this->CreateVarProfile('BuderusKM200.Hc_OperationMode', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations);
         $associations = [
-					['Wert' => 0, 'Name' => $this->Translate('Error'), 'Farbe' => 0xEE0000],
-					['Wert' => 1, 'Name' => $this->Translate('Maintenance'), 'Farbe' => 0xFFFF00],
-					['Wert' => 2, 'Name' => $this->Translate('Ok'), 'Farbe' => 0x228B22],
-				];
+                    ['Wert' => 0, 'Name' => $this->Translate('Error'), 'Farbe' => 0xEE0000],
+                    ['Wert' => 1, 'Name' => $this->Translate('Maintenance'), 'Farbe' => 0xFFFF00],
+                    ['Wert' => 2, 'Name' => $this->Translate('Ok'), 'Farbe' => 0x228B22],
+                ];
         $this->CreateVarProfile('BuderusKM200.HealthStatus', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations);
         $this->CreateVarProfile('BuderusKM200.min', VARIABLETYPE_INTEGER, ' min', 0, 0, 0, 0, '');
         $associations = [
-					['Wert' => 0, 'Name' => $this->Translate('Inactive'), 'Farbe' => -1],
-					['Wert' => 1, 'Name' => $this->Translate('Active'), 'Farbe' => -1],
-				];
+                    ['Wert' => 0, 'Name' => $this->Translate('Inactive'), 'Farbe' => -1],
+                    ['Wert' => 1, 'Name' => $this->Translate('Active'), 'Farbe' => -1],
+                ];
         $this->CreateVarProfile('BuderusKM200.Status', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations);
 
         $this->CreateVarProfile('BuderusKM200.bar', VARIABLETYPE_FLOAT, ' bar', 0, 0, 0, 1, '');
