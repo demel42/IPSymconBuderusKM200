@@ -17,6 +17,10 @@ if (!defined('OBJECTTYPE_CATEGORY')) {
     define('OBJECTTYPE_LINK', 6);
 }
 
+if (!defined('MEDIATYPE_DOCUMENT')) {
+    define('MEDIATYPE_DOCUMENT', 5);
+}
+
 if (!defined('IS_INVALIDCONFIG')) {
     define('IS_INVALIDCONFIG', IS_EBASE + 1);
 }
