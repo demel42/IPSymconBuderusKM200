@@ -191,7 +191,7 @@ class BuderusKM200 extends IPSModule
                 ['caption' => 'Float', 'value' => VARIABLETYPE_FLOAT],
                 ['caption' => 'String', 'value' => VARIABLETYPE_STRING],
             ];
-        $columns[] = ['caption' => 'Variable type', 'name' => 'vartype', 'add' => '', 'width' => '80px', 'edit' => [
+        $columns[] = ['caption' => 'Variable type', 'name' => 'vartype', 'add' => VARIABLETYPE_FLOAT, 'width' => '80px', 'edit' => [
                                 'caption' => 'Field', 'type' => 'Select', 'name' => 'field', 'options' => $options
                             ]
                         ];
@@ -199,7 +199,7 @@ class BuderusKM200 extends IPSModule
                                 'type' => 'ValidationTextBox'
                             ]
                         ];
-        $formElements[] = ['type' => 'List', 'name' => 'fields', 'caption' => 'Fields', 'rowCount' => 20, 'add' => true, 'delete' => true, 'columns' => $columns];
+        $formElements[] = ['type' => 'List', 'name' => 'fields', 'caption' => 'Fields', 'rowCount' => 10, 'add' => true, 'delete' => true, 'columns' => $columns];
 
         $formElements[] = ['type' => 'SelectScript', 'name' => 'convert_script', 'caption' => 'convert values'];
 
