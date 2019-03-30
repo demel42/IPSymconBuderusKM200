@@ -54,8 +54,44 @@ In IP-Symcon nun _Instanz hinzufügen_ (_CTRL+1_) auswählen unter der Kategorie
 | Instanz ist deaktiviert   | boolean  | false        | Instanz temporär deaktivieren |
 |                           |          |              | |
 | Host                      | string   |              | KM200-Server |
+| Port                      | integer  | 80           | HTTP-Port |
+|                           |          |              | |
+| Key                       | string   |              | AES-Key |
+|                           |          |              | |
+| Felder                    |          |              | Tabelle zur Angabe der auszulesenden Datenpunkte |
+| Werte konvertieren        |          |              | |
 |                           |          |              | |
 | Aktualisiere Status ...   | integer  | 60           | Aktualisierungsintervall, Angabe in Sekunden |
+
+- AES-Key: Key zum Zugriff auf die KEM200, den man mittels dieses [AES-Key-Generator](https://ssl-account.com/km200.andreashahn.info) ermitteln kann.
+- Felder: Liste der zu übernehmenden Datenpunkte und ANgabe des Datentyps der Variable. Variablen, die aus dieser Liste gelöscht werden, werden gelöscht.
+Der Ident dieser erzeugten Variablen ist wiefolgt ausgebaut: _DP_ + Bezeichung des Datenpunkts, _/_ ersetzt durch *_*.
+- Werte konvertieren: mit diesen Scripten kann man Werte zu konvertieren
+
+Ein passendes Code-Fragment für ein Script (siehe auch _docs_:
+
+```
+<?php
+
+$datapoint = $_IPS['datapoint'];
+$value = $_IPS['value'];
+
+$ret = '';
+if ($datapoint == '/heatSources/workingTime/totalSystem') {
+    $m = $value;
+    if ($m > 60) {
+        $h = floor($m / 60);
+        $m = $m % 60;
+        $ret .= sprintf('%dh', $h);
+    }
+    if ($m > 0) {
+        $ret .= sprintf('%dm', $m);
+    }
+}
+
+echo $ret;
+```
+Wandelt die Betriebszeit (in Minuten) in einer Darstellung als _<Stunden>d<Minuten>m_, Variable dann als String.
 
 #### Schaltflächen
 
@@ -63,6 +99,20 @@ In IP-Symcon nun _Instanz hinzufügen_ (_CTRL+1_) auswählen unter der Kategorie
 | :--------------------------: | :----------------------------: |
 | Zugriff prüfen               | Zugriff auf prüfen |
 | Aktualisiere Status          | aktuellen Status holen |
+| Datenpunkt-Tabelle           | Tabelle der verfügbafren Datenpunkte erzeugen |
+
+- Datenpunkte: liest alle Datenpunkte der Heizung ein und legt diese csv-Datei als Medien-Objekt unterhalb der Instanz ab.
+
+### Variablenprofile
+
+* Boolean<br>
+BuderusKM200.OnOff [Off|On], BuderusKM200.Status [Inactive|Active]. BuderusKM200.Charge [Stop|Start]
+
+* Integer<br>
+BuderusKM200.min, BuderusKM200.HealthStatus [Error|Maintenance|Ok], BuderusKM200.Hc_OperationMode [automatic|manual], BuderusKM200.Dwh_OperationMode [Off|High|HC-Program|Own program]
+
+* Float<br>
+BuderusKM200.bar, BuderusKM200.Celsius, BuderusKM200.kW, BuderusKM200.kWh, BuderusKM200.l_min, BuderusKM200.Pascal, BuderusKM200.Percent, BuderusKM200.Wh
 
 ## 6. Anhang
 
