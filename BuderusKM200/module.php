@@ -329,7 +329,7 @@ class BuderusKM200 extends IPSModule
         } else {
             $msg = $this->Translate('Access ok') . ':' . PHP_EOL;
             $msg .= '  ' . $this->Translate('System health') . ': ' . $r['value'] . PHP_EOL;
-			$msg .= PHP_EOL;
+            $msg .= PHP_EOL;
             $r = $this->GetData('/system/brand');
             if ($r != false) {
                 $msg .= '  ' . $this->Translate('Brand') . ': ' . $r['value'] . PHP_EOL;
@@ -342,7 +342,7 @@ class BuderusKM200 extends IPSModule
             if ($r != false) {
                 $msg .= '  ' . $this->Translate('System type') . ': ' . $r['value'] . PHP_EOL;
             }
-			$msg .= PHP_EOL;
+            $msg .= PHP_EOL;
             $r = $this->GetData('/gateway/versionHardware');
             if ($r != false) {
                 $msg .= '  ' . $this->Translate('Hardware version') . ': ' . $r['value'] . PHP_EOL;
@@ -351,13 +351,12 @@ class BuderusKM200 extends IPSModule
             if ($r != false) {
                 $msg .= '  ' . $this->Translate('Firmware version') . ': ' . $r['value'] . PHP_EOL;
             }
-			$msg .= PHP_EOL;
+            $msg .= PHP_EOL;
             $r = $this->GetData('/gateway/DateTime');
             if ($r != false) {
                 $ts = strtotime($r['value']);
                 $msg .= '  ' . $this->Translate('System time') . ': ' . date('d.m.Y H:i:s', $ts) . PHP_EOL;
             }
-
         }
 
         echo $msg;
