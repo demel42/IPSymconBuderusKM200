@@ -50,7 +50,7 @@ In IP-Symcon nun _Instanz hinzufügen_ (_CTRL+1_) auswählen unter der Kategorie
 
 ### Einrichtung der Instanz
 
-Nach Eingabe von _Host_ und _KEy_ kann man mit die Funktion _Zugriff prüfen_ verwenden, um ein paar Basisdaten abzurufen.
+Nach Eingabe von _Host_ und _Key_ in der Konfigurationsmaske kann man mit die Funktion _Zugriff prüfen_ verwenden, um ein paar Basisdaten abzurufen.
 
 Leider gibt es sehr viele Datenpunkte, deren Existenz bzw. deren Befüllung von der individuellen Konfiguration abhängen.
 Daher macht es Sinn, als erstes _Datenpunkt-Tabelle_ auszulösen. Hiermit werden alle verfügbaren Datenpunkte ermittelt und im csv-Format als Medienobjekt unterhalb der Instanz gespeichert.
