@@ -53,16 +53,20 @@ In IP-Symcon nun _Instanz hinzufügen_ (_CTRL+1_) auswählen unter der Kategorie
 Nach Eingabe von _Host_ und _Key_ in der Konfigurationsmaske kann man mit die Funktion _Zugriff prüfen_ verwenden, um ein paar Basisdaten abzurufen.
 
 Leider gibt es sehr viele Datenpunkte, deren Existenz bzw. deren Befüllung von der individuellen Konfiguration abhängen.
-Daher macht es Sinn, als erstes _Datenpunkt-Tabelle_ auszulösen. Hiermit werden alle verfügbaren Datenpunkte ermittelt und im csv-Format als Medienobjekt unterhalb der Instanz gespeichert.
-Das dauert etwas, weil einige Hundert Abfragen gemacht werden. Diese Tabelle sollte man sich in einer geeigneten Programm öffnen und ansehen.
-Folgende Datenpunkte meine ich identifiziert zu haben: siehe [hier](docs/datapoints.md), Ergänzungen sind ausdrücklich erwünscht…
+Daher macht es Sinn, als erstes _Datenpunkt-Tabelle_ auszulösen. Hiermit werden alle verfügbaren Datenpunkte ermittelt und im csv-Format als Medienobjekt unterhalb der Instanz gespeichert.<br>
+Das dauert etwas, weil einige Hundert Abfragen gemacht werden. Diese Tabelle sollte man sich in einer geeigneten Programm öffnen und ansehen.<br>
+Folgende Datenpunkte meine ich identifiziert zu haben: siehe [hier](docs/datapoints.md), Ergänzungen sind ausdrücklich erwünscht.
 
-In dem Konfigurationsformular im Bereich _Felder_ kann man nun die Datenpunkte eingeben, die man haben möchte und zu dem Datenpunkt den gewünschten Variablentyp. Hierbei liefern die o.g. Tabellen Informationen, zum einen, welcher Datentyp von _KM200_ geliefert wird und zum anderen eine Information, welcher Variablentyp im IPS  möglicherweise der sinnvollste ist.
+In dem Konfigurationsformular im Bereich _Felder_ kann man nun die Datenpunkte eingeben, die man haben möchte und zu dem Datenpunkt den gewünschten Variablentyp.<br>
+Hierbei liefern die o.g. Tabellen Informationen
+1. welcher Datentyp von _KM200_ geliefert wird 
+2. welcher Variablentyp im IPS  möglicherweise der sinnvollste ist.
+
 Eine gewisse Konvertierung der Werte wird automatisch durchgeführt, so wird z.B. _/gateway/DateTime_ automatisch in ein Timestamp umgewandelt, wenn der Variablentyp _Integer_ ist; ist es _String_ wird der Wert unverändert übernommen.
 Eine Umsetzung wird ebenfalls bei allen Variablen gemacht, bei denen in der Spalte _Wertemenge_ eine Wertemenge angegeben ist und der Variablentyp _Integer_ (bzw. _Boolean_). Siehe hierzu auch die vordefinierten Datentypen.
 Sind weitergehenden Konvertierungen des Datentyps erwünscht, kann man optional ein Script einbinden (siehe unten).
 
-Die Variablen sind so benannt wie der Datenpunkt, es müsste also die Bezeichnung und der Datentyp angepasst werden.o
+Die Variablen sind so benannt wie der Datenpunkt, es müsste also sinnvollerweise die Bezeichnung und der Datentyp angepasst werden.
 
 Wichtig: wenn man einen Datenpunkt wieder aus der Liste æntfernt, wird die dazugehörige Variable gelöscht!
 
