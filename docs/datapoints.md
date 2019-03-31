@@ -10,16 +10,16 @@
 | /gateway/versionFirmware | Firmware-Version | String | |
 | /gateway/versionHardware | Hardware-Version | String | |
 | /heatingCircuits/hc1/currentRoomSetpoint | Raum-Temperatur - Soll | Float | BuderusKM200.Celsius |
-| /heatingCircuits/hc1/manualRoomSetpointg | Raum-Temperatur - Soll | Float | BuderusKM200.Celsius |
-| /heatingCircuits/hc1/operationModeg | Heizmodus | Integer | BuderusKM200.Hc_OperationMode |
+| /heatingCircuits/hc1/manualRoomSetpoint | Raum-Temperatur - Soll | Float | BuderusKM200.Celsius |
+| /heatingCircuits/hc1/operationMode | Heizmodus | Integer | BuderusKM200.Hc_OperationMode |
 | /heatingCircuits/hc1/pumpModulation | Heizkkreislauf-Pumpleistung | Float | BuderusKM200.Percent |
 | /heatingCircuits/hc1/status | Heizkreislauf-Status | Boolean | BuderusKM200.Status |
-| /heatingCircuits/hc1/temperatureLevels/comfort2g | Temperaturnivea Heizen | Float | BuderusKM200.Celsius |
-| /heatingCircuits/hc1/temperatureLevels/ecog | Temperaturnivea Absenken | Float | BuderusKM200.Celsius |
+| /heatingCircuits/hc1/temperatureLevels/comfort2 | Temperaturniveau _Heizen_ | Float | BuderusKM200.Celsius |
+| /heatingCircuits/hc1/temperatureLevels/ecog | Temperaturniveau _Absenken_ | Float | BuderusKM200.Celsius |
 | /heatSources/actualModulation | aktuelle Leistung | Float | BuderusKM200.Percent |
 | /heatSources/actualPower | aktuelle Leistung | Float | BuderusKM200.kW |
-| /heatSources/energyMonitoring/consumptiong | Float | BuderusKM200.kWh |
-| /heatSources/energyMonitoring/startDateTime | Integer | ~UnixTimestamp |
+| /heatSources/energyMonitoring/consumption | Gesamtverbrauch | Float | BuderusKM200.kWh |
+| /heatSources/energyMonitoring/startDateTime | Beginn der Verbrauchsmessung | Integer | ~UnixTimestamp |
 | /heatSources/flameStatus | Brenner | Boolean | BuderusKM200.OnOff |
 | /heatSources/hs1/actualModulation | aktuelle Leistung | Float | BuderusKM200.Percent |
 | /heatSources/hs1/actualPower | aktuelle Leistung | Float | BuderusKM200.kW |
