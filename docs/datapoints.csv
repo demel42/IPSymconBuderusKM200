@@ -11,8 +11,8 @@ Datenpunkt;Bedeutung;Variablentyp;Variablenprofil
 /heatingCircuits/hc1/operationModeg;Heizmodus;Integer;BuderusKM200.Hc_OperationMode
 /heatingCircuits/hc1/pumpModulation;Heizkkreislauf-Pumpleistung;Float;BuderusKM200.Percent
 /heatingCircuits/hc1/status;Heizkreislauf-Status;Boolean;BuderusKM200.Status
-/heatingCircuits/hc1/temperatureLevels/comfort2g;Heizen;Float;BuderusKM200.Celsius
-/heatingCircuits/hc1/temperatureLevels/ecog;Absenken;Float;BuderusKM200.Celsius
+/heatingCircuits/hc1/temperatureLevels/comfort2g;Temperaturnivea Heizen;Float;BuderusKM200.Celsius
+/heatingCircuits/hc1/temperatureLevels/ecog;Temperaturnivea Absenken;Float;BuderusKM200.Celsius
 /heatSources/actualModulation;aktuelle Leistung;Float;BuderusKM200.Percent
 /heatSources/actualPower;aktuelle Leistung;Float;BuderusKM200.kW
 /heatSources/energyMonitoring/consumptiong;Float;BuderusKM200.kWh
@@ -26,7 +26,7 @@ Datenpunkt;Bedeutung;Variablentyp;Variablenprofil
 /heatSources/workingTime/centralHeating;Heizzeit;Integer;BuderusKM200.min
 /heatSources/workingTime/totalSystem;Betriebszeit;Integer;BuderusKM200.min
 /solarCircuits/sc1/collectorTemperature;Solarkollektor-Temperatur;Float;BuderusKM200.Celsius
-/solarCircuits/sc1/dhwTankTemperature;unterer Speicher-Temperatur;Float;BuderusKM200.Celsius
+/solarCircuits/sc1/dhwTankTemperature;untere Speicher-Temperatur;Float;BuderusKM200.Celsius
 /solarCircuits/sc1/solarYield;Solarkollektor-Ertrag;Float;BuderusKM200.Wh
 /solarCircuits/sc1/status;Solarkollektor-Status;Boolean;BuderusKM200.Status
 /system/brand;Hersteller;String;

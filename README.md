@@ -20,6 +20,19 @@
 
 ## 1. Funktionsumfang
 
+`BuderusKEM200_UpdateData(int $InstanzID)`
+ruft die Daten vom KEM200 ab; für jeden Datenpunkt muss ein separater HTTP-Call durchgeführt werden.
+Der Abruf wird automatisch zyklisch durch die Instanz durchgeführt im Abstand wie in der Konfiguration angegeben.
+
+`BuderusKEM200_DatapointSheet(int $InstanzID)`
+erzeugt das Medien-Objekt _Datenpunkt-Tabelle_.
+
+`BuderusKEM200_GetData(int $InstanzID, string $datapoint)`
+ruft die Daten eines einzelnen Datenpunktes ab und liefert ein JSON-kodiester Objekt zurück.
+
+`BuderusKEM200_SetData(int $InstanzID, string $datapoint, string $Value)`
+setzt ein Datenobjekt auf den übergebenen Wert. Die Objekte, die beschriebbar sind, sind ぢn der o.g. Tabelle der Datenpunkte gekennzeichet.
+
 ## 2. Voraussetzungen
 
  - IP-Symcon ab Version 5
@@ -43,6 +56,24 @@ Anschließend erscheint ein Eintrag für das Modul in der Liste der Instanz _Mod
 
 In IP-Symcon nun _Instanz hinzufügen_ (_CTRL+1_) auswählen unter der Kategorie, unter der man die Instanz hinzufügen will, und Hersteller _Buderus_ und als Gerät _KM200_ auswählen.
 
+### Einrichtung der Instanz
+
+Nach Eingabe von _Host_ und _KEy_ kann man mit die Funktion _Zugriff prüfen_ verwenden, um ein paar Basisdaten abzurufen.
+
+Leider gibt es sehr viele Datenpunkte, deren Existenz bzw. deren Befüllung von der individuellen Konfiguration abhängen.
+Daher macht es Sinn, als erstes _Datenpunkt-Tabelle_ auszulösen. Hiermit werden alle verfügbaren Datenpunkte ermittelt und im csv-Format als Medienobjekt unterhalb der Instanz gespeichert.
+Das dauert etwas, weil einige Hundert Abfragen gemacht werden. Diese Tabelle sollte man sich in einer geeigneten Programm öffnen und ansehen.
+Folgende Datenpunkte meine ich identifiziert zu haben: siehe [hier](docs/datapoints.md), Ergänzungen sind ausdrücklich erwünscht…
+
+In dem Konfigurationsformular im Bereich _Felder_ kann man nun die Datenpunkte eingeben, die man haben möchte und zu dem Datenpunkt den gewünschten Variablentyp. Hierbei liefern die o.g. Tabellen Informationen, zum einen, welcher Datentyp von _KM200_ geliefert wird und zum anderen eine Information, welcher Variablentyp im IPS  möglicherweise der sinnvollste ist.
+Eine gewisse Konvertierung der Werte wird automatisch durchgeführt, so wird z.B. _/gateway/DateTime_ automatisch in ein Timestamp umgewandelt, wenn der Variablentyp _Integer_ ist; ist es _String_ wird der Wert unverändert übernommen.
+Eine Umsetzung wird ebenfalls bei allen Variablen gemacht, bei denen in der Spalte _Wertemenge_ eine Wertemenge angegeben ist und der Variablentyp _Integer_ (bzw. _Boolean_). Siehe hierzu auch die vordefinierten Datentypen.
+Sind weitergehenden Konvertierungen des Datentyps erwünscht, kann man optional ein Script einbinden (siehe unten).
+
+Die Variablen sind so benannt wie der Datenpunkt, es müsste also die Bezeichnung und der Datentyp angepasst werden.o
+
+Wichtig: wenn man einen Datenpunkt wieder aus der Liste æntfernt, wird die dazugehörige Variable gelöscht!
+
 ## 4. Funktionsreferenz
 
 ## 5. Konfiguration
@@ -50,7 +81,7 @@ In IP-Symcon nun _Instanz hinzufügen_ (_CTRL+1_) auswählen unter der Kategorie
 ### Variablen
 
 | Eigenschaft               | Typ      | Standardwert | Beschreibung |
-| :-----------------------: | :-----:  | :----------: | :-----------------------------------------: |
+| :------------------------ | :------  | :----------- | :------------------------------------------ |
 | Instanz ist deaktiviert   | boolean  | false        | Instanz temporär deaktivieren |
 |                           |          |              | |
 | Host                      | string   |              | KM200-Server |
@@ -67,13 +98,13 @@ In IP-Symcon nun _Instanz hinzufügen_ (_CTRL+1_) auswählen unter der Kategorie
 Key zum Zugriff auf die KEM200, den man mittels dieses [AES-Key-Generator](https://ssl-account.com/km200.andreashahn.info) ermitteln kann.
 
 - Felder:<br>
-Liste der zu übernehmenden Datenpunkte und ANgabe des Datentyps der Variable. Variablen, die aus dieser Liste gelöscht werden, werden gelöscht.
+Liste der zu übernehmenden Datenpunkte und Angabe des Datentyps der Variable. Variablen, die aus dieser Liste gelöscht werden, werden gelöscht.
 Der Ident dieser erzeugten Variablen ist wiefolgt ausgebaut: _DP_ + Bezeichung des Datenpunkts, die **/** isnd ersetzt durch **_**.
 
 - Werte konvertieren:<br>
 mit diesen Scripten kann man Werte zu konvertieren
 
-Ein passendes Code-Fragment für ein Script (siehe auch _docs_:
+Ein passendes Code-Fragment für ein Script (siehe auch _docs/convert_script.php_):
 
 ```
 <?php
@@ -101,7 +132,7 @@ Wandelt die Betriebszeit (in Minuten) in einer Darstellung als _<Stunden>d<Minut
 #### Schaltflächen
 
 | Bezeichnung                  | Beschreibung |
-| :--------------------------: | :----------------------------: |
+| :--------------------------- | :----------------------------- |
 | Zugriff prüfen               | Zugriff auf prüfen |
 | Aktualisiere Status          | aktuellen Status holen |
 | Datenpunkt-Tabelle           | Tabelle der verfügbafren Datenpunkte erzeugen |
@@ -112,13 +143,25 @@ liest alle Datenpunkte der Heizung ein und legt diese csv-Datei als Medien-Objek
 ### Variablenprofile
 
 * Boolean<br>
-BuderusKM200.OnOff [Off|On], BuderusKM200.Status [Inactive|Active]. BuderusKM200.Charge [Stop|Start]
+BuderusKM200.OnOff [Off|On],
+BuderusKM200.Status [Inactive|Active],
+BuderusKM200.Charge [Stop|Start]
 
 * Integer<br>
-BuderusKM200.min, BuderusKM200.HealthStatus [Error|Maintenance|Ok], BuderusKM200.Hc_OperationMode [automatic|manual], BuderusKM200.Dwh_OperationMode [Off|High|HC-Program|Own program]
+BuderusKM200.min,
+BuderusKM200.HealthStatus [Error|Maintenance|Ok],
+BuderusKM200.Hc_OperationMode [automatic|manual],
+BuderusKM200.Dwh_OperationMode [Off|High|HC-Program|Own program]
 
 * Float<br>
-BuderusKM200.bar, BuderusKM200.Celsius, BuderusKM200.kW, BuderusKM200.kWh, BuderusKM200.l_min, BuderusKM200.Pascal, BuderusKM200.Percent, BuderusKM200.Wh
+BuderusKM200.bar,
+BuderusKM200.Celsius,
+BuderusKM200.kW,
+BuderusKM200.kWh,
+BuderusKM200.l_min,
+BuderusKM200.Pascal,
+BuderusKM200.Percent,
+BuderusKM200.Wh
 
 ## 6. Anhang
 
@@ -127,8 +170,6 @@ GUIDs
 - Modul: `{6AE8F5B3-93AC-428E-9EDB-B37D46B708F1}`
 - Instanzen:
   - BuderusKM200: `{3A2FE2B9-EB88-4B14-B144-2A3839A761CA}`
-
-Folgende Datenpunkte meine ich identifiziert zu haben: siehe `docs/datapoints.csv`
 
 ## 7. Versions-Historie
 

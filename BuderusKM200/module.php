@@ -325,15 +325,39 @@ class BuderusKM200 extends IPSModule
         $msg = '';
         $r = $this->GetData('/system/healthStatus');
         if ($r == false) {
-            $msg = $this->Translate('access failed') . ':' . PHP_EOL;
+            $msg = $this->Translate('Access failed') . ':' . PHP_EOL;
         } else {
-            $msg = $this->Translate('access ok') . ':' . PHP_EOL;
-            $msg .= '  ' . $this->Translate('system health') . ': ' . $r['value'] . PHP_EOL;
+            $msg = $this->Translate('Access ok') . ':' . PHP_EOL;
+            $msg .= '  ' . $this->Translate('System health') . ': ' . $r['value'] . PHP_EOL;
+			$msg .= PHP_EOL;
+            $r = $this->GetData('/system/brand');
+            if ($r != false) {
+                $msg .= '  ' . $this->Translate('Brand') . ': ' . $r['value'] . PHP_EOL;
+            }
+            $r = $this->GetData('/system/bus');
+            if ($r != false) {
+                $msg .= '  ' . $this->Translate('Bus') . ': ' . $r['value'] . PHP_EOL;
+            }
+            $r = $this->GetData('/system/systemType');
+            if ($r != false) {
+                $msg .= '  ' . $this->Translate('System type') . ': ' . $r['value'] . PHP_EOL;
+            }
+			$msg .= PHP_EOL;
+            $r = $this->GetData('/gateway/versionHardware');
+            if ($r != false) {
+                $msg .= '  ' . $this->Translate('Hardware version') . ': ' . $r['value'] . PHP_EOL;
+            }
+            $r = $this->GetData('/gateway/versionFirmware');
+            if ($r != false) {
+                $msg .= '  ' . $this->Translate('Firmware version') . ': ' . $r['value'] . PHP_EOL;
+            }
+			$msg .= PHP_EOL;
             $r = $this->GetData('/gateway/DateTime');
             if ($r != false) {
                 $ts = strtotime($r['value']);
-                $msg .= '  ' . $this->Translate('system time') . ': ' . date('d.m.Y H:i:s', $ts) . PHP_EOL;
+                $msg .= '  ' . $this->Translate('System time') . ': ' . date('d.m.Y H:i:s', $ts) . PHP_EOL;
             }
+
         }
 
         echo $msg;
@@ -504,7 +528,7 @@ class BuderusKM200 extends IPSModule
         }
     }
 
-    private function GetData($url)
+    public function GetData($datapoint)
     {
         $host = $this->ReadPropertyString('host');
         $port = $this->ReadPropertyInteger('port');
@@ -518,7 +542,7 @@ class BuderusKM200 extends IPSModule
         ];
         $context = stream_context_create($options);
         $content = @file_get_contents(
-            'http://' . $host . ':' . $post . $url,
+            'http://' . $host . ':' . $post . $datapoint,
             false,
             $context
         );
@@ -531,7 +555,7 @@ class BuderusKM200 extends IPSModule
         return json_decode($data, true);
     }
 
-    private function SetData($url, $Value)
+    public function SetData($datapoint, $Value)
     {
         $host = $this->ReadPropertyString('host');
         $port = $this->ReadPropertyInteger('port');
@@ -551,7 +575,7 @@ class BuderusKM200 extends IPSModule
         ];
         $context = stream_context_create($options);
         @file_get_contents(
-            'http://' . $host . ':' . $port . $url,
+            'http://' . $host . ':' . $port . $datapoint,
             false,
             $context
         );
