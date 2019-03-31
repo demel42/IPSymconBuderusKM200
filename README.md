@@ -20,18 +20,10 @@
 
 ## 1. Funktionsumfang
 
-`BuderusKEM200_UpdateData(int $InstanzID)`
-ruft die Daten vom KEM200 ab; für jeden Datenpunkt muss ein separater HTTP-Call durchgeführt werden.
-Der Abruf wird automatisch zyklisch durch die Instanz durchgeführt im Abstand wie in der Konfiguration angegeben.
+Das Modul dient zu Anbindung einer Buderus-Heizung mit einem KM200-Kommunikationsmodul. Es können alle Datenpunkte abgerufen und die beschreibbaren Datenpunkte geändert werden.
 
-`BuderusKEM200_DatapointSheet(int $InstanzID)`
-erzeugt das Medien-Objekt _Datenpunkt-Tabelle_.
-
-`BuderusKEM200_GetData(int $InstanzID, string $datapoint)`
-ruft die Daten eines einzelnen Datenpunktes ab und liefert ein JSON-kodiester Objekt zurück.
-
-`BuderusKEM200_SetData(int $InstanzID, string $datapoint, string $Value)`
-setzt ein Datenobjekt auf den übergebenen Wert. Die Objekte, die beschriebbar sind, sind ぢn der o.g. Tabelle der Datenpunkte gekennzeichet.
+Diese Modul basiert auf den Arbeiten von [Slash](https://www.symcon.de/forum/members/1206-Slash), siehe auch [Buderus Logamatic Web KM200](https://www.symcon.de/forum/threads/25188-Buderus-Logamatic-Web-KM200) und
+[Buderus Logamatic Web KM200 Reloaded](https://www.symcon.de/forum/threads/25211-Buderus-Logamatic-Web-KM200-Reloaded).
 
 ## 2. Voraussetzungen
 
@@ -75,6 +67,23 @@ Die Variablen sind so benannt wie der Datenpunkt, es müsste also die Bezeichnun
 Wichtig: wenn man einen Datenpunkt wieder aus der Liste æntfernt, wird die dazugehörige Variable gelöscht!
 
 ## 4. Funktionsreferenz
+
+`BuderusKEM200_UpdateData(int $InstanzID)`
+
+ruft die Daten vom KEM200 ab; für jeden Datenpunkt muss ein separater HTTP-Call durchgeführt werden.
+Der Abruf wird automatisch zyklisch durch die Instanz durchgeführt im Abstand wie in der Konfiguration angegeben.
+
+`BuderusKEM200_DatapointSheet(int $InstanzID)`
+
+erzeugt das Medien-Objekt _Datenpunkt-Tabelle_.
+
+`BuderusKEM200_GetData(int $InstanzID, string $datapoint)`
+
+ruft die Daten eines einzelnen Datenpunktes ab und liefert ein JSON-kodiester Objekt zurück.
+
+`BuderusKEM200_SetData(int $InstanzID, string $datapoint, string $Value)`
+
+setzt ein Datenobjekt auf den übergebenen Wert. Die Objekte, die beschreibbar sind, sind in der o.g. Tabelle der Datenpunkte gekennzeichet.
 
 ## 5. Konfiguration
 
