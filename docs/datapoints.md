@@ -32,14 +32,17 @@
 | /solarCircuits/sc1/dhwTankTemperature | untere Speicher-Temperatur | Float | BuderusKM200.Celsius |
 | /solarCircuits/sc1/solarYield | Solarkollektor-Ertrag | Float | BuderusKM200.Wh |
 | /solarCircuits/sc1/status | Solarkollektor-Status | Boolean | BuderusKM200.Status |
+| /system/appliance/gasAirPressure | anliegender Gasdruck | float | BuderusKM200.Pascal |
+| /system/appliance/systemPressure | Druck im Heizkreislauf | float | BuderusKM200.bar |
 | /system/brand | Hersteller | String | |
 | /system/bus | Bus-Typ | String | |
 | /system/healthStatus | Status | Integer | BuderusKM200.HealthStatus |
-| /system/sensors/temperatures/chimney | Schornstein-Temperatur | Float | BuderusKM200.Celsius |
+| /system/sensors/temperatures/chimney | Abgas-Temperatur | Float | BuderusKM200.Celsius |
 | /system/sensors/temperatures/hotWater_t2 | Warmwasser-Temperatur - Ist | Float | BuderusKM200.Celsius |
 | /system/sensors/temperatures/outdoor_t1 | Aussentemperatur | Float | BuderusKM200.Celsius |
 | /system/sensors/temperatures/return | Rücklauf-Temperatur | Float | BuderusKM200.Celsius |
 | /system/sensors/temperatures/supply_t1 | Raum-Vorlauftemperatur - Ist | Float | BuderusKM200.Celsius |
+| /system/sensors/temperatures/supply_t1_setpoint | Kesseltemperatur - Soll | Float | BuderusKM200.Celsius |
 | /system/systemType | System-Typ | String | |
 
 Anmerkung: die mit **1** bezeichneten Gruppen (also _hc1_, _hs1_, _sc1_) könne auch mehrfach vorkommen, die **1** wird entsprechend hochgezählt.
