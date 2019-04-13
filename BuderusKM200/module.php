@@ -18,8 +18,8 @@ class BuderusKM200 extends IPSModule
         $this->RegisterPropertyString('gateway_password', '');
         $this->RegisterPropertyString('private_password', '');
         /*
-		$this->RegisterPropertyString('calculated_key', '');
-		*/
+        $this->RegisterPropertyString('calculated_key', '');
+        */
 
         $fields = [
                 [
@@ -154,20 +154,20 @@ class BuderusKM200 extends IPSModule
             return;
         }
 
-		$status = IS_ACTIVE;
+        $status = IS_ACTIVE;
 
         $host = $this->ReadPropertyString('host');
         $port = $this->ReadPropertyInteger('port');
         if ($host == '' || $port == 0) {
             $status = IS_INVALIDCONFIG;
-		}
+        }
 
-		/*
+        /*
         $calculated_key = $this->ReadPropertyString('calculated_key');
         if ($calculated_key == '') {
             $status = IS_INVALIDCONFIG;
         }
-		*/
+        */
 
         $gateway_password = $this->ReadPropertyString('gateway_password');
         $private_password = $this->ReadPropertyString('private_password');
@@ -176,7 +176,7 @@ class BuderusKM200 extends IPSModule
             $status = IS_INVALIDCONFIG;
         }
 
-		$this->SetStatus($status);
+        $this->SetStatus($status);
         $this->SetUpdateInterval();
     }
 
@@ -196,9 +196,9 @@ class BuderusKM200 extends IPSModule
         $formElements[] = ['type' => 'NumberSpinner', 'name' => 'port', 'caption' => 'Port'];
         $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'gateway_password', 'caption' => 'Gateway password'];
         $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'private_password', 'caption' => 'Private password'];
-		/*
+        /*
         $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'calculated_key', 'caption' => 'Calculated key'];
-		*/
+        */
 
         $columns = [];
         $columns[] = ['caption' => 'Datapoint', 'name' => 'datapoint', 'add' => '', 'width' => 'auto', 'edit' => [
@@ -253,7 +253,7 @@ class BuderusKM200 extends IPSModule
             return;
         }
 
-		$now = time();
+        $now = time();
 
         $convert_script = $this->ReadPropertyInteger('convert_script');
 
@@ -334,45 +334,45 @@ class BuderusKM200 extends IPSModule
             $this->SetValue($ident, $value);
         }
 
-		$result = $this->GetData('/notifications');
-$this->SendDebug(__FUNCTION__, 'notifications=' . print_r($result, true), 0);
-if ($result == false) {
-$html = $this->Translate('Unable to get notifications');
-} else if (count($result['values']) == 0) {
-$html = $this->Translate('There are no notifications');
-} else {
-$html = "<style>" . PHP_EOL;
-$html .= "th, td { padding: 2px 10px; }" . PHP_EOL;
-$html .= "</style>" . PHP_EOL;
-$html .= "<table>" . PHP_EOL;
-		foreach ($result['values'] as $item) {
-$this->SendDebug(__FUNCTION__, ' ... noticfication=' . print_r($item, true), 0);
-			$ts = $item['t'];
-			$errorCode = $item['dcd'];
-			$addCode = $item['ccd'];
-			$classCode = $item['cat'];
-	$s = $errorCode . ' ' . $addCode . ' ' . $classCode;
-					$html .= "<tr>" . PHP_EOL;
-                    $html .= '<td>' . $ts . "</td>" . PHP_EOL;
-                    $html .= '<td>' . $s . "</td>" . PHP_EOL;
-                    $html .= "</tr>" . PHP_EOL;
-                }
+        $result = $this->GetData('/notifications');
+        $this->SendDebug(__FUNCTION__, 'notifications=' . print_r($result, true), 0);
+        if ($result == false) {
+            $html = $this->Translate('Unable to get notifications');
+        } elseif (count($result['values']) == 0) {
+            $html = $this->Translate('There are no notifications');
+        } else {
+            $html = '<style>' . PHP_EOL;
+            $html .= 'th, td { padding: 2px 10px; }' . PHP_EOL;
+            $html .= '</style>' . PHP_EOL;
+            $html .= '<table>' . PHP_EOL;
+            foreach ($result['values'] as $item) {
+                $this->SendDebug(__FUNCTION__, ' ... noticfication=' . print_r($item, true), 0);
+                $ts = $item['t'];
+                $errorCode = $item['dcd'];
+                $addCode = $item['ccd'];
+                $classCode = $item['cat'];
+                $s = $errorCode . ' ' . $addCode . ' ' . $classCode;
+                $html .= '<tr>' . PHP_EOL;
+                $html .= '<td>' . $ts . '</td>' . PHP_EOL;
+                $html .= '<td>' . $s . '</td>' . PHP_EOL;
+                $html .= '</tr>' . PHP_EOL;
+            }
+        }
+        $html .= '</table>' . PHP_EOL;
 
-		}
-                $html .= "</table>" . PHP_EOL;
-
-		$this->SetValue('Notifications', $html);
+        $this->SetValue('Notifications', $html);
 
         $this->SetValue('LastUpdate', $now);
         $this->SetStatus(IS_ACTIVE);
 
-		$dur = time() - $now;
+        $dur = time() - $now;
         $min = $this->ReadPropertyInteger('update_interval');
-		$sec = $min * 60 - $dur;
-		// minimal 50% Pause eines Update-Zyklus
-		if ($sec < ($min * 60 / 2))
-			$sec = $min * 60;
-		$this->SendDebug(__FUNCTION__, 'set timer to ' . $sec . 's', 0);
+        $sec = $min * 60 - $dur;
+        // minimal 50% Pause eines Update-Zyklus
+        if ($sec < ($min * 60 / 2)) {
+            $sec = $min * 60;
+        }
+        $this->SendDebug(__FUNCTION__, 'set timer to ' . $sec . 's', 0);
         $this->SetTimerInterval('UpdateData', $sec * 1000);
     }
 
@@ -547,40 +547,40 @@ $this->SendDebug(__FUNCTION__, ' ... noticfication=' . print_r($item, true), 0);
     }
 
     private function GetKey()
-	{
-		/*
+    {
+        /*
         $calculated_key = $this->ReadPropertyString('calculated_key');
-		if ($calculated_key != '')
-			return $calculated_key;
-		*/
+        if ($calculated_key != '')
+            return $calculated_key;
+        */
 
         $gateway_password = $this->ReadPropertyString('gateway_password');
         $private_password = $this->ReadPropertyString('private_password');
 
-		// Achtung: Gerätepasswort ohne Bindestriche
-		$gateway_password = preg_replace('/-/', '', $gateway_password);
+        // Achtung: Gerätepasswort ohne Bindestriche
+        $gateway_password = preg_replace('/-/', '', $gateway_password);
 
-		// Salt der MD5-Hashes zur AES-Schlüsselerzeugung 
-		$crypt_md5_salt = pack( 
-				"c*", 
-				0x86, 0x78, 0x45, 0xe9, 0x7c, 0x4e, 0x29, 0xdc, 
-				0xe5, 0x22, 0xb9, 0xa7, 0xd3, 0xa3, 0xe0, 0x7b, 
-				0x15, 0x2b, 0xff, 0xad, 0xdd, 0xbe, 0xd7, 0xf5, 
-				0xff, 0xd8, 0x42, 0xe9, 0x89, 0x5a, 0xd1, 0xe4 
-			); 
+        // Salt der MD5-Hashes zur AES-Schlüsselerzeugung
+        $crypt_md5_salt = pack(
+                'c*',
+                0x86, 0x78, 0x45, 0xe9, 0x7c, 0x4e, 0x29, 0xdc,
+                0xe5, 0x22, 0xb9, 0xa7, 0xd3, 0xa3, 0xe0, 0x7b,
+                0x15, 0x2b, 0xff, 0xad, 0xdd, 0xbe, 0xd7, 0xf5,
+                0xff, 0xd8, 0x42, 0xe9, 0x89, 0x5a, 0xd1, 0xe4
+            );
 
-		// Erste Hälfte des Schlüssels: MD5 von ( Gerätepasswort . Salt ) 
-		$key_1 = md5( $gateway_password . $crypt_md5_salt, true ); 
-		// Zweite Hälfte des Schlüssels - initial: MD5 von ( Salt ) 
-		$key_2_initial = md5( $crypt_md5_salt, true ); 
-		// Zweite Hälfte des Schlüssels - privat: MD5 von ( Salt . privates Passwort ) 
-		$key_2_private = md5( $crypt_md5_salt . $private_password, true ); 
+        // Erste Hälfte des Schlüssels: MD5 von ( Gerätepasswort . Salt )
+        $key_1 = md5($gateway_password . $crypt_md5_salt, true);
+        // Zweite Hälfte des Schlüssels - initial: MD5 von ( Salt )
+        $key_2_initial = md5($crypt_md5_salt, true);
+        // Zweite Hälfte des Schlüssels - privat: MD5 von ( Salt . privates Passwort )
+        $key_2_private = md5($crypt_md5_salt . $private_password, true);
 
-		$crypt_key_private = bin2hex($key_1 . $key_2_private);
+        $crypt_key_private = bin2hex($key_1 . $key_2_private);
 
-		$this->SendDebug(__FUNCTION__, 'gateway_password=' . $gateway_password . ', private_password=' . $private_password . ' => ' . $crypt_key_private, 0);
-		return $crypt_key_private;
-	}
+        $this->SendDebug(__FUNCTION__, 'gateway_password=' . $gateway_password . ', private_password=' . $private_password . ' => ' . $crypt_key_private, 0);
+        return $crypt_key_private;
+    }
 
     private function Encrypt($encryptData)
     {
