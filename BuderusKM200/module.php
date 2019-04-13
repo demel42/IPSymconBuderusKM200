@@ -338,27 +338,48 @@ class BuderusKM200 extends IPSModule
         $this->SendDebug(__FUNCTION__, 'notifications=' . print_r($result, true), 0);
         if ($result == false) {
             $html = $this->Translate('Unable to get notifications');
-        } elseif (count($result['values']) == 0) {
-            $html = $this->Translate('There are no notifications');
         } else {
-            $html = '<style>' . PHP_EOL;
-            $html .= 'th, td { padding: 2px 10px; }' . PHP_EOL;
-            $html .= '</style>' . PHP_EOL;
-            $html .= '<table>' . PHP_EOL;
-            foreach ($result['values'] as $item) {
-                $this->SendDebug(__FUNCTION__, ' ... noticfication=' . print_r($item, true), 0);
-                $ts = $item['t'];
-                $errorCode = $item['dcd'];
-                $addCode = $item['ccd'];
-                $classCode = $item['cat'];
-                $s = $errorCode . ' ' . $addCode . ' ' . $classCode;
-                $html .= '<tr>' . PHP_EOL;
-                $html .= '<td>' . $ts . '</td>' . PHP_EOL;
-                $html .= '<td>' . $s . '</td>' . PHP_EOL;
-                $html .= '</tr>' . PHP_EOL;
-            }
+			$html = '<html>' . PHP_EOL;
+			$html .= '<body>' . PHP_EOL;
+			$html .= '<style>' . PHP_EOL;
+			$html .= 'body { margin: 1; padding: 0; font-family: "Open Sans", sans-serif; font-size: 20px; }' . PHP_EOL;
+			$html .= 'table { border-collapse: collapse; border: 0px solid; margin: 0.5em;}' . PHP_EOL;
+			$html .= 'th, td { padding: 1; }' . PHP_EOL;
+			$html .= 'thead, tdata { text-align: left; }' . PHP_EOL;
+			$html .= '#spalte_zeitpunkt { width: 125px; }' . PHP_EOL;
+			$html .= '#spalte_text { }' . PHP_EOL;
+			$html .= '</style>' . PHP_EOL;
+			if (count($result['values']) == 0) {
+				$html .= $this->Translate('There are no notifications') . PHP_EOL;
+			} else {
+				$html .= '<table>' . PHP_EOL;
+				$html .= '<colgroup><col id="spalte_zeitpunkt"></colgroup>' . PHP_EOL;
+				$html .= '<colgroup><col id="spalte_text"></colgroup>' . PHP_EOL;
+				$html .= '<thead>' . PHP_EOL;
+				$html .= '<tr>' . PHP_EOL;
+				$html .= '<th>Zeitpunkt</th>' . PHP_EOL;
+				$html .= '<th>Meldung</th>' . PHP_EOL;
+				$html .= '</tr>' . PHP_EOL;
+				$html .= '</thead>' . PHP_EOL;
+				$html .= '<tdata>' . PHP_EOL;
+				foreach ($result['values'] as $item) {
+					$this->SendDebug(__FUNCTION__, ' ... notification=' . print_r($item, true), 0);
+					$ts = $item['t'];
+					$errorCode = $item['dcd'];
+					$addCode = $item['ccd'];
+					$classCode = $item['cat'];
+					$s = $errorCode . ' ' . $addCode . ' ' . $classCode;
+					$html .= '<tr>' . PHP_EOL;
+					$html .= '<td>' . $ts . '</td>' . PHP_EOL;
+					$html .= '<td>' . $s . '</td>' . PHP_EOL;
+					$html .= '</tr>' . PHP_EOL;
+				}
+			}
+			$html .= '</tdata>' . PHP_EOL;
+			$html .= '</table>' . PHP_EOL;
         }
-        $html .= '</table>' . PHP_EOL;
+        $html .= '</body>' . PHP_EOL;
+        $html .= '</html>' . PHP_EOL;
 
         $this->SetValue('Notifications', $html);
 
