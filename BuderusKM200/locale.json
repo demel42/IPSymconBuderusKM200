@@ -7,7 +7,9 @@
 			"Host": "Host",
 			"Port": "Port",
 
-			"Key": "Key",
+			"Gateway password": "Gateway-Passwort",
+			"Private password": "privates Passwort",
+			"Calculated key": "berechneter Schlüssel",
 
 			"Update data every X minutes": "Aktualisieren Daten alle X Minuten",
 			"Minutes": "Minuten",
@@ -31,6 +33,7 @@
 			"Type": "Type",
 			"Unit": "Einheit",
 			"writeable?": "beschreibbar?",
+			"recordable?": "protokollierbar?",
 			"current value": "aktueller Wert",
 			"possible values": "Wertemenge",
 			"not useable": "nicht verwendbar",
@@ -65,8 +68,12 @@
 			"Stop": "Stop",
 			"Start": "Start",
 
+			"Unable to get notifications": "Meldungen sind nicht abrufbar",
+			"There are no notifications ": "es liegen keine Meldungen vor",
+
 			"Buderus KM200 Datapoints": "Buderus KM200 Datenpunkte",
 
+			"Notifications": "Meldungen",
 			"Last update": "letzte Aktualisierung",
 
 			"Instance getting created": "Instanz wird erstellt",

@@ -100,19 +100,19 @@ setzt ein Datenobjekt auf den übergebenen Wert. Die Objekte, die beschreibbar s
 | Host                      | string   |              | KM200-Server |
 | Port                      | integer  | 80           | HTTP-Port |
 |                           |          |              | |
-| Key                       | string   |              | AES-Key |
+| Gateway-Passwort          | string   |              | Gateway-Passwort mit oder ohne **-** |
+| privates Passwort         | string   |              | privater Schlüssel |
 |                           |          |              | |
 | Felder                    |          |              | Tabelle zur Angabe der auszulesenden Datenpunkte |
 | Werte konvertieren        |          |              | |
 |                           |          |              | |
 | Aktualisiere Status ...   | integer  | 60           | Aktualisierungsintervall, Angabe in Sekunden |
 
-- AES-Key:<br>
-Key zum Zugriff auf die KEM200, den man mittels dieses [AES-Key-Generator](https://ssl-account.com/km200.andreashahn.info) ermitteln kann.
-
 - Felder:<br>
 Liste der zu übernehmenden Datenpunkte und Angabe des Datentyps der Variable. Variablen, die aus dieser Liste gelöscht werden, werden gelöscht.
 Der Ident dieser erzeugten Variablen ist wiefolgt ausgebaut: _DP_ + Bezeichung des Datenpunkts, die **/** isnd ersetzt durch **_**.
+
+Anmerkung: der Datenpunkt _/notifications_ wird automatisch abgerufen und in einer Variablen vom Typ _~HTMLBox_ abgelegt.
 
 - Werte konvertieren:<br>
 mit diesen Scripten kann man Werte zu konvertieren
