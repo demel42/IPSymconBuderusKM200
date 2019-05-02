@@ -1,7 +1,7 @@
 # IPSymconBuderusKM200
 
 [![IPS-Version](https://img.shields.io/badge/Symcon_Version-5.0+-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
-![Module-Version](https://img.shields.io/badge/Modul_Version-1.0-blue.svg)
+![Module-Version](https://img.shields.io/badge/Modul_Version-1.1-blue.svg)
 ![Code](https://img.shields.io/badge/Code-PHP-blue.svg)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![StyleCI](https://github.styleci.io/repos/175371809/shield?branch=master)](https://github.styleci.io/repos/xxxx)
@@ -185,6 +185,9 @@ GUIDs
   - BuderusKM200: `{3A2FE2B9-EB88-4B14-B144-2A3839A761CA}`
 
 ## 7. Versions-Historie
+
+- 1.1 @ 02.05.2019 11:56<br>
+  - Bugfix: Auswertung des HTTP-Port
 
 - 1.0 @ 28.03.2019 19:07<br>
   Initiale Version
