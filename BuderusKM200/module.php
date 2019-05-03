@@ -247,8 +247,7 @@ class BuderusKM200 extends IPSModule
 
     public function UpdateData()
     {
-        $inst = IPS_GetInstance($this->InstanceID);
-        if ($inst['InstanceStatus'] == IS_INACTIVE) {
+        if ($this->GetStatus() == IS_INACTIVE) {
             $this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
             return;
         }
@@ -399,8 +398,7 @@ class BuderusKM200 extends IPSModule
 
     public function VerifyAccess()
     {
-        $inst = IPS_GetInstance($this->InstanceID);
-        if ($inst['InstanceStatus'] == IS_INACTIVE) {
+        if ($this->GetStatus() == IS_INACTIVE) {
             $this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
             echo $this->Translate('Instance is inactive') . PHP_EOL;
             return;
@@ -519,8 +517,7 @@ class BuderusKM200 extends IPSModule
 
     public function DatapointSheet()
     {
-        $inst = IPS_GetInstance($this->InstanceID);
-        if ($inst['InstanceStatus'] == IS_INACTIVE) {
+        if ($this->GetStatus() == IS_INACTIVE) {
             $this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
             echo $this->Translate('Instance is inactive') . PHP_EOL;
             return;
@@ -559,7 +556,7 @@ class BuderusKM200 extends IPSModule
         @$mediaID = IPS_GetMediaIDByName($mediaName, $this->InstanceID);
         if ($mediaID == false) {
             $mediaID = IPS_CreateMedia(MEDIATYPE_DOCUMENT);
-            $filename = 'media' . DIRECTORY_SEPARATOR . 'Buderus_KM200.csv';
+            $filename = 'media' . DIRECTORY_SEPARATOR . $this->InstanceID . '.csv';
             IPS_SetMediaFile($mediaID, $filename, false);
             IPS_SetName($mediaID, $mediaName);
             IPS_SetParent($mediaID, $this->InstanceID);
