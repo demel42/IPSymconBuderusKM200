@@ -184,12 +184,12 @@ trait BuderusKM200Common
     }
 
     protected function GetStatus()
-	{
-		if (IPS_GetKernelVersion() >= 5.1) {
-			return parent::GetStatus();
-		}
+    {
+        if (IPS_GetKernelVersion() >= 5.1) {
+            return parent::GetStatus();
+        }
 
-		$inst = IPS_GetInstance($this->InstanceID);
-		return $inst['InstanceStatus'];
-	}
+        $inst = IPS_GetInstance($this->InstanceID);
+        return $inst['InstanceStatus'];
+    }
 }
