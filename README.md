@@ -4,7 +4,7 @@
 ![Module-Version](https://img.shields.io/badge/Modul_Version-1.2-blue.svg)
 ![Code](https://img.shields.io/badge/Code-PHP-blue.svg)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
-[![StyleCI](https://github.styleci.io/repos/175371809/shield?branch=master)](https://github.styleci.io/repos/xxxx)
+[![StyleCI](https://github.styleci.io/repos/178259203/shield?branch=master)](https://github.styleci.io/repos/178259203)
 
 ## Dokumentation
 
