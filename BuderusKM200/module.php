@@ -630,6 +630,9 @@ class BuderusKM200 extends IPSModule
         );
 
         $decrypt = rtrim($decrypt, "\x00");
+		if ($decrypt == "") {
+			return false;
+		}
         $decrypt_len = strlen($decrypt);
         $decrypt_padchar = ord($decrypt[$decrypt_len - 1]);
         for ($i = 0; $i < $decrypt_padchar; $i++) {
@@ -671,6 +674,9 @@ class BuderusKM200 extends IPSModule
             return false;
         }
         $data = $this->Decrypt($content);
+        if ($data == false) {
+            return false;
+        }
         $this->SendDebug(__FUNCTION__, 'decrypt content=' . print_r($data, true), 0);
         return json_decode($data, true);
     }
