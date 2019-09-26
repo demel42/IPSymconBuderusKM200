@@ -226,12 +226,14 @@ class BuderusKM200 extends IPSModule
         $formActions[] = ['type' => 'Button', 'label' => 'Verify access', 'onClick' => 'BuderusKM200_VerifyAccess($id);'];
         $formActions[] = ['type' => 'Button', 'label' => 'Update data', 'onClick' => 'BuderusKM200_UpdateData($id);'];
         $formActions[] = ['type' => 'Button', 'label' => 'Datapoint-sheet', 'onClick' => 'BuderusKM200_DatapointSheet($id);'];
-        $formActions[] = ['type' => 'Label', 'label' => '____________________________________________________________________________________________________'];
-        $formActions[] = [
-                            'type'    => 'Button',
-                            'caption' => 'Module description',
-                            'onClick' => 'echo "https://github.com/demel42/IPSymconBuderusKM200/blob/master/README.md";'
-                        ];
+		if (IPS_GetKernelVersion() < 5.2) {
+			$formActions[] = ['type' => 'Label', 'label' => '____________________________________________________________________________________________________'];
+			$formActions[] = [
+								'type'    => 'Button',
+								'caption' => 'Module description',
+								'onClick' => 'echo "https://github.com/demel42/IPSymconBuderusKM200/blob/master/README.md";'
+							];
+		}
 
         $formStatus = [];
         $formStatus[] = ['code' => IS_CREATING, 'icon' => 'inactive', 'caption' => 'Instance getting created'];

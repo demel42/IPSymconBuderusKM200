@@ -1,7 +1,7 @@
 # IPSymconBuderusKM200
 
 [![IPS-Version](https://img.shields.io/badge/Symcon_Version-5.0+-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
-![Module-Version](https://img.shields.io/badge/Modul_Version-1.4-blue.svg)
+![Module-Version](https://img.shields.io/badge/Modul_Version-1.5-blue.svg)
 ![Code](https://img.shields.io/badge/Code-PHP-blue.svg)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![StyleCI](https://github.styleci.io/repos/178259203/shield?branch=master)](https://github.styleci.io/repos/178259203)
@@ -185,6 +185,11 @@ GUIDs
   - BuderusKM200: `{3A2FE2B9-EB88-4B14-B144-2A3839A761CA}`
 
 ## 7. Versions-Historie
+
+- 1.5 @ 26.09.2019 18:24<br>
+  - Anpassungen an IPS 5.2
+    - IPS_SetVariableProfileValues(), IPS_SetVariableProfileDigits() nur bei INTEGER, FLOAT
+    - Dokumentation-URL in module.json
 
 - 1.4 @ 09.08.2019 14:32<br>
   - Schreibfehler korrigiert
