@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 if (!defined('VARIABLETYPE_BOOLEAN')) {
     define('VARIABLETYPE_BOOLEAN', 0);
     define('VARIABLETYPE_INTEGER', 1);

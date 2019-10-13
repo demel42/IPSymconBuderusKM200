@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $datapoint = $_IPS['datapoint'];
 $value = $_IPS['value'];
 
