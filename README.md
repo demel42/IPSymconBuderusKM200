@@ -186,7 +186,7 @@ GUIDs
 ## 7. Versions-Historie
 
 - 1.6 @ 29.10.2019 10:21<br>
-  - die 'notifications' gegen fehlende Felder abgesichert
+  - Datenpunkt 'notifications' gegen fehlende Felder abgesichert
 
 - 1.5 @ 13.10.2019 13:18<br>
   - Anpassungen an IPS 5.2
