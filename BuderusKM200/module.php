@@ -367,10 +367,10 @@ class BuderusKM200 extends IPSModule
                 $html .= '<tdata>' . PHP_EOL;
                 foreach ($result['values'] as $item) {
                     $this->SendDebug(__FUNCTION__, ' ... notification=' . print_r($item, true), 0);
-					$ts = $this->GetArrayElem($item, 't', '');
-					$errorCode = $this->GetArrayElem($item, 'dcd', '?');
-					$addCode = $this->GetArrayElem($item, 'ccd', '?');
-					$classCode = $this->GetArrayElem($item, 'cat', '?');
+                    $ts = $this->GetArrayElem($item, 't', '');
+                    $errorCode = $this->GetArrayElem($item, 'dcd', '?');
+                    $addCode = $this->GetArrayElem($item, 'ccd', '?');
+                    $classCode = $this->GetArrayElem($item, 'cat', '?');
                     $s = $errorCode . ' ' . $addCode . ' ' . $classCode;
                     $html .= '<tr>' . PHP_EOL;
                     $html .= '<td>' . $ts . '</td>' . PHP_EOL;
