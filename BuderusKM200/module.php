@@ -451,6 +451,7 @@ class BuderusKM200 extends IPSModule
     private function traverseService($service, &$entList)
     {
         $jdata = $this->GetData($service);
+        $this->SendDebug(__FUNCTION__, 'service=' . $service . ', jdata=' . print_r($jdata, true), 0);
         if ($jdata == false) {
             return;
         }
@@ -529,10 +530,13 @@ class BuderusKM200 extends IPSModule
 
         $urls = ['/gateway', '/system', '/heatSources', '/heatingCircuits', '/solarCircuits', '/dhwCircuits'];
 
+        $this->SendDebug(__FUNCTION__, 'urls=' . print_r($urls, true), 0);
+
         $entList = [];
         foreach ($urls as $url) {
             $this->traverseService($url, $entList);
         }
+        $this->SendDebug(__FUNCTION__, 'entList=' . print_r($entList, true), 0);
 
         $title = [];
         $title[] = $this->Translate('Name');
@@ -566,6 +570,7 @@ class BuderusKM200 extends IPSModule
             IPS_SetParent($mediaID, $this->InstanceID);
         }
         IPS_SetMediaContent($mediaID, base64_encode($buf));
+        $this->SendDebug(__FUNCTION__, 'mediaName=' . $mediaName . ', mediaID=' . $mediaID, 0);
     }
 
     private function GetKey()
@@ -600,7 +605,7 @@ class BuderusKM200 extends IPSModule
 
         $crypt_key_private = bin2hex($key_1 . $key_2_private);
 
-        $this->SendDebug(__FUNCTION__, 'gateway_password=' . $gateway_password . ', private_password=' . $private_password . ' => ' . $crypt_key_private, 0);
+        // $this->SendDebug(__FUNCTION__, 'gateway_password=' . $gateway_password . ', private_password=' . $private_password . ' => ' . $crypt_key_private, 0);
         return $crypt_key_private;
     }
 
