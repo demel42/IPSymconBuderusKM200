@@ -1,7 +1,7 @@
 # IPSymconBuderusKM200
 
 [![IPS-Version](https://img.shields.io/badge/Symcon_Version-5.0+-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
-![Module-Version](https://img.shields.io/badge/Modul_Version-1.7-blue.svg)
+![Module-Version](https://img.shields.io/badge/Modul_Version-1.8-blue.svg)
 ![Code](https://img.shields.io/badge/Code-PHP-blue.svg)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
@@ -185,31 +185,35 @@ GUIDs
 
 ## 7. Versions-Historie
 
-- 1.7 @ 09.12.2019 16:46<br>
+- 1.8 @ 19.12.2019 14:09
+  - Anpassungen an IPS 5.3
+    - Formular-Elemente: 'label' in 'caption' geändert
+
+- 1.7 @ 09.12.2019 16:46
   - mehr Ausgabe zu der Funktion 'DatapoitSheet' (Tabelle der Datenpunkte)
 
-- 1.6 @ 29.10.2019 10:21<br>
+- 1.6 @ 29.10.2019 10:21
   - Datenpunkt 'notifications' gegen fehlende Felder abgesichert
 
-- 1.5 @ 13.10.2019 13:18<br>
+- 1.5 @ 13.10.2019 13:18
   - Anpassungen an IPS 5.2
     - IPS_SetVariableProfileValues(), IPS_SetVariableProfileDigits() nur bei INTEGER, FLOAT
     - Dokumentation-URL in module.json
   - Umstellung auf strict_types=1
   - Umstellung von StyleCI auf php-cs-fixer
 
-- 1.4 @ 09.08.2019 14:32<br>
+- 1.4 @ 09.08.2019 14:32
   - Schreibfehler korrigiert
 
-- 1.3 @ 16.06.2019 18:34<br>
+- 1.3 @ 16.06.2019 18:34
   - leeres Ergebnis eines HTTP-Request abfangen
 
-- 1.2 @ 03.05.2019 14:14<br>
+- 1.2 @ 03.05.2019 14:14
   - Dateiname der Mediadatei "Buderus KM200 Datenpunkte" ist nun eindeutig
   - Abfrage des Status nun über GetStatus() mit Emulation für IPS < 5.1
 
-- 1.1 @ 02.05.2019 11:56<br>
+- 1.1 @ 02.05.2019 11:56
   - Bugfix: Auswertung des HTTP-Port
 
-- 1.0 @ 28.03.2019 19:07<br>
-  Initiale Version
+- 1.0 @ 28.03.2019 19:07
+  - Initiale Version

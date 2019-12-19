@@ -193,7 +193,7 @@ class BuderusKM200 extends IPSModule
     {
         $formElements = [];
         $formElements[] = ['type' => 'CheckBox', 'name' => 'module_disable', 'caption' => 'Instance is disabled'];
-        $formElements[] = ['type' => 'Label', 'label' => 'Buderus KM200'];
+        $formElements[] = ['type' => 'Label', 'caption' => 'Buderus KM200'];
         $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'host', 'caption' => 'Host'];
         $formElements[] = ['type' => 'NumberSpinner', 'name' => 'port', 'caption' => 'Port'];
         $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'gateway_password', 'caption' => 'Gateway password'];
@@ -221,15 +221,15 @@ class BuderusKM200 extends IPSModule
 
         $formElements[] = ['type' => 'SelectScript', 'name' => 'convert_script', 'caption' => 'convert values'];
 
-        $formElements[] = ['type' => 'Label', 'label' => 'Update data every X minutes'];
+        $formElements[] = ['type' => 'Label', 'caption' => 'Update data every X minutes'];
         $formElements[] = ['type' => 'NumberSpinner', 'name' => 'update_interval', 'caption' => 'Minutes'];
 
         $formActions = [];
-        $formActions[] = ['type' => 'Button', 'label' => 'Verify access', 'onClick' => 'BuderusKM200_VerifyAccess($id);'];
-        $formActions[] = ['type' => 'Button', 'label' => 'Update data', 'onClick' => 'BuderusKM200_UpdateData($id);'];
-        $formActions[] = ['type' => 'Button', 'label' => 'Datapoint-sheet', 'onClick' => 'BuderusKM200_DatapointSheet($id);'];
+        $formActions[] = ['type' => 'Button', 'caption' => 'Verify access', 'onClick' => 'BuderusKM200_VerifyAccess($id);'];
+        $formActions[] = ['type' => 'Button', 'caption' => 'Update data', 'onClick' => 'BuderusKM200_UpdateData($id);'];
+        $formActions[] = ['type' => 'Button', 'caption' => 'Datapoint-sheet', 'onClick' => 'BuderusKM200_DatapointSheet($id);'];
         if (IPS_GetKernelVersion() < 5.2) {
-            $formActions[] = ['type' => 'Label', 'label' => '____________________________________________________________________________________________________'];
+            $formActions[] = ['type' => 'Label', 'caption' => '____________________________________________________________________________________________________'];
             $formActions[] = [
                 'type'    => 'Button',
                 'caption' => 'Module description',
