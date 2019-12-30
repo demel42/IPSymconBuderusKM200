@@ -4,9 +4,9 @@
 	"name": "Buderus KM200",
 	"url": "https://github.com/demel42/IPSymconBuderusKM200",
 	"compatibility": {
-		"version": "5.0"
+		"version": "5.3"
 	},
 	"version": "1.8",
 	"build": 0,
-	"date": 1576760956
+	"date": 1577699807
 }

@@ -1,6 +1,6 @@
 # IPSymconBuderusKM200
 
-[![IPS-Version](https://img.shields.io/badge/Symcon_Version-5.0+-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
+[![IPS-Version](https://img.shields.io/badge/Symcon_Version-5.3+-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 ![Module-Version](https://img.shields.io/badge/Modul_Version-1.8-blue.svg)
 ![Code](https://img.shields.io/badge/Code-PHP-blue.svg)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
@@ -26,7 +26,7 @@ Diese Modul basiert auf den Arbeiten von [Slash](https://www.symcon.de/forum/mem
 
 ## 2. Voraussetzungen
 
- - IP-Symcon ab Version 5
+ - IP-Symcon ab Version 5.3
  - Buderus mit KM200
 
 ## 3. Installation
@@ -185,7 +185,7 @@ GUIDs
 
 ## 7. Versions-Historie
 
-- 1.8 @ 19.12.2019 14:09
+- 1.8 @ 30.12.2019 10:56
   - Anpassungen an IPS 5.3
     - Formular-Elemente: 'label' in 'caption' geändert
 
