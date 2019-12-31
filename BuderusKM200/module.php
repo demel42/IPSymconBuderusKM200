@@ -630,6 +630,9 @@ class BuderusKM200 extends IPSModule
             OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING
         );
 
+        if ($decrypt == '') {
+            return false;
+        }
         $decrypt = rtrim($decrypt, "\x00");
         if ($decrypt == '') {
             return false;

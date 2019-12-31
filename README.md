@@ -1,7 +1,7 @@
 # IPSymconBuderusKM200
 
 [![IPS-Version](https://img.shields.io/badge/Symcon_Version-5.3+-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
-![Module-Version](https://img.shields.io/badge/Modul_Version-1.8-blue.svg)
+![Module-Version](https://img.shields.io/badge/Modul_Version-1.9-blue.svg)
 ![Code](https://img.shields.io/badge/Code-PHP-blue.svg)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
@@ -184,6 +184,9 @@ GUIDs
   - BuderusKM200: `{3A2FE2B9-EB88-4B14-B144-2A3839A761CA}`
 
 ## 7. Versions-Historie
+
+- 1.9 @ 31.12.2019 18:47
+  - Fix wegen Umstellung auf strict_types=1
 
 - 1.8 @ 30.12.2019 10:56
   - Anpassungen an IPS 5.3
