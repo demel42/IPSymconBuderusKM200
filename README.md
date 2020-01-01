@@ -27,7 +27,8 @@ Diese Modul basiert auf den Arbeiten von [Slash](https://www.symcon.de/forum/mem
 ## 2. Voraussetzungen
 
  - IP-Symcon ab Version 5.3
- - Buderus mit KM200
+ - Buderus mit KM200<br>
+Nach Prüfung durch [danam33](https://www.symcon.de/forum/members/3940-danam33) funktioniert das Modul auch mit Heizungen von Junkers mit dem Modul **Junkers MB Lan** funktionsfähig (siehe [hier](https://www.symcon.de/forum/threads/25211-Buderus-Logamatic-Web-KM200-Reloaded?p=414018#post414018)).
 
 ## 3. Installation
 
