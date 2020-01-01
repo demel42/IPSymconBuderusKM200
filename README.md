@@ -185,8 +185,9 @@ GUIDs
 
 ## 7. Versions-Historie
 
-- 1.9 @ 31.12.2019 18:47
+- 1.9 @ 01.01.2020 18:52
   - Fix wegen Umstellung auf strict_types=1
+  - Schreibfehler korrigiert
 
 - 1.8 @ 30.12.2019 10:56
   - Anpassungen an IPS 5.3

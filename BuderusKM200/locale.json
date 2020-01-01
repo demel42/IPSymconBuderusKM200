@@ -2,7 +2,7 @@
 	"translations": {
 		"de": {
 			"Instance is disabled": "Instanz ist deaktiviert",
-			"instance is inactive": "Instanz ist inaktiv",
+			"Instance is inactive": "Instanz ist inaktiv",
 
 			"Host": "Host",
 			"Port": "Port",
