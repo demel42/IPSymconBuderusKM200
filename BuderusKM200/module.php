@@ -203,19 +203,29 @@ class BuderusKM200 extends IPSModule
          */
 
         $columns = [];
-        $columns[] = ['caption' => 'Datapoint', 'name' => 'datapoint', 'add' => '', 'width' => 'auto', 'edit' => [
-            'type' => 'ValidationTextBox'
-        ]
+        $columns[] = [
+            'caption' => 'Datapoint',
+            'name'    => 'datapoint',
+            'add'     => '',
+            'width'   => 'auto',
+            'edit'    => [
+                'type' => 'ValidationTextBox'
+            ]
         ];
-        $options = [
-            ['caption' => 'Boolean', 'value' => VARIABLETYPE_BOOLEAN],
-            ['caption' => 'Integer', 'value' => VARIABLETYPE_INTEGER],
-            ['caption' => 'Float', 'value' => VARIABLETYPE_FLOAT],
-            ['caption' => 'String', 'value' => VARIABLETYPE_STRING],
-        ];
-        $columns[] = ['caption' => 'Variable type', 'name' => 'vartype', 'add' => VARIABLETYPE_FLOAT, 'width' => '150px', 'edit' => [
-            'caption' => 'Field', 'type' => 'Select', 'name' => 'field', 'options' => $options
-        ]
+        $columns[] = [
+            'caption' => 'Variable type',
+            'name'    => 'vartype',
+            'add'     => VARIABLETYPE_FLOAT,
+            'width'   => '150px',
+            'edit'    => [
+                'type'    => 'Select',
+                'options' => [
+                    ['caption' => 'Boolean', 'value' => VARIABLETYPE_BOOLEAN],
+                    ['caption' => 'Integer', 'value' => VARIABLETYPE_INTEGER],
+                    ['caption' => 'Float', 'value' => VARIABLETYPE_FLOAT],
+                    ['caption' => 'String', 'value' => VARIABLETYPE_STRING],
+                ]
+            ]
         ];
         $formElements[] = ['type' => 'List', 'name' => 'fields', 'caption' => 'Fields', 'rowCount' => 15, 'add' => true, 'delete' => true, 'columns' => $columns];
 

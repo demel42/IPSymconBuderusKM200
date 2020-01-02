@@ -186,7 +186,7 @@ GUIDs
 
 ## 7. Versions-Historie
 
-- 1.9 @ 01.01.2020 18:52
+- 1.9 @ 02.01.2020 13:28
   - Fix wegen Umstellung auf strict_types=1
   - Schreibfehler korrigiert
 
