@@ -35,8 +35,6 @@ class BuderusKM200 extends IPSModule
 
         $this->RegisterPropertyInteger('update_interval', '60');
 
-        $this->RegisterTimer('UpdateData', 0, 'BuderusKM200_UpdateData(' . $this->InstanceID . ');');
-
         $associations = [
             ['Wert' => false, 'Name' => $this->Translate('Stop'), 'Farbe' => -1],
             ['Wert' => true, 'Name' => $this->Translate('Start'), 'Farbe' => -1],
@@ -85,6 +83,19 @@ class BuderusKM200 extends IPSModule
         $this->CreateVarProfile('BuderusKM200.Pascal', VARIABLETYPE_FLOAT, ' Pascal', 0, 0, 0, 0, '');
         $this->CreateVarProfile('BuderusKM200.Percent', VARIABLETYPE_FLOAT, ' %', 0, 0, 0, 0, '');
         $this->CreateVarProfile('BuderusKM200.Wh', VARIABLETYPE_FLOAT, ' Wh', 0, 0, 0, 0, '');
+
+        $this->RegisterTimer('UpdateData', 0, 'BuderusKM200_UpdateData(' . $this->InstanceID . ');');
+
+        $this->RegisterMessage(0, IPS_KERNELMESSAGE);
+    }
+
+    public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
+    {
+        parent::MessageSink($TimeStamp, $SenderID, $Message, $Data);
+
+        if ($Message == IPS_KERNELMESSAGE && $Data[0] == KR_READY) {
+            $this->SetUpdateInterval();
+        }
     }
 
     private function findVariables($objID, &$objList)
@@ -156,30 +167,45 @@ class BuderusKM200 extends IPSModule
             return;
         }
 
-        $status = IS_ACTIVE;
-
         $host = $this->ReadPropertyString('host');
         $port = $this->ReadPropertyInteger('port');
         if ($host == '' || $port == 0) {
-            $status = IS_INVALIDCONFIG;
+            $this->SetStatus(IS_INVALIDCONFIG);
+            return;
         }
 
         /*
         $calculated_key = $this->ReadPropertyString('calculated_key');
         if ($calculated_key == '') {
-            $status = IS_INVALIDCONFIG;
+            $this->SetStatus(IS_INVALIDCONFIG);
+            return;
         }
          */
 
         $gateway_password = $this->ReadPropertyString('gateway_password');
         $private_password = $this->ReadPropertyString('private_password');
-
         if ($gateway_password == '' || $private_password == '') {
-            $status = IS_INVALIDCONFIG;
+            $this->SetStatus(IS_INVALIDCONFIG);
+            return;
         }
 
-        $this->SetStatus($status);
-        $this->SetUpdateInterval();
+        $refs = $this->GetReferenceList();
+        foreach ($refs as $ref) {
+            $this->UnregisterReference($ref);
+        }
+        $propertyNames = ['convert_script'];
+        foreach ($propertyNames as $name) {
+            $oid = $this->ReadPropertyInteger($name);
+            if ($oid > 0) {
+                $this->RegisterReference($oid);
+            }
+        }
+
+        if (IPS_GetKernelRunlevel() == KR_READY) {
+            $this->SetUpdateInterval();
+        }
+
+        $this->SetStatus(IS_ACTIVE);
     }
 
     protected function SetUpdateInterval()
