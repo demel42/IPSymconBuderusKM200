@@ -731,6 +731,7 @@ class BuderusKM200 extends IPSModule
                 'value' => $Value
             ]
         );
+        $this->SendDebug(__FUNCTION__, 'content=' . print_r($content, true), 0);
         $options = [
             'http' => [
                 'method'     => 'PUT',
@@ -739,6 +740,7 @@ class BuderusKM200 extends IPSModule
                 'content' => $this->Encrypt($content)
             ]
         ];
+        $this->SendDebug(__FUNCTION__, 'options=' . print_r($options, true), 0);
         $context = stream_context_create($options);
         @file_get_contents(
             'http://' . $host . ':' . $port . $datapoint,
