@@ -185,6 +185,9 @@ GUIDs
 
 ## 7. Versions-Historie
 
+- 1.11 @ 13.05.2020 17:42
+  - mehr Debug zur Funktion 'SetData'
+
 - 1.10 @ 06.01.2020 11:17
   - Nutzung von RegisterReference() für im Modul genutze Objekte (Scripte, Kategorien etc)
   - SetTimerInterval() erst nach KR_READY
