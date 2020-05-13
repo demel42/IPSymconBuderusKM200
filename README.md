@@ -192,7 +192,7 @@ GUIDs
 
 ## 7. Versions-Historie
 
-- 1.11 @ 13.05.2020 20:05
+- 1.11 @ 13.05.2020 20:35
   - mehr Debug zur Funktion 'SetData()'
   - Datentyp-spezifische Funktionen: 'SetBooleanData', 'SetIntegerData', 'SetStringData', 'SetFloatData'
 
