@@ -721,16 +721,11 @@ class BuderusKM200 extends IPSModule
         return json_decode($data, true);
     }
 
-    public function SetData(string $datapoint, string $Value)
+    public function SetData(string $datapoint, string $content)
     {
         $host = $this->ReadPropertyString('host');
         $port = $this->ReadPropertyInteger('port');
 
-        $content = json_encode(
-            [
-                'value' => $Value
-            ]
-        );
         $this->SendDebug(__FUNCTION__, 'content=' . print_r($content, true), 0);
         $options = [
             'http' => [
@@ -741,11 +736,32 @@ class BuderusKM200 extends IPSModule
             ]
         ];
         $this->SendDebug(__FUNCTION__, 'options=' . print_r($options, true), 0);
+        return;
         $context = stream_context_create($options);
         @file_get_contents(
             'http://' . $host . ':' . $port . $datapoint,
             false,
             $context
         );
+    }
+
+    public function SetBooleanData(string $datapoint, bool $Value)
+    {
+        return $this->SetData($datapoint, json_encode(['value' => $Value]));
+    }
+
+    public function SetIntegerData(string $datapoint, int $Value)
+    {
+        return $this->SetData($datapoint, json_encode(['value' => $Value]));
+    }
+
+    public function SetFloatData(string $datapoint, float $Value)
+    {
+        return $this->SetData($datapoint, json_encode(['value' => $Value]));
+    }
+
+    public function SetStringData(string $datapoint, string $Value)
+    {
+        return $this->SetData($datapoint, json_encode(['value' => $Value]));
     }
 }

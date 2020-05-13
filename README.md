@@ -84,9 +84,16 @@ erzeugt das Medien-Objekt _Datenpunkt-Tabelle_.
 
 ruft die Daten eines einzelnen Datenpunktes ab und liefert ein JSON-kodiester Objekt zurück.
 
-`BuderusKEM200_SetData(int $InstanzID, string $datapoint, string $Value)`
+`BuderusKEM200_SetBooleanData(int $InstanzID, string $datapoint, string $Content)`
+
+`BuderusKEM200_SetIntegerData(int $InstanzID, string $datapoint, string $Content)`
+
+`BuderusKEM200_SetStringData(int $InstanzID, string $datapoint, string $Content)`
+
+`BuderusKEM200_SetFloatData(int $InstanzID, string $datapoint, string $Content)`
 
 setzt ein Datenobjekt auf den übergebenen Wert. Die Objekte, die beschreibbar sind, sind in der o.g. Tabelle der Datenpunkte gekennzeichet.
+
 
 ## 5. Konfiguration
 
@@ -185,8 +192,9 @@ GUIDs
 
 ## 7. Versions-Historie
 
-- 1.11 @ 13.05.2020 17:42
-  - mehr Debug zur Funktion 'SetData'
+- 1.11 @ 13.05.2020 18:59
+  - mehr Debug zur Funktion 'SetData()'
+  - Datentyp-spezifische Funktionen: 'SetBooleanData', 'SetIntegerData', 'SetStringData', 'SetFLoatData'
 
 - 1.10 @ 06.01.2020 11:17
   - Nutzung von RegisterReference() für im Modul genutze Objekte (Scripte, Kategorien etc)
