@@ -194,7 +194,7 @@ GUIDs
 
 - 1.11 @ 13.05.2020 18:59
   - mehr Debug zur Funktion 'SetData()'
-  - Datentyp-spezifische Funktionen: 'SetBooleanData', 'SetIntegerData', 'SetStringData', 'SetFLoatData'
+  - Datentyp-spezifische Funktionen: 'SetBooleanData', 'SetIntegerData', 'SetStringData', 'SetFloatData'
 
 - 1.10 @ 06.01.2020 11:17
   - Nutzung von RegisterReference() für im Modul genutze Objekte (Scripte, Kategorien etc)
