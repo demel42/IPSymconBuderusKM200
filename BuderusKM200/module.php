@@ -721,7 +721,7 @@ class BuderusKM200 extends IPSModule
         return json_decode($data, true);
     }
 
-    public function SetData(string $datapoint, string $content)
+    private function SetData(string $datapoint, string $content)
     {
         $host = $this->ReadPropertyString('host');
         $port = $this->ReadPropertyInteger('port');
