@@ -289,6 +289,20 @@ class BuderusKM200 extends IPSModule
         $convert_script = $this->ReadPropertyInteger('convert_script');
 
         $fields = json_decode($this->ReadPropertyString('fields'), true);
+
+        foreach ($fields as $field) {
+            $datapoint = $this->GetArrayElem($field, 'datapoint', '');
+            if ($datapoint == '/system/healthStatus') {
+                $r = $this->GetData($datapoint);
+                if ($r == false) {
+                    $ident = 'DP' . str_replace('/', '_', $datapoint);
+                    $this->SetValue($ident, 0); // Error
+                    $this->SendDebug(__FUNCTION__, 'unable to get "/system/healthStatus"', 0);
+                    return;
+                }
+            }
+        }
+
         foreach ($fields as $field) {
             $datapoint = $this->GetArrayElem($field, 'datapoint', '');
             $result = $this->GetData($datapoint);

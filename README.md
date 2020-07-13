@@ -192,6 +192,9 @@ GUIDs
 
 ## 7. Versions-Historie
 
+- 1.12 @ 13.07.2020 14:56
+  - LICENSE.md hinzugefügt
+
 - 1.11 @ 13.05.2020 20:35
   - mehr Debug zur Funktion 'SetData()'
   - Datentyp-spezifische Funktionen: 'SetBooleanData', 'SetIntegerData', 'SetStringData', 'SetFloatData'
