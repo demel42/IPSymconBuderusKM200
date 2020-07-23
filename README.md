@@ -192,8 +192,12 @@ GUIDs
 
 ## 7. Versions-Historie
 
-- 1.12 @ 13.07.2020 14:56
+- 1.12 @ 23.07.2020 09:53 (beta)
   - LICENSE.md hinzugefügt
+  - lokale Funktionen aus common.php in locale.php verlagert
+  - Traits des Moduls haben nun Postfix "Lib"
+  - GetConfigurationForm() überarbeitet
+  - define's durch statische Klassen-Variablen ersetzt
 
 - 1.11 @ 13.05.2020 20:35
   - mehr Debug zur Funktion 'SetData()'

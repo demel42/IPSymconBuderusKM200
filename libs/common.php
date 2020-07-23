@@ -2,32 +2,7 @@
 
 declare(strict_types=1);
 
-if (!defined('VARIABLETYPE_BOOLEAN')) {
-    define('VARIABLETYPE_BOOLEAN', 0);
-    define('VARIABLETYPE_INTEGER', 1);
-    define('VARIABLETYPE_FLOAT', 2);
-    define('VARIABLETYPE_STRING', 3);
-}
-
-if (!defined('OBJECTTYPE_CATEGORY')) {
-    define('OBJECTTYPE_CATEGORY', 0);
-    define('OBJECTTYPE_INSTANCE', 1);
-    define('OBJECTTYPE_VARIABLE', 2);
-    define('OBJECTTYPE_SCRIPT', 3);
-    define('OBJECTTYPE_EVENT', 4);
-    define('OBJECTTYPE_MEDIA', 5);
-    define('OBJECTTYPE_LINK', 6);
-}
-
-if (!defined('MEDIATYPE_DOCUMENT')) {
-    define('MEDIATYPE_DOCUMENT', 5);
-}
-
-if (!defined('IS_INVALIDCONFIG')) {
-    define('IS_INVALIDCONFIG', IS_EBASE + 1);
-}
-
-trait BuderusKM200Common
+trait BuderusKM200CommonLib
 {
     protected function SetValue($Ident, $Value)
     {
