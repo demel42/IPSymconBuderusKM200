@@ -3,10 +3,12 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../libs/common.php';  // globale Funktionen
+require_once __DIR__ . '/../libs/local.php';   // lokale Funktionen
 
 class BuderusKM200 extends IPSModule
 {
-    use BuderusKM200Common;
+    use BuderusKM200CommonLib;
+    use BuderusKM200LocalLib;
 
     public function Create()
     {
@@ -19,9 +21,6 @@ class BuderusKM200 extends IPSModule
 
         $this->RegisterPropertyString('gateway_password', '');
         $this->RegisterPropertyString('private_password', '');
-        /*
-        $this->RegisterPropertyString('calculated_key', '');
-         */
 
         $fields = [
             [
@@ -174,14 +173,6 @@ class BuderusKM200 extends IPSModule
             return;
         }
 
-        /*
-        $calculated_key = $this->ReadPropertyString('calculated_key');
-        if ($calculated_key == '') {
-            $this->SetStatus(IS_INVALIDCONFIG);
-            return;
-        }
-         */
-
         $gateway_password = $this->ReadPropertyString('gateway_password');
         $private_password = $this->ReadPropertyString('private_password');
         if ($gateway_password == '' || $private_password == '') {
@@ -217,16 +208,55 @@ class BuderusKM200 extends IPSModule
 
     public function GetConfigurationForm()
     {
+        $formElements = $this->GetFormElements();
+        $formActions = $this->GetFormActions();
+        $formStatus = $this->GetFormStatus();
+
+        $form = json_encode(['elements' => $formElements, 'actions' => $formActions, 'status' => $formStatus]);
+        if ($form == '') {
+            $this->SendDebug(__FUNCTION__, 'json_error=' . json_last_error_msg(), 0);
+            $this->SendDebug(__FUNCTION__, '=> formElements=' . print_r($formElements, true), 0);
+            $this->SendDebug(__FUNCTION__, '=> formActions=' . print_r($formActions, true), 0);
+            $this->SendDebug(__FUNCTION__, '=> formStatus=' . print_r($formStatus, true), 0);
+        }
+        return $form;
+    }
+
+    private function GetFormElements()
+    {
         $formElements = [];
-        $formElements[] = ['type' => 'CheckBox', 'name' => 'module_disable', 'caption' => 'Instance is disabled'];
-        $formElements[] = ['type' => 'Label', 'caption' => 'Buderus KM200'];
-        $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'host', 'caption' => 'Host'];
-        $formElements[] = ['type' => 'NumberSpinner', 'name' => 'port', 'caption' => 'Port'];
-        $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'gateway_password', 'caption' => 'Gateway password'];
-        $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'private_password', 'caption' => 'Private password'];
-        /*
-        $formElements[] = ['type' => 'ValidationTextBox', 'name' => 'calculated_key', 'caption' => 'Calculated key'];
-         */
+
+        $formElements[] = [
+            'type'    => 'CheckBox',
+            'name'    => 'module_disable',
+            'caption' => 'Instance is disabled'
+        ];
+
+        $formElements[] = [
+            'type'    => 'Label',
+            'caption' => 'Buderus KM200'
+        ];
+
+        $formElements[] = [
+            'type'    => 'ValidationTextBox',
+            'name'    => 'host',
+            'caption' => 'Host'
+        ];
+        $formElements[] = [
+            'type'    => 'NumberSpinner',
+            'name'    => 'port',
+            'caption' => 'Port'
+        ];
+        $formElements[] = [
+            'type'    => 'ValidationTextBox',
+            'name'    => 'gateway_password',
+            'caption' => 'Gateway password'
+        ];
+        $formElements[] = [
+            'type'    => 'ValidationTextBox',
+            'name'    => 'private_password',
+            'caption' => 'Private password'
+        ];
 
         $columns = [];
         $columns[] = [
@@ -246,35 +276,75 @@ class BuderusKM200 extends IPSModule
             'edit'    => [
                 'type'    => 'Select',
                 'options' => [
-                    ['caption' => 'Boolean', 'value' => VARIABLETYPE_BOOLEAN],
-                    ['caption' => 'Integer', 'value' => VARIABLETYPE_INTEGER],
-                    ['caption' => 'Float', 'value' => VARIABLETYPE_FLOAT],
-                    ['caption' => 'String', 'value' => VARIABLETYPE_STRING],
+                    [
+                        'caption' => 'Boolean',
+                        'value'   => VARIABLETYPE_BOOLEAN
+                    ],
+                    [
+                        'caption' => 'Integer',
+                        'value'   => VARIABLETYPE_INTEGER
+                    ],
+                    [
+                        'caption' => 'Float',
+                        'value'   => VARIABLETYPE_FLOAT
+                    ],
+                    [
+                        'caption' => 'String',
+                        'value'   => VARIABLETYPE_STRING
+                    ],
                 ]
             ]
         ];
-        $formElements[] = ['type' => 'List', 'name' => 'fields', 'caption' => 'Fields', 'rowCount' => 15, 'add' => true, 'delete' => true, 'columns' => $columns];
+        $formElements[] = [
+            'type'     => 'List',
+            'name'     => 'fields',
+            'caption'  => 'Fields',
+            'rowCount' => 15,
+            'add'      => true,
+            'delete'   => true,
+            'columns'  => $columns
+        ];
 
-        $formElements[] = ['type' => 'SelectScript', 'name' => 'convert_script', 'caption' => 'convert values'];
+        $formElements[] = [
+            'type'    => 'SelectScript',
+            'name'    => 'convert_script',
+            'caption' => 'convert values'
+        ];
 
-        $formElements[] = ['type' => 'Label', 'caption' => 'Update data every X minutes'];
-        $formElements[] = ['type' => 'NumberSpinner', 'name' => 'update_interval', 'caption' => 'Minutes'];
+        $formElements[] = [
+            'type'    => 'Label',
+            'caption' => 'Update data every X minutes'
+        ];
+        $formElements[] = [
+            'type'    => 'NumberSpinner',
+            'name'    => 'update_interval',
+            'caption' => 'Minutes'
+        ];
 
+        return $formElements;
+    }
+
+    private function GetFormActions()
+    {
         $formActions = [];
-        $formActions[] = ['type' => 'Button', 'caption' => 'Verify access', 'onClick' => 'BuderusKM200_VerifyAccess($id);'];
-        $formActions[] = ['type' => 'Button', 'caption' => 'Update data', 'onClick' => 'BuderusKM200_UpdateData($id);'];
-        $formActions[] = ['type' => 'Button', 'caption' => 'Datapoint-sheet', 'onClick' => 'BuderusKM200_DatapointSheet($id);'];
 
-        $formStatus = [];
-        $formStatus[] = ['code' => IS_CREATING, 'icon' => 'inactive', 'caption' => 'Instance getting created'];
-        $formStatus[] = ['code' => IS_ACTIVE, 'icon' => 'active', 'caption' => 'Instance is active'];
-        $formStatus[] = ['code' => IS_DELETING, 'icon' => 'inactive', 'caption' => 'Instance is deleted'];
-        $formStatus[] = ['code' => IS_INACTIVE, 'icon' => 'inactive', 'caption' => 'Instance is inactive'];
-        $formStatus[] = ['code' => IS_NOTCREATED, 'icon' => 'inactive', 'caption' => 'Instance is not created'];
+        $formActions[] = [
+            'type'    => 'Button',
+            'caption' => 'Verify access',
+            'onClick' => 'BuderusKM200_VerifyAccess($id);'
+        ];
+        $formActions[] = [
+            'type'    => 'Button',
+            'caption' => 'Update data',
+            'onClick' => 'BuderusKM200_UpdateData($id);'
+        ];
+        $formActions[] = [
+            'type'    => 'Button',
+            'caption' => 'Datapoint-sheet',
+            'onClick' => 'BuderusKM200_DatapointSheet($id);'
+        ];
 
-        $formStatus[] = ['code' => IS_INVALIDCONFIG, 'icon' => 'error', 'caption' => 'Instance is inactive (invalid configuration)'];
-
-        return json_encode(['elements' => $formElements, 'actions' => $formActions, 'status' => $formStatus]);
+        return $formActions;
     }
 
     public function UpdateData()
@@ -617,12 +687,6 @@ class BuderusKM200 extends IPSModule
 
     private function GetKey()
     {
-        /*
-        $calculated_key = $this->ReadPropertyString('calculated_key');
-        if ($calculated_key != '')
-            return $calculated_key;
-         */
-
         $gateway_password = $this->ReadPropertyString('gateway_password');
         $private_password = $this->ReadPropertyString('private_password');
 
