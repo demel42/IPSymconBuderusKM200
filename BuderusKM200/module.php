@@ -169,14 +169,14 @@ class BuderusKM200 extends IPSModule
         $host = $this->ReadPropertyString('host');
         $port = $this->ReadPropertyInteger('port');
         if ($host == '' || $port == 0) {
-            $this->SetStatus(IS_INVALIDCONFIG);
+            $this->SetStatus(self::$IS_INVALIDCONFIG);
             return;
         }
 
         $gateway_password = $this->ReadPropertyString('gateway_password');
         $private_password = $this->ReadPropertyString('private_password');
         if ($gateway_password == '' || $private_password == '') {
-            $this->SetStatus(IS_INVALIDCONFIG);
+            $this->SetStatus(self::$IS_INVALIDCONFIG);
             return;
         }
 
