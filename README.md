@@ -192,7 +192,7 @@ GUIDs
 
 ## 7. Versions-Historie
 
-- 1.12 @ 13.09.2020 20:52 (beta)
+- 1.12 @ 13.09.2020 20:52
   - LICENSE.md hinzugefügt
   - lokale Funktionen aus common.php in locale.php verlagert
   - Traits des Moduls haben nun Postfix "Lib"
