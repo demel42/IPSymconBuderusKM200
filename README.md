@@ -101,7 +101,7 @@ setzt ein Datenobjekt auf den übergebenen Wert. Die Objekte, die beschreibbar s
 
 | Eigenschaft               | Typ      | Standardwert | Beschreibung |
 | :------------------------ | :------  | :----------- | :------------------------------------------ |
-| Instanz ist deaktiviert   | boolean  | false        | Instanz temporär deaktivieren |
+| Instanz deaktivieren      | boolean  | false        | Instanz temporär deaktivieren |
 |                           |          |              | |
 | Host                      | string   |              | KM200-Server |
 | Port                      | integer  | 80           | HTTP-Port |
