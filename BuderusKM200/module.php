@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../libs/common.php';  // globale Funktionen
+require_once __DIR__ . '/../libs/CommonStubs/common.php'; // globale Funktionen
 require_once __DIR__ . '/../libs/local.php';   // lokale Funktionen
 
 class BuderusKM200 extends IPSModule
 {
-    use BuderusKM200CommonLib;
+    use StubsCommonLib;
     use BuderusKM200LocalLib;
 
     public function Create()
@@ -34,58 +34,45 @@ class BuderusKM200 extends IPSModule
 
         $this->RegisterPropertyInteger('update_interval', '60');
 
-        $associations = [
-            ['Wert' => false, 'Name' => $this->Translate('Stop'), 'Farbe' => -1],
-            ['Wert' => true, 'Name' => $this->Translate('Start'), 'Farbe' => -1],
-        ];
-        $this->CreateVarProfile('BuderusKM200.Charge', VARIABLETYPE_BOOLEAN, '', 0, 0, 0, 1, '', $associations);
-        $associations = [
-            ['Wert' => false, 'Name' => $this->Translate('Off'), 'Farbe' => -1],
-            ['Wert' => true, 'Name' => $this->Translate('On'), 'Farbe' => -1],
-        ];
-        $this->CreateVarProfile('BuderusKM200.OnOff', VARIABLETYPE_BOOLEAN, '', 0, 0, 0, 1, '', $associations);
-
-        $associations = [
-            ['Wert' => 0, 'Name' => $this->Translate('Off'), 'Farbe' => -1],
-            ['Wert' => 1, 'Name' => $this->Translate('High'), 'Farbe' => -1],
-            ['Wert' => 1, 'Name' => $this->Translate('HC-Program'), 'Farbe' => -1],
-            ['Wert' => 1, 'Name' => $this->Translate('Own program'), 'Farbe' => -1],
-        ];
-        $this->CreateVarProfile('BuderusKM200.Dwh_OperationMode', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations);
-        $associations = [
-            ['Wert' => 0, 'Name' => $this->Translate('automatic'), 'Farbe' => -1],
-            ['Wert' => 1, 'Name' => $this->Translate('manual'), 'Farbe' => -1],
-        ];
-        $this->CreateVarProfile('BuderusKM200.Hc_OperationMode', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations);
-        $associations = [
-            ['Wert' => 0, 'Name' => $this->Translate('Error'), 'Farbe' => 0xEE0000],
-            ['Wert' => 1, 'Name' => $this->Translate('Maintenance'), 'Farbe' => 0xFFFF00],
-            ['Wert' => 2, 'Name' => $this->Translate('Ok'), 'Farbe' => 0x228B22],
-        ];
-        $this->CreateVarProfile('BuderusKM200.HealthStatus', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations);
-        $this->CreateVarProfile('BuderusKM200.min', VARIABLETYPE_INTEGER, ' min', 0, 0, 0, 0, '');
-        $associations = [
-            ['Wert' => 0, 'Name' => $this->Translate('Inactive'), 'Farbe' => -1],
-            ['Wert' => 1, 'Name' => $this->Translate('Active'), 'Farbe' => -1],
-        ];
-        $this->CreateVarProfile('BuderusKM200.Status', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations);
-
-        $this->CreateVarProfile('BuderusKM200.bar', VARIABLETYPE_FLOAT, ' bar', 0, 0, 0, 0, '');
-        $associations = [
-            ['Wert' => -3276.8, 'Name' => '-', 'Farbe' => -1],
-            ['Wert' => -3276.7, 'Name' => '%.1f °C', 'Farbe' => -1],
-        ];
-        $this->CreateVarProfile('BuderusKM200.Celsius', VARIABLETYPE_FLOAT, '', 0, 0, 0, 1, 'Temperature', $associations);
-        $this->CreateVarProfile('BuderusKM200.kWh', VARIABLETYPE_FLOAT, ' kWh', 0, 0, 0, 0, '');
-        $this->CreateVarProfile('BuderusKM200.kW', VARIABLETYPE_FLOAT, ' kW', 0, 0, 0, 1, '');
-        $this->CreateVarProfile('BuderusKM200.l_min', VARIABLETYPE_FLOAT, ' l/min', 0, 0, 0, 0, '');
-        $this->CreateVarProfile('BuderusKM200.Pascal', VARIABLETYPE_FLOAT, ' Pascal', 0, 0, 0, 0, '');
-        $this->CreateVarProfile('BuderusKM200.Percent', VARIABLETYPE_FLOAT, ' %', 0, 0, 0, 0, '');
-        $this->CreateVarProfile('BuderusKM200.Wh', VARIABLETYPE_FLOAT, ' Wh', 0, 0, 0, 0, '');
+        $this->InstallVarProfiles(false);
 
         $this->RegisterTimer('UpdateData', 0, 'BuderusKM200_UpdateData(' . $this->InstanceID . ');');
 
         $this->RegisterMessage(0, IPS_KERNELMESSAGE);
+    }
+
+    private function CheckConfiguration()
+    {
+        $s = '';
+        $r = [];
+
+        $host = $this->ReadPropertyString('host');
+        if ($host == '') {
+            $this->SendDebug(__FUNCTION__, '"host" is needed', 0);
+            $r[] = $this->Translate('Hostname must be specified');
+        }
+
+        $port = $this->ReadPropertyInteger('port');
+        if ($port == 0) {
+            $this->SendDebug(__FUNCTION__, '"port" is needed', 0);
+            $r[] = $this->Translate('Port must be specified');
+        }
+
+        $gateway_password = $this->ReadPropertyString('gateway_password');
+        $private_password = $this->ReadPropertyString('private_password');
+        if ($gateway_password == '' || $private_password == '') {
+            $this->SendDebug(__FUNCTION__, '"gateway_password" / "private_password" is needed', 0);
+            $r[] = $this->Translate('Passwords must be specified');
+        }
+
+        if ($r != []) {
+            $s = $this->Translate('The following points of the configuration are incorrect') . ':' . PHP_EOL;
+            foreach ($r as $p) {
+                $s .= '- ' . $p . PHP_EOL;
+            }
+        }
+
+        return $s;
     }
 
     public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
@@ -159,27 +146,6 @@ class BuderusKM200 extends IPSModule
         $this->MaintainVariable('Notifications', $this->Translate('Notifications'), VARIABLETYPE_STRING, '~HTMLBox', $vpos++, true);
         $this->MaintainVariable('LastUpdate', $this->Translate('Last update'), VARIABLETYPE_INTEGER, '~UnixTimestamp', $vpos++, true);
 
-        $module_disable = $this->ReadPropertyBoolean('module_disable');
-        if ($module_disable) {
-            $this->SetTimerInterval('UpdateData', 0);
-            $this->SetStatus(IS_INACTIVE);
-            return;
-        }
-
-        $host = $this->ReadPropertyString('host');
-        $port = $this->ReadPropertyInteger('port');
-        if ($host == '' || $port == 0) {
-            $this->SetStatus(self::$IS_INVALIDCONFIG);
-            return;
-        }
-
-        $gateway_password = $this->ReadPropertyString('gateway_password');
-        $private_password = $this->ReadPropertyString('private_password');
-        if ($gateway_password == '' || $private_password == '') {
-            $this->SetStatus(self::$IS_INVALIDCONFIG);
-            return;
-        }
-
         $refs = $this->GetReferenceList();
         foreach ($refs as $ref) {
             $this->UnregisterReference($ref);
@@ -187,9 +153,22 @@ class BuderusKM200 extends IPSModule
         $propertyNames = ['convert_script'];
         foreach ($propertyNames as $name) {
             $oid = $this->ReadPropertyInteger($name);
-            if ($oid > 0) {
+            if ($oid >= 10000) {
                 $this->RegisterReference($oid);
             }
+        }
+
+        $module_disable = $this->ReadPropertyBoolean('module_disable');
+        if ($module_disable) {
+            $this->MaintainTimer('UpdateData', 0);
+            $this->SetStatus(IS_INACTIVE);
+            return;
+        }
+
+        if ($this->CheckConfiguration() != false) {
+            $this->MaintainTimer('UpdateData', 0);
+            $this->SetStatus(self::$IS_INVALIDCONFIG);
+            return;
         }
 
         if (IPS_GetKernelRunlevel() == KR_READY) {
@@ -203,12 +182,28 @@ class BuderusKM200 extends IPSModule
     {
         $min = $this->ReadPropertyInteger('update_interval');
         $msec = $min > 0 ? $min * 60 * 1000 : 0;
-        $this->SetTimerInterval('UpdateData', $msec);
+        $this->MaintainTimer('UpdateData', $msec);
     }
 
     private function GetFormElements()
     {
         $formElements = [];
+
+        $formElements[] = [
+            'type'    => 'Label',
+            'caption' => 'Buderus KM200'
+        ];
+
+        @$s = $this->CheckConfiguration();
+        if ($s != '') {
+            $formElements[] = [
+                'type'    => 'Label',
+                'caption' => $s,
+            ];
+            $formElements[] = [
+                'type'    => 'Label',
+            ];
+        }
 
         $formElements[] = [
             'type'    => 'CheckBox',
@@ -217,68 +212,32 @@ class BuderusKM200 extends IPSModule
         ];
 
         $formElements[] = [
-            'type'    => 'Label',
-            'caption' => 'Buderus KM200'
+            'type'    => 'ExpansionPanel',
+            'items'   => [
+                [
+                    'type'    => 'ValidationTextBox',
+                    'name'    => 'host',
+                    'caption' => 'Host'
+                ],
+                [
+                    'type'    => 'NumberSpinner',
+                    'name'    => 'port',
+                    'caption' => 'Port'
+                ],
+                [
+                    'type'    => 'ValidationTextBox',
+                    'name'    => 'gateway_password',
+                    'caption' => 'Gateway password'
+                ],
+                [
+                    'type'    => 'ValidationTextBox',
+                    'name'    => 'private_password',
+                    'caption' => 'Private password'
+                ],
+            ],
+            'caption' => 'Basic configuration',
         ];
 
-        $formElements[] = [
-            'type'    => 'ValidationTextBox',
-            'name'    => 'host',
-            'caption' => 'Host'
-        ];
-        $formElements[] = [
-            'type'    => 'NumberSpinner',
-            'name'    => 'port',
-            'caption' => 'Port'
-        ];
-        $formElements[] = [
-            'type'    => 'ValidationTextBox',
-            'name'    => 'gateway_password',
-            'caption' => 'Gateway password'
-        ];
-        $formElements[] = [
-            'type'    => 'ValidationTextBox',
-            'name'    => 'private_password',
-            'caption' => 'Private password'
-        ];
-
-        $columns = [];
-        $columns[] = [
-            'caption' => 'Datapoint',
-            'name'    => 'datapoint',
-            'add'     => '',
-            'width'   => 'auto',
-            'edit'    => [
-                'type' => 'ValidationTextBox'
-            ]
-        ];
-        $columns[] = [
-            'caption' => 'Variable type',
-            'name'    => 'vartype',
-            'add'     => VARIABLETYPE_FLOAT,
-            'width'   => '150px',
-            'edit'    => [
-                'type'    => 'Select',
-                'options' => [
-                    [
-                        'caption' => 'Boolean',
-                        'value'   => VARIABLETYPE_BOOLEAN
-                    ],
-                    [
-                        'caption' => 'Integer',
-                        'value'   => VARIABLETYPE_INTEGER
-                    ],
-                    [
-                        'caption' => 'Float',
-                        'value'   => VARIABLETYPE_FLOAT
-                    ],
-                    [
-                        'caption' => 'String',
-                        'value'   => VARIABLETYPE_STRING
-                    ],
-                ]
-            ]
-        ];
         $formElements[] = [
             'type'     => 'List',
             'name'     => 'fields',
@@ -286,7 +245,44 @@ class BuderusKM200 extends IPSModule
             'rowCount' => 15,
             'add'      => true,
             'delete'   => true,
-            'columns'  => $columns
+            'columns'  => [
+                [
+                    'caption' => 'Datapoint',
+                    'name'    => 'datapoint',
+                    'add'     => '',
+                    'width'   => 'auto',
+                    'edit'    => [
+                        'type' => 'ValidationTextBox'
+                    ]
+                ],
+                [
+                    'caption' => 'Variable type',
+                    'name'    => 'vartype',
+                    'add'     => VARIABLETYPE_FLOAT,
+                    'width'   => '150px',
+                    'edit'    => [
+                        'type'    => 'Select',
+                        'options' => [
+                            [
+                                'caption' => 'Boolean',
+                                'value'   => VARIABLETYPE_BOOLEAN
+                            ],
+                            [
+                                'caption' => 'Integer',
+                                'value'   => VARIABLETYPE_INTEGER
+                            ],
+                            [
+                                'caption' => 'Float',
+                                'value'   => VARIABLETYPE_FLOAT
+                            ],
+                            [
+                                'caption' => 'String',
+                                'value'   => VARIABLETYPE_STRING
+                            ],
+                        ]
+                    ]
+                ],
+            ],
         ];
 
         $formElements[] = [
@@ -296,13 +292,10 @@ class BuderusKM200 extends IPSModule
         ];
 
         $formElements[] = [
-            'type'    => 'Label',
-            'caption' => 'Update data every X minutes'
-        ];
-        $formElements[] = [
             'type'    => 'NumberSpinner',
             'name'    => 'update_interval',
-            'caption' => 'Minutes'
+            'suffix'  => 'Minutes',
+            'caption' => 'Update interval',
         ];
 
         return $formElements;
@@ -322,19 +315,53 @@ class BuderusKM200 extends IPSModule
             'caption' => 'Update data',
             'onClick' => 'BuderusKM200_UpdateData($id);'
         ];
+
         $formActions[] = [
-            'type'    => 'Button',
-            'caption' => 'Datapoint-sheet',
-            'onClick' => 'BuderusKM200_DatapointSheet($id);'
+            'type'      => 'ExpansionPanel',
+            'caption'   => 'Expert area',
+            'expanded ' => false,
+            'items'     => [
+                [
+                    'type'    => 'Button',
+                    'caption' => 'Datapoint-sheet',
+                    'onClick' => 'BuderusKM200_DatapointSheet($id);'
+                ],
+                [
+                    'type'    => 'Button',
+                    'caption' => 'Re-install variable-profiles',
+                    'onClick' => 'TractiveGps_InstallVarProfiles($id, true);'
+                ],
+            ],
         ];
+
+        $formActions[] = $this->GetInformationForm();
+        $formActions[] = $this->GetReferencesForm();
 
         return $formActions;
     }
 
-    public function UpdateData()
+    public function RequestAction($ident, $value)
     {
+        if ($this->CommonRequestAction($ident, $value)) {
+            return;
+        }
+
         if ($this->GetStatus() == IS_INACTIVE) {
             $this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
+            return;
+        }
+
+        switch ($ident) {
+            default:
+                $this->SendDebug(__FUNCTION__, 'invalid ident ' . $ident, 0);
+                break;
+        }
+    }
+
+    public function UpdateData()
+    {
+        if ($this->CheckStatus() == self::$STATUS_INVALID) {
+            $this->SendDebug(__FUNCTION__, $this->GetStatusText() . ' => skip', 0);
             return;
         }
 
@@ -375,7 +402,7 @@ class BuderusKM200 extends IPSModule
 
             $this->SendDebug(__FUNCTION__, 'datapoint=' . $datapoint . ', result=' . print_r($result, true), 0);
 
-            if ($do_convert && $convert_script > 0) {
+            if ($do_convert && $convert_script >= 10000) {
                 $info = [
                     'InstanceID'    => $this->InstanceID,
                     'datapoint'     => $datapoint,
@@ -493,7 +520,7 @@ class BuderusKM200 extends IPSModule
             $sec = $min * 60;
         }
         $this->SendDebug(__FUNCTION__, 'set timer to ' . $sec . 's', 0);
-        $this->SetTimerInterval('UpdateData', $sec * 1000);
+        $this->MaintainTimer('UpdateData', $sec * 1000);
     }
 
     public function VerifyAccess()
@@ -679,12 +706,40 @@ class BuderusKM200 extends IPSModule
 
         // Salt der MD5-Hashes zur AES-Schlüsselerzeugung
         $crypt_md5_salt = pack(
-                'c*',
-                0x86, 0x78, 0x45, 0xe9, 0x7c, 0x4e, 0x29, 0xdc,
-                0xe5, 0x22, 0xb9, 0xa7, 0xd3, 0xa3, 0xe0, 0x7b,
-                0x15, 0x2b, 0xff, 0xad, 0xdd, 0xbe, 0xd7, 0xf5,
-                0xff, 0xd8, 0x42, 0xe9, 0x89, 0x5a, 0xd1, 0xe4
-            );
+            'c*',
+            0x86,
+            0x78,
+            0x45,
+            0xe9,
+            0x7c,
+            0x4e,
+            0x29,
+            0xdc,
+            0xe5,
+            0x22,
+            0xb9,
+            0xa7,
+            0xd3,
+            0xa3,
+            0xe0,
+            0x7b,
+            0x15,
+            0x2b,
+            0xff,
+            0xad,
+            0xdd,
+            0xbe,
+            0xd7,
+            0xf5,
+            0xff,
+            0xd8,
+            0x42,
+            0xe9,
+            0x89,
+            0x5a,
+            0xd1,
+            0xe4
+        );
 
         // Erste Hälfte des Schlüssels: MD5 von ( Gerätepasswort . Salt )
         $key_1 = md5($gateway_password . $crypt_md5_salt, true);

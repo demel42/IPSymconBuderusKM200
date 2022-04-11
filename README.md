@@ -192,6 +192,11 @@ GUIDs
 
 ## 7. Versions-Historie
 
+- 1.14 @ 11.04.2022 17:30
+  - Anpassungen an IPS 6.2 (Prüfung auf ungültige ID's)
+  - Anzeige der Referenzen der Instanz incl. Statusvariablen und Instanz-Timer
+  - common.php -> libs/CommonStubs
+
 - 1.13 @ 14.07.2021 18:34
   - PHP_CS_FIXER_IGNORE_ENV=1 in github/workflows/style.yml eingefügt
   - Schalter "Instanz ist deaktiviert" umbenannt in "Instanz deaktivieren"
