@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../libs/CommonStubs/common.php'; // globale Funktionen
-require_once __DIR__ . '/../libs/local.php';   // lokale Funktionen
+require_once __DIR__ . '/../libs/common.php';
+require_once __DIR__ . '/../libs/local.php';
 
 class BuderusKM200 extends IPSModule
 {
-    use StubsCommonLib;
+    use BuderusKM200\StubsCommonLib;
     use BuderusKM200LocalLib;
 
     public function Create()
