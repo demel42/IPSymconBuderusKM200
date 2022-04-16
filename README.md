@@ -192,8 +192,9 @@ GUIDs
 
 ## 7. Versions-Historie
 
-- 1.15 @ 13.04.2022 14:44
+- 1.15 @ 16.04.2022 11:49
   - potentieller Namenskonflikt behoben (trait CommonStubs)
+  - Aktualisierung von submodule CommonStubs
 
 - 1.14 @ 11.04.2022 17:30
   - Anpassungen an IPS 6.2 (Prüfung auf ungültige ID's)
