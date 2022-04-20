@@ -4,8 +4,8 @@
 	"type": 3,
 	"vendor": "Buderus",
 	"aliases": [
-			"KM200"
-		],
+		"KM200"
+	],
 	"parentRequirements": [],
 	"childRequirements": [],
 	"implemented": [],

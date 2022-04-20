@@ -4,25 +4,16 @@ declare(strict_types=1);
 
 trait BuderusKM200LocalLib
 {
-    public static $IS_INVALIDCONFIG = IS_EBASE + 1;
+    private function GetFormStatus()
+    {
+        $formStatus = $this->GetCommonFormStatus();
+
+        return $formStatus;
+    }
 
     public static $STATUS_INVALID = 0;
     public static $STATUS_VALID = 1;
     public static $STATUS_RETRYABLE = 2;
-
-    private function GetFormStatus()
-    {
-        $formStatus = [];
-        $formStatus[] = ['code' => IS_CREATING, 'icon' => 'inactive', 'caption' => 'Instance getting created'];
-        $formStatus[] = ['code' => IS_ACTIVE, 'icon' => 'active', 'caption' => 'Instance is active'];
-        $formStatus[] = ['code' => IS_DELETING, 'icon' => 'inactive', 'caption' => 'Instance is deleted'];
-        $formStatus[] = ['code' => IS_INACTIVE, 'icon' => 'inactive', 'caption' => 'Instance is inactive'];
-        $formStatus[] = ['code' => IS_NOTCREATED, 'icon' => 'inactive', 'caption' => 'Instance is not created'];
-
-        $formStatus[] = ['code' => self::$IS_INVALIDCONFIG, 'icon' => 'error', 'caption' => 'Instance is inactive (invalid config)'];
-
-        return $formStatus;
-    }
 
     private function CheckStatus()
     {
@@ -85,6 +76,7 @@ trait BuderusKM200LocalLib
             ['Wert' => -3276.8, 'Name' => '-', 'Farbe' => -1],
             ['Wert' => -3276.7, 'Name' => '%.1f °C', 'Farbe' => -1],
         ];
+
         $this->CreateVarProfile('BuderusKM200.Celsius', VARIABLETYPE_FLOAT, '', 0, 0, 0, 1, 'Temperature', $associations, $reInstall);
         $this->CreateVarProfile('BuderusKM200.kWh', VARIABLETYPE_FLOAT, ' kWh', 0, 0, 0, 0, '', [], $reInstall);
         $this->CreateVarProfile('BuderusKM200.kW', VARIABLETYPE_FLOAT, ' kW', 0, 0, 0, 1, '', [], $reInstall);
