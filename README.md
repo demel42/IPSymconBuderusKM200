@@ -192,7 +192,7 @@ GUIDs
 
 ## 7. Versions-Historie
 
-- 1.16 @ 20.04.2022 17:31
+- 1.16 @ 21.04.2022 08:52
   - Implememtierung einer Update-Logik
   - diverse interne Änderungen
 
