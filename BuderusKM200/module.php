@@ -102,6 +102,9 @@ class BuderusKM200 extends IPSModule
     {
         parent::ApplyChanges();
 
+        $propertyNames = ['convert_script'];
+        $this->MaintainReferences($propertyNames);
+
         if ($this->CheckPrerequisites() != false) {
             $this->MaintainTimer('UpdateData', 0);
             $this->SetStatus(self::$IS_INVALIDPREREQUISITES);
@@ -112,18 +115,6 @@ class BuderusKM200 extends IPSModule
             $this->MaintainTimer('UpdateData', 0);
             $this->SetStatus(self::$IS_UPDATEUNCOMPLETED);
             return;
-        }
-
-        $refs = $this->GetReferenceList();
-        foreach ($refs as $ref) {
-            $this->UnregisterReference($ref);
-        }
-        $propertyNames = ['convert_script'];
-        foreach ($propertyNames as $name) {
-            $oid = $this->ReadPropertyInteger($name);
-            if ($oid >= 10000) {
-                $this->RegisterReference($oid);
-            }
         }
 
         if ($this->CheckConfiguration() != false) {
