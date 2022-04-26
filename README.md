@@ -1,6 +1,6 @@
 # IPSymconBuderusKM200
 
-[![IPS-Version](https://img.shields.io/badge/Symcon_Version-5.3+-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
+[![IPS-Version](https://img.shields.io/badge/Symcon_Version-6.0+-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 ![Code](https://img.shields.io/badge/Code-PHP-blue.svg)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
@@ -25,7 +25,7 @@ Diese Modul basiert auf den Arbeiten von [Slash](https://www.symcon.de/forum/mem
 
 ## 2. Voraussetzungen
 
- - IP-Symcon ab Version 5.3
+ - IP-Symcon ab Version 6.0
  - Buderus mit KM200<br>
 Nach Prüfung durch [danam33](https://www.symcon.de/forum/members/3940-danam33) funktioniert das Modul auch mit Heizungen von Junkers mit dem Modul **Junkers MB Lan** funktionsfähig (siehe [hier](https://www.symcon.de/forum/threads/25211-Buderus-Logamatic-Web-KM200-Reloaded?p=414018#post414018)).
 
@@ -191,6 +191,10 @@ GUIDs
   - BuderusKM200: `{3A2FE2B9-EB88-4B14-B144-2A3839A761CA}`
 
 ## 7. Versions-Historie
+
+- 1.16.1 @ 26.04.2022 12:32
+  - Korrektur: self::$IS_DEACTIVATED wieder IS_INACTIVE
+  - IPS-Version ist nun minimal 6.0
 
 - 1.16 @ 21.04.2022 08:52
   - Implememtierung einer Update-Logik
