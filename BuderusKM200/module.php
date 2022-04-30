@@ -10,6 +10,15 @@ class BuderusKM200 extends IPSModule
     use BuderusKM200\StubsCommonLib;
     use BuderusKM200LocalLib;
 
+    private $ModuleDir;
+
+    public function __construct(string $InstanceID)
+    {
+        parent::__construct($InstanceID);
+
+        $this->ModuleDir = __DIR__;
+    }
+
     public function Create()
     {
         parent::Create();

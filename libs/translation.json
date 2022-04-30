@@ -1,0 +1,34 @@
+{
+	"translations": {
+		"de": {
+			"__variableprofile__": "BuderusKM200.Charge",
+			"Stop": "Stop",
+			"Start": "Start",
+
+			"__variableprofile__": "BuderusKM200.OnOff",
+			"Off": "Aus",
+			"On": "Ein",
+
+			"__variableprofile__": "BuderusKM200.Dwh_OperationMode",
+			"Off": "Aus",
+			"High": "Hoch",
+			"HC-Program": "HC-Programm",
+			"Own program": "eigenes Programm",
+
+			"__variableprofile__": "BuderusKM200.Hc_OperationMode",
+			"manual": "manuell",
+			"automatic": "automatisch",
+
+			"__variableprofile__": "BuderusKM200.HealthStatus",
+			"Error": "Fehler",
+			"Maintenance": "Wartung",
+			"Ok": "in Ordnung",
+
+			"__variableprofile__": "BuderusKM200.Status",
+			"Active": "Aktiv",
+			"Inactive": "Inaktiv",
+
+			"__end__": ""
+		}
+	}
+}

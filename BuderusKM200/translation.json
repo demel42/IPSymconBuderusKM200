@@ -1,0 +1,65 @@
+{
+	"translations": {
+		"de": {
+			"Buderus KM 200": "Buderus KM 200",
+
+			"__elements__": "",
+			"Disable instance": "Instanz deaktivieren",
+
+			"Basic configuration": "Basis-Konfiguration",
+			"Host": "Host",
+			"Port": "Port",
+			"Gateway password": "Gateway-Passwort",
+			"Private password": "privates Passwort",
+			"Calculated key": "berechneter Schlüssel",
+
+			"Update interval": "Aktualisierungsintervall",
+			"Minutes": "Minuten",
+
+			"Fields": "Felder",
+			"Datapoint": "Datenpunkt",
+			"Title": "Titel",
+			"Variable type": "Variablentyp",
+			"Variable profile": "Variablenprofil",
+
+			"convert values": "Werte konvertieren",
+
+			"__variables__": "",
+			"Notifications": "Meldungen",
+			"Last update": "letzte Aktualisierung",
+			"Buderus KM200 Datapoints": "Buderus KM200 Datenpunkte",
+
+			"__actions__": "",
+			"Verify access": "Zugriff prüfen",
+			"Update data": "Aktualisiere Daten",
+			"Datapoint-sheet": "Datenpunkt-Tabelle",
+
+			"__function__": "VerifyAccess",
+			"Access failed": "Zugriff fehlgeschlagen",
+			"Access ok": "Zugriff in Ordnung",
+			"Brand": "Hersteller",
+			"Bus": "Systembus",
+			"Firmware version": "Firmware-Version",
+			"Hardware version": "Hardware-Version",
+			"System health": "Systemzustand",
+			"System time": "Systemzeit",
+			"System type": "Systemtyp",
+
+			"__function__": "DatapointSheet",
+			"Name": "Name",
+			"Type": "Type",
+			"Unit": "Einheit",
+			"writeable?": "beschreibbar?",
+			"recordable?": "protokollierbar?",
+			"current value": "aktueller Wert",
+			"possible values": "Wertemenge",
+			"not useable": "nicht verwendbar",
+
+			"__function__": "UpdateData",
+			"Unable to get notifications": "Meldungen sind nicht abrufbar",
+			"There are no notifications": "es liegen keine Meldungen vor",
+
+			"__end__": ""
+		}
+	}
+}
