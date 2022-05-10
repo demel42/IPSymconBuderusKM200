@@ -405,7 +405,7 @@ class BuderusKM200 extends IPSModule
 
             $this->SendDebug(__FUNCTION__, 'datapoint=' . $datapoint . ', result=' . print_r($result, true), 0);
 
-            if ($do_convert && $convert_script >= 10000) {
+            if ($do_convert && IPS_ScriptExists($convert_script)) {
                 $info = [
                     'InstanceID'    => $this->InstanceID,
                     'datapoint'     => $datapoint,
