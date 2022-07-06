@@ -524,7 +524,6 @@ class BuderusKM200 extends IPSModule
         if ($sec < ($min * 60 / 2)) {
             $sec = $min * 60;
         }
-        $this->SendDebug(__FUNCTION__, 'set timer to ' . $sec . 's', 0);
         $this->MaintainTimer('UpdateData', $sec * 1000);
     }
 
