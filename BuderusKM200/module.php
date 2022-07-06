@@ -47,7 +47,7 @@ class BuderusKM200 extends IPSModule
 
         $this->InstallVarProfiles(false);
 
-        $this->RegisterTimer('UpdateData', 0, $this->GetModulePrefix() . '_UpdateData(' . $this->InstanceID . ');');
+        $this->RegisterTimer('UpdateData', 0, 'IPS_RequestAction(' . $this->InstanceID . ', "UpdateData", "");');
 
         $this->RegisterMessage(0, IPS_KERNELMESSAGE);
     }
@@ -116,19 +116,19 @@ class BuderusKM200 extends IPSModule
 
         if ($this->CheckPrerequisites() != false) {
             $this->MaintainTimer('UpdateData', 0);
-            $this->SetStatus(self::$IS_INVALIDPREREQUISITES);
+            $this->MaintainStatus(self::$IS_INVALIDPREREQUISITES);
             return;
         }
 
         if ($this->CheckUpdate() != false) {
             $this->MaintainTimer('UpdateData', 0);
-            $this->SetStatus(self::$IS_UPDATEUNCOMPLETED);
+            $this->MaintainStatus(self::$IS_UPDATEUNCOMPLETED);
             return;
         }
 
         if ($this->CheckConfiguration() != false) {
             $this->MaintainTimer('UpdateData', 0);
-            $this->SetStatus(self::$IS_INVALIDCONFIG);
+            $this->MaintainStatus(self::$IS_INVALIDCONFIG);
             return;
         }
 
@@ -173,18 +173,18 @@ class BuderusKM200 extends IPSModule
         $module_disable = $this->ReadPropertyBoolean('module_disable');
         if ($module_disable) {
             $this->MaintainTimer('UpdateData', 0);
-            $this->SetStatus(IS_INACTIVE);
+            $this->MaintainStatus(IS_INACTIVE);
             return;
         }
 
-        $this->SetStatus(IS_ACTIVE);
+        $this->MaintainStatus(IS_ACTIVE);
 
         if (IPS_GetKernelRunlevel() == KR_READY) {
             $this->SetUpdateInterval();
         }
     }
 
-    protected function SetUpdateInterval()
+    private function SetUpdateInterval()
     {
         $min = $this->ReadPropertyInteger('update_interval');
         $msec = $min > 0 ? $min * 60 * 1000 : 0;
@@ -311,12 +311,12 @@ class BuderusKM200 extends IPSModule
         $formActions[] = [
             'type'    => 'Button',
             'caption' => 'Verify access',
-            'onClick' => $this->GetModulePrefix() . '_VerifyAccess($id);'
+            'onClick' => 'IPS_RequestAction(' . $this->InstanceID . ', "VerifyAccess", "");',
         ];
         $formActions[] = [
             'type'    => 'Button',
             'caption' => 'Update data',
-            'onClick' => $this->GetModulePrefix() . '_UpdateData($id);'
+            'onClick' => 'IPS_RequestAction(' . $this->InstanceID . ', "UpdateDate", "");',
         ];
 
         $formActions[] = [
@@ -329,11 +329,7 @@ class BuderusKM200 extends IPSModule
                     'caption' => 'Datapoint-sheet',
                     'onClick' => $this->GetModulePrefix() . '_DatapointSheet($id);'
                 ],
-                [
-                    'type'    => 'Button',
-                    'caption' => 'Re-install variable-profiles',
-                    'onClick' => $this->GetModulePrefix() . '_InstallVarProfiles($id, true);'
-                ],
+                $this->GetInstallVarProfilesFormItem(),
             ],
         ];
 
@@ -355,13 +351,19 @@ class BuderusKM200 extends IPSModule
         }
 
         switch ($ident) {
+            case 'UpdateData':
+                $this->UpdateData();
+                break;
+            case 'VerifyAccess':
+                $this->VerifyAccess();
+                break;
             default:
                 $this->SendDebug(__FUNCTION__, 'invalid ident ' . $ident, 0);
                 break;
         }
     }
 
-    public function UpdateData()
+    private function UpdateData()
     {
         if ($this->CheckStatus() == self::$STATUS_INVALID) {
             $this->SendDebug(__FUNCTION__, $this->GetStatusText() . ' => skip', 0);
@@ -513,7 +515,7 @@ class BuderusKM200 extends IPSModule
         $this->SetValue('Notifications', $html);
 
         $this->SetValue('LastUpdate', $now);
-        $this->SetStatus(IS_ACTIVE);
+        $this->MaintainStatus(IS_ACTIVE);
 
         $dur = time() - $now;
         $min = $this->ReadPropertyInteger('update_interval');
@@ -526,11 +528,12 @@ class BuderusKM200 extends IPSModule
         $this->MaintainTimer('UpdateData', $sec * 1000);
     }
 
-    public function VerifyAccess()
+    private function VerifyAccess()
     {
         if ($this->GetStatus() == IS_INACTIVE) {
             $this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
-            echo $this->Translate('Instance is inactive') . PHP_EOL;
+            $msg = $this->Translate('Instance is inactive') . PHP_EOL;
+            $this->PopupMessage($msg);
             return;
         }
 
@@ -571,7 +574,7 @@ class BuderusKM200 extends IPSModule
             }
         }
 
-        echo $msg;
+        $this->PopupMessage($msg);
     }
 
     private function traverseService($service, &$entList)
