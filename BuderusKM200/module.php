@@ -339,8 +339,28 @@ class BuderusKM200 extends IPSModule
         return $formActions;
     }
 
+    private function LocalRequestAction($ident, $value)
+    {
+        $r = true;
+        switch ($ident) {
+            case 'UpdateData':
+                $this->UpdateData();
+                break;
+            case 'VerifyAccess':
+                $this->VerifyAccess();
+                break;
+            default:
+                $r = false;
+                break;
+        }
+        return $r;
+    }
+
     public function RequestAction($ident, $value)
     {
+        if ($this->LocalRequestAction($ident, $value)) {
+            return;
+        }
         if ($this->CommonRequestAction($ident, $value)) {
             return;
         }
@@ -351,12 +371,6 @@ class BuderusKM200 extends IPSModule
         }
 
         switch ($ident) {
-            case 'UpdateData':
-                $this->UpdateData();
-                break;
-            case 'VerifyAccess':
-                $this->VerifyAccess();
-                break;
             default:
                 $this->SendDebug(__FUNCTION__, 'invalid ident ' . $ident, 0);
                 break;
