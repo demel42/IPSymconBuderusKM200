@@ -530,8 +530,8 @@ class BuderusKM200 extends IPSModule
     private function VerifyAccess()
     {
         if ($this->GetStatus() == IS_INACTIVE) {
-            $this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
-            $msg = $this->Translate('Instance is inactive') . PHP_EOL;
+            $this->SendDebug(__FUNCTION__, $this->GetStatusText() . ' => skip', 0);
+            $msg = $this->GetStatusText();
             $this->PopupMessage($msg);
             return;
         }
