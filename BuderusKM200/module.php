@@ -346,7 +346,7 @@ class BuderusKM200 extends IPSModule
         }
 
         if ($this->GetStatus() == IS_INACTIVE) {
-            $this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
+            $this->SendDebug(__FUNCTION__, $this->GetStatusText() . ' => skip', 0);
             return;
         }
 
@@ -529,7 +529,7 @@ class BuderusKM200 extends IPSModule
 
     private function VerifyAccess()
     {
-        if ($this->GetStatus() == IS_INACTIVE) {
+        if ($this->CheckStatus() == self::$STATUS_INVALID) {
             $this->SendDebug(__FUNCTION__, $this->GetStatusText() . ' => skip', 0);
             $msg = $this->GetStatusText();
             $this->PopupMessage($msg);
@@ -650,9 +650,10 @@ class BuderusKM200 extends IPSModule
 
     public function DatapointSheet()
     {
-        if ($this->GetStatus() == IS_INACTIVE) {
-            $this->SendDebug(__FUNCTION__, 'instance is inactive, skip', 0);
-            echo $this->Translate('Instance is inactive') . PHP_EOL;
+        if ($this->CheckStatus() == self::$STATUS_INVALID) {
+            $this->SendDebug(__FUNCTION__, $this->GetStatusText() . ' => skip', 0);
+            $msg = $this->GetStatusText();
+            $this->PopupMessage($msg);
             return;
         }
 

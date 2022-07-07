@@ -192,7 +192,7 @@ GUIDs
 
 ## 7. Versions-Historie
 
-- 1.17 @ 07.07.2022 10:00
+- 1.17 @ 07.07.2022 11:32
   - einige Funktionen (GetFormElements, GetFormActions) waren fehlerhafterweise "protected" und nicht "private"
   - interne Funktionen sind nun private und ggfs nur noch via IPS_RequestAction() erreichbar
   - Fix: Angabe der Kompatibilität auf 6.2 korrigiert
