@@ -28,6 +28,9 @@
 			"Active": "Aktiv",
 			"Inactive": "Inaktiv",
 
+			"__status__": "",
+			"Instance is inactive (server error)": "Instanz ist inaktiv (Serverfehler)",
+
 			"__end__": ""
 		}
 	}

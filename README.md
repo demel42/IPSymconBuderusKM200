@@ -192,6 +192,11 @@ GUIDs
 
 ## 7. Versions-Historie
 
+- 1.18 @ 07.08.2022 19:30
+  - Verbesserung: bessere Absicherung der Nicht-Erreichbarkeit der Heizung
+  - Verbesserung: Datenpunkte in eigenem Panel
+  - update submodule CommonStubs
+
 - 1.17 @ 07.07.2022 11:47
   - einige Funktionen (GetFormElements, GetFormActions) waren fehlerhafterweise "protected" und nicht "private"
   - interne Funktionen sind nun private und ggfs nur noch via IPS_RequestAction() erreichbar

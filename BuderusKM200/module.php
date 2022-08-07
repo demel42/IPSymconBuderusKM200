@@ -233,56 +233,61 @@ class BuderusKM200 extends IPSModule
         ];
 
         $formElements[] = [
-            'type'     => 'List',
-            'name'     => 'fields',
-            'caption'  => 'Fields',
-            'rowCount' => 15,
-            'add'      => true,
-            'delete'   => true,
-            'columns'  => [
+            'type'    => 'ExpansionPanel',
+            'items'   => [
                 [
-                    'caption' => 'Datapoint',
-                    'name'    => 'datapoint',
-                    'add'     => '',
-                    'width'   => 'auto',
-                    'edit'    => [
-                        'type' => 'ValidationTextBox'
-                    ]
+                    'type'     => 'List',
+                    'name'     => 'fields',
+                    'caption'  => 'Fields',
+                    'rowCount' => 15,
+                    'add'      => true,
+                    'delete'   => true,
+                    'columns'  => [
+                        [
+                            'caption' => 'Datapoint',
+                            'name'    => 'datapoint',
+                            'add'     => '',
+                            'width'   => 'auto',
+                            'edit'    => [
+                                'type' => 'ValidationTextBox'
+                            ]
+                        ],
+                        [
+                            'caption' => 'Variable type',
+                            'name'    => 'vartype',
+                            'add'     => VARIABLETYPE_FLOAT,
+                            'width'   => '150px',
+                            'edit'    => [
+                                'type'    => 'Select',
+                                'options' => [
+                                    [
+                                        'caption' => 'Boolean',
+                                        'value'   => VARIABLETYPE_BOOLEAN
+                                    ],
+                                    [
+                                        'caption' => 'Integer',
+                                        'value'   => VARIABLETYPE_INTEGER
+                                    ],
+                                    [
+                                        'caption' => 'Float',
+                                        'value'   => VARIABLETYPE_FLOAT
+                                    ],
+                                    [
+                                        'caption' => 'String',
+                                        'value'   => VARIABLETYPE_STRING
+                                    ],
+                                ]
+                            ]
+                        ],
+                    ],
                 ],
                 [
-                    'caption' => 'Variable type',
-                    'name'    => 'vartype',
-                    'add'     => VARIABLETYPE_FLOAT,
-                    'width'   => '150px',
-                    'edit'    => [
-                        'type'    => 'Select',
-                        'options' => [
-                            [
-                                'caption' => 'Boolean',
-                                'value'   => VARIABLETYPE_BOOLEAN
-                            ],
-                            [
-                                'caption' => 'Integer',
-                                'value'   => VARIABLETYPE_INTEGER
-                            ],
-                            [
-                                'caption' => 'Float',
-                                'value'   => VARIABLETYPE_FLOAT
-                            ],
-                            [
-                                'caption' => 'String',
-                                'value'   => VARIABLETYPE_STRING
-                            ],
-                        ]
-                    ]
+                    'type'    => 'SelectScript',
+                    'name'    => 'convert_script',
+                    'caption' => 'convert values'
                 ],
             ],
-        ];
-
-        $formElements[] = [
-            'type'    => 'SelectScript',
-            'name'    => 'convert_script',
-            'caption' => 'convert values'
+            'caption' => 'Datapoint configurations',
         ];
 
         $formElements[] = [
@@ -316,7 +321,7 @@ class BuderusKM200 extends IPSModule
         $formActions[] = [
             'type'    => 'Button',
             'caption' => 'Update data',
-            'onClick' => 'IPS_RequestAction(' . $this->InstanceID . ', "UpdateDate", "");',
+            'onClick' => 'IPS_RequestAction(' . $this->InstanceID . ', "UpdateData", "");',
         ];
 
         $formActions[] = [
@@ -397,7 +402,7 @@ class BuderusKM200 extends IPSModule
                 if ($r == false) {
                     $ident = 'DP' . str_replace('/', '_', $datapoint);
                     $this->SetValue($ident, 0); // Error
-                    $this->SendDebug(__FUNCTION__, 'unable to get "/system/healthStatus"', 0);
+                    $this->SendDebug(__FUNCTION__, 'unable to get datapoint "' . $datapoint . '"', 0);
                     return;
                 }
             }
@@ -406,6 +411,10 @@ class BuderusKM200 extends IPSModule
         foreach ($fields as $field) {
             $datapoint = $this->GetArrayElem($field, 'datapoint', '');
             $result = $this->GetData($datapoint);
+            if ($result == false) {
+                $this->SendDebug(__FUNCTION__, 'unable to get datapoint "' . $datapoint . '"', 0);
+                return;
+            }
 
             $vartype = $this->GetArrayElem($field, 'vartype', -1);
             $type = $this->GetArrayElem($result, 'type', '');
@@ -848,12 +857,16 @@ class BuderusKM200 extends IPSModule
         );
         $this->SendDebug(__FUNCTION__, 'options=' . print_r($options, true), 0);
         if ($content == false) {
+            $this->MaintainStatus(self::$IS_SERVERERROR);
             return false;
         }
         $data = $this->Decrypt($content);
         if ($data == false) {
+            $this->MaintainStatus(self::$IS_SERVERERROR);
             return false;
         }
+        $this->MaintainStatus(IS_ACTIVE);
+
         $this->SendDebug(__FUNCTION__, 'decrypt content=' . print_r($data, true), 0);
         return json_decode($data, true);
     }
