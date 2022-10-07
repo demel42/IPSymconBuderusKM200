@@ -192,6 +192,10 @@ GUIDs
 
 ## 7. Versions-Historie
 
+- 1.18.1 @ 07.10.2022 13:59
+  - update submodule CommonStubs
+    Fix: Update-Prüfung wieder funktionsfähig
+
 - 1.18 @ 07.08.2022 19:30
   - Verbesserung: bessere Absicherung der Nicht-Erreichbarkeit der Heizung
   - Verbesserung: Datenpunkte in eigenem Panel
