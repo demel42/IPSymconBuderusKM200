@@ -192,6 +192,10 @@ GUIDs
 
 ## 7. Versions-Historie
 
+- 1.18.2 @ 12.10.2022 09:38
+  - zusätzliche Debug-Meldung beim Datenabruf
+  - update submodule CommonStubs
+
 - 1.18.1 @ 07.10.2022 13:59
   - update submodule CommonStubs
     Fix: Update-Prüfung wieder funktionsfähig

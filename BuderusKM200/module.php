@@ -453,11 +453,11 @@ class BuderusKM200 extends IPSModule
                             $allowedValues = $result['allowedValues'];
                             foreach ($allowedValues as $val => $txt) {
                                 if ($txt == $value) {
-                                    $value = $val;
+                                    $value = (bool) $val;
                                     break;
                                 }
                             }
-                            $this->SendDebug(__FUNCTION__, 'string2bool: datapoint=' . $datapoint . ', orgval=' . $orgval . ', value=' . $value . ', allowedValues=' . print_r($allowedValues, true), 0);
+                            $this->SendDebug(__FUNCTION__, 'string2bool: datapoint=' . $datapoint . ', orgval=' . $orgval . ', value=' . $this->bool2str($value) . ', allowedValues=' . print_r($allowedValues, true), 0);
                         }
                         break;
                     case VARIABLETYPE_INTEGER:
@@ -846,22 +846,24 @@ class BuderusKM200 extends IPSModule
             'http' => [
                 'method' => 'GET',
                 'header' => "Accept: application/json\r\n" .
-                            "User-Agent: TeleHeater/2.2.3\r\n"
+                            "User-Agent: TeleHeater/2.2.3\r\n",
             ]
         ];
         $context = stream_context_create($options);
+        $this->SendDebug(__FUNCTION__, 'stream_context=' . print_r(stream_context_get_options($context), true), 0);
         $content = @file_get_contents(
             'http://' . $host . ':' . $port . $datapoint,
             false,
             $context
         );
-        $this->SendDebug(__FUNCTION__, 'options=' . print_r($options, true), 0);
         if ($content == false) {
+            $this->SendDebug(__FUNCTION__, 'got error=' . print_r(error_get_last(), true), 0);
             $this->MaintainStatus(self::$IS_SERVERERROR);
             return false;
         }
         $data = $this->Decrypt($content);
         if ($data == false) {
+            $this->SendDebug(__FUNCTION__, 'unable to decrypt', 0);
             $this->MaintainStatus(self::$IS_SERVERERROR);
             return false;
         }
