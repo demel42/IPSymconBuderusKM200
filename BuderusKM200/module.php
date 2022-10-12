@@ -851,6 +851,8 @@ class BuderusKM200 extends IPSModule
         ];
         $context = stream_context_create($options);
         $this->SendDebug(__FUNCTION__, 'stream_context=' . print_r(stream_context_get_options($context), true), 0);
+        $url = 'http://' . $host . ':' . $port . $datapoint;
+        $this->SendDebug(__FUNCTION__, 'url=' . $url, 0);
         $content = @file_get_contents(
             'http://' . $host . ':' . $port . $datapoint,
             false,
