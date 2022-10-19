@@ -123,7 +123,7 @@ Anmerkung: der Datenpunkt _/notifications_ wird automatisch abgerufen und in ein
 - Werte konvertieren:<br>
 mit diesen Scripten kann man Werte zu konvertieren
 
-Ein passendes Code-Fragment für ein Script (siehe auch _docs/convert_script.php_):
+Ein passendes Code-Fragment für ein Script (siehe auch [docs/convert_script.php](docs/convert_script.php)):
 
 ```
 <?php
