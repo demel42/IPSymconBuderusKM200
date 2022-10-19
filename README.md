@@ -192,6 +192,10 @@ GUIDs
 
 ## 7. Versions-Historie
 
+- 1.19 @ 19.10.2022 10:09
+  - Fix: README
+  - update submodule CommonStubs
+
 - 1.18.2 @ 12.10.2022 09:38
   - zusätzliche Debug-Meldung beim Datenabruf
   - update submodule CommonStubs
