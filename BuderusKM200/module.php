@@ -327,7 +327,7 @@ class BuderusKM200 extends IPSModule
         $formActions[] = [
             'type'      => 'ExpansionPanel',
             'caption'   => 'Expert area',
-            'expanded ' => false,
+            'expanded'  => false,
             'items'     => [
                 [
                     'type'    => 'Button',
