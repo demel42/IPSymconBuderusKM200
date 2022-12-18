@@ -106,17 +106,21 @@ setzt ein Datenobjekt auf den übergebenen Wert. Die Objekte, die beschreibbar s
 | Host                      | string   |              | KM200-Server |
 | Port                      | integer  | 80           | HTTP-Port |
 |                           |          |              | |
-| Gateway-Passwort          | string   |              | Gateway-Passwort mit oder ohne **-** |
-| privates Passwort         | string   |              | privater Schlüssel |
+| Gateway-Passwort          | string   |              | Passwort des Gateway _[1]_ |
+| privates Passwort         | string   |              | Passwort der Heizung _[2]_ |
 |                           |          |              | |
 | Felder                    |          |              | Tabelle zur Angabe der auszulesenden Datenpunkte |
 | Werte konvertieren        |          |              | |
 |                           |          |              | |
 | Aktualisiere Status ...   | integer  | 60           | Aktualisierungsintervall, Angabe in Sekunden |
 
+_[1]_: das Gateway-Passwort (KM200) ist auf dem Gehäuse aufgedruckt. Angabe mit oder ohne **-**
+_[2]_: das private Internet-Passwort wird in der Buderus-App konfiguriert und kann bei Bedarf in der Bedieneinheit (zB RC301) zurückgesetzt werden.
+Es hat nichts mit dem Passwort der Bosch-ID zu tun, das zur Anmeldung in der App benötigt wird.
+
 - Felder:<br>
 Liste der zu übernehmenden Datenpunkte und Angabe des Datentyps der Variable. Variablen, die aus dieser Liste gelöscht werden, werden gelöscht.
-Der Ident dieser erzeugten Variablen ist wiefolgt ausgebaut: _DP_ + Bezeichung des Datenpunkts, die **/** isnd ersetzt durch **_**.
+Der Ident dieser erzeugten Variablen ist wie folgt aufgebaut: _DP_ + Bezeichung des Datenpunkts, die **/** sind ersetzt durch **_**.
 
 Anmerkung: der Datenpunkt _/notifications_ wird automatisch abgerufen und in einer Variablen vom Typ _~HTMLBox_ abgelegt.
 
@@ -191,6 +195,12 @@ GUIDs
   - BuderusKM200: `{3A2FE2B9-EB88-4B14-B144-2A3839A761CA}`
 
 ## 7. Versions-Historie
+
+- 1.20 @ 27.11.2022 16:57
+  - Fix: README bzgl. der Passwörter angepasst
+  - Neu: Absicherung gegen konkurrierende Zugriffe auf den KM200
+  - Neu: Abruf von Archivdaten (bestimmte Energiedaten, die auf dem KM200 gespeichert werden)
+  - update submodule CommonStubs
 
 - 1.19 @ 19.10.2022 10:09
   - Fix: README

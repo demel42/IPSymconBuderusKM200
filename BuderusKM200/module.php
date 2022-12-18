@@ -10,13 +10,17 @@ class BuderusKM200 extends IPSModule
     use BuderusKM200\StubsCommonLib;
     use BuderusKM200LocalLib;
 
+    private static $semaphoreTM = 30 * 1000;
+
     private $ModuleDir;
+    private $SemaphoreID;
 
     public function __construct(string $InstanceID)
     {
         parent::__construct($InstanceID);
 
         $this->ModuleDir = __DIR__;
+        $this->SemaphoreID = __CLASS__ . '_' . $InstanceID;
     }
 
     public function Create()
@@ -323,6 +327,11 @@ class BuderusKM200 extends IPSModule
             'caption' => 'Update data',
             'onClick' => 'IPS_RequestAction(' . $this->InstanceID . ', "UpdateData", "");',
         ];
+        $formActions[] = [
+            'type'    => 'Button',
+            'caption' => 'Show recordings',
+            'onClick' => 'IPS_RequestAction(' . $this->InstanceID . ', "ShowRecordings", "");',
+        ];
 
         $formActions[] = [
             'type'      => 'ExpansionPanel',
@@ -353,6 +362,9 @@ class BuderusKM200 extends IPSModule
                 break;
             case 'VerifyAccess':
                 $this->VerifyAccess();
+                break;
+            case 'ShowRecordings':
+                $this->ShowRecordings();
                 break;
             default:
                 $r = false;
@@ -595,12 +607,136 @@ class BuderusKM200 extends IPSModule
                 $msg .= '  ' . $this->Translate('System time') . ': ' . date('d.m.Y H:i:s', $ts) . PHP_EOL;
             }
         }
-
         $this->PopupMessage($msg);
+    }
+
+    private function ShowRecordings()
+    {
+        if ($this->CheckStatus() == self::$STATUS_INVALID) {
+            $this->SendDebug(__FUNCTION__, $this->GetStatusText() . ' => skip', 0);
+            $msg = $this->GetStatusText();
+            $this->PopupMessage($msg);
+            return;
+        }
+
+        $msg = '';
+
+        $serviceList = [
+            '/heatSources/hs1/actualPower',
+            '/solarCircuits/sc1/solarYield',
+        ];
+        $now = time();
+        $intervals = [
+            date('Y-m-d', $now),
+            date('Y-m-d', $now - (24 * 60 * 60)),
+            date('Y-m', $now),
+            date('Y', $now),
+        ];
+        foreach ($intervals as $interval) {
+            foreach ($serviceList as $service) {
+                $jdata = $this->GetData($service);
+                if ((isset($jdata['recordable']) && $jdata['recordable']) == false) {
+                    $this->SendDebug(__FUNCTION__, 'service=' . $service . ' ist not recordable', 0);
+                    continue;
+                }
+
+                $unit = isset($jdata['unitOfMeasure']) ? $jdata['unitOfMeasure'] : '';
+
+                $jdata = $this->GetData('/recordings' . $service . '?interval=' . $interval);
+                $this->SendDebug(__FUNCTION__, 'service=' . $service . ', jdata=' . print_r($jdata, true), 0);
+
+                $interval = $jdata['interval'];
+                $sampleRate = $jdata['sampleRate'];
+                switch ($sampleRate) {
+                    case 'P1H':
+                        $timeGrid = 'day';
+                        $scale = 1;
+                        break;
+                    case 'P1D':
+                        $timeGrid = 'month';
+                        $scale = 24;
+                        break;
+                    case 'P31D':
+                        $timeGrid = 'year';
+                        $scale = 24 * 30;
+                        break;
+                    default:
+                        $timeGrid = $sampleRate;
+                        break;
+                }
+                $recordingType = $jdata['recording-type'];
+                $recording = $jdata['recording'];
+                $v = [];
+                for ($i = 0; $i < count($recording); $i++) {
+                    $y = $recording[$i]['y'];
+                    $c = $recording[$i]['c'];
+                    $factor = $c > 0 ? ($c / $scale) : 1;
+                    if ($c > 0) {
+                        switch ($unit) {
+                        case 'kW':
+                            $y /= ($c / $scale);
+                            $_unit = 'kWh';
+                            break;
+                        case 'Wh':
+                            $y /= ($c / $scale);
+                            $y /= 1000.0;
+                            $_unit = 'kWh';
+                            break;
+                        default:
+                            $_unit = $unit;
+                            break;
+                    }
+                    } else {
+                        $y = 0;
+                    }
+                    $v[] = sprintf('%02d=%.2f', $i + 1, $y);
+                }
+                $this->SendDebug(__FUNCTION__, 'interval=' . $interval . ', grid=' . $timeGrid . ' => ' . implode(', ', $v) . ' ' . $_unit, 0);
+            }
+        }
     }
 
     private function traverseService($service, &$entList)
     {
+        $skipService = [
+            '/gateway/firmware',
+            '/gateway/userpassword',
+            '/gateway/boschSHPassword',
+            '/gateway/portalPassword',
+            '/gateway/knxPassword',
+            '/gateway/haiPassword',
+            '/gateway/instPassword',
+            '/gateway/version',
+            '/gateway/update/version',
+            '/gateway/update/request',
+            '/gateway/update/strategy',
+            '/gateway/logging/switch',
+            '/gateway/logging/reqBusVar',
+            '/system/busReq',
+            '/system/holidayModes/hm1/delete',
+            '/system/holidayModes/hm2/delete',
+            '/system/holidayModes/hm3/delete',
+            '/system/holidayModes/hm4/delete',
+            '/system/holidayModes/hm5/delete',
+            '/heatingCircuits/hc1/timeToNextSetpoint',
+            '/heatingCircuits/hc1/nextSetpoint',
+            '/heatingCircuits/hc1/designTemp',
+            '/heatingCircuits/hc1/roomTempOffset',
+            '/heatingCircuits/hc1/heatCurveMax',
+            '/heatingCircuits/hc1/controlType',
+            '/heatingCircuits/hc1/solarInfluence',
+            '/heatingCircuits/hc1/roomInfluence',
+            '/dhwCircuits/dhw1/tdsetPoint',
+            '/dhwCircuits/dhw1/tdweekDay',
+            '/dhwCircuits/dhw1/tddayTime',
+            '/dhwCircuits/dhw1/cpStartph',
+            '/dhwCircuits/dhw1/cpoperationMode',
+        ];
+        if (in_array($service, $skipService)) {
+            $this->SendDebug(__FUNCTION__, 'skip unreadable service=' . $service, 0);
+            return;
+        }
+
         $jdata = $this->GetData($service);
         $this->SendDebug(__FUNCTION__, 'service=' . $service . ', jdata=' . print_r($jdata, true), 0);
         if ($jdata == false) {
@@ -842,6 +978,11 @@ class BuderusKM200 extends IPSModule
         $host = $this->ReadPropertyString('host');
         $port = $this->ReadPropertyInteger('port');
 
+        if (IPS_SemaphoreEnter($this->SemaphoreID, self::$semaphoreTM) == false) {
+            $this->SendDebug(__FUNCTION__, 'unable to lock sempahore ' . $this->SemaphoreID, 0);
+            return false;
+        }
+
         $options = [
             'http' => [
                 'method' => 'GET',
@@ -861,15 +1002,19 @@ class BuderusKM200 extends IPSModule
         if ($content == false) {
             $this->SendDebug(__FUNCTION__, 'got error=' . print_r(error_get_last(), true), 0);
             $this->MaintainStatus(self::$IS_SERVERERROR);
+            IPS_SemaphoreLeave($this->SemaphoreID);
             return false;
         }
         $data = $this->Decrypt($content);
         if ($data == false) {
             $this->SendDebug(__FUNCTION__, 'unable to decrypt', 0);
             $this->MaintainStatus(self::$IS_SERVERERROR);
+            IPS_SemaphoreLeave($this->SemaphoreID);
             return false;
         }
         $this->MaintainStatus(IS_ACTIVE);
+		IPS_Sleep(250);
+        IPS_SemaphoreLeave($this->SemaphoreID);
 
         $this->SendDebug(__FUNCTION__, 'decrypt content=' . print_r($data, true), 0);
         return json_decode($data, true);
@@ -881,11 +1026,17 @@ class BuderusKM200 extends IPSModule
         $port = $this->ReadPropertyInteger('port');
 
         $this->SendDebug(__FUNCTION__, 'content=' . print_r($content, true), 0);
+
+        if (IPS_SemaphoreEnter($this->SemaphoreID, self::$semaphoreTM) == false) {
+            $this->SendDebug(__FUNCTION__, 'unable to lock sempahore ' . $this->SemaphoreID, 0);
+            return false;
+        }
+
         $options = [
             'http' => [
                 'method'     => 'PUT',
                 'header'     => "Content-type: application/json\r\n" .
-                            "User-Agent: TeleHeater/2.2.3\r\n",
+                                "User-Agent: TeleHeater/2.2.3\r\n",
                 'content' => $this->Encrypt($content)
             ]
         ];
@@ -896,6 +1047,7 @@ class BuderusKM200 extends IPSModule
             false,
             $context
         );
+        IPS_SemaphoreLeave($this->SemaphoreID);
     }
 
     public function SetBooleanData(string $datapoint, bool $Value)
