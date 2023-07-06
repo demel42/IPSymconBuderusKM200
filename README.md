@@ -114,7 +114,7 @@ setzt ein Datenobjekt auf den übergebenen Wert. Die Objekte, die beschreibbar s
 |                           |          |              | |
 | Aktualisiere Status ...   | integer  | 60           | Aktualisierungsintervall, Angabe in Sekunden |
 
-_[1]_: das Gateway-Passwort (KM200) ist auf dem Gehäuse aufgedruckt. Angabe mit oder ohne **-**
+_[1]_: das Gateway-Passwort (KM200) ist auf dem Gehäuse aufgedruckt. Angabe mit oder ohne **-**<br>
 _[2]_: das private Internet-Passwort wird in der Buderus-App konfiguriert und kann bei Bedarf in der Bedieneinheit (zB RC301) zurückgesetzt werden.
 Es hat nichts mit dem Passwort der Bosch-ID zu tun, das zur Anmeldung in der App benötigt wird.
 
@@ -195,6 +195,13 @@ GUIDs
   - BuderusKM200: `{3A2FE2B9-EB88-4B14-B144-2A3839A761CA}`
 
 ## 7. Versions-Historie
+
+- 1.21 @ 06.07.2023 09:41
+  - Fix: Absicherung für Geräte ohne Solarthermie
+  - Fix: Zusatzpause von 250ms nach jedem Datenabruf
+  - Vorbereitung auf IPS 7 / PHP 8.2
+  - update submodule CommonStubs
+    - Absicherung bei Zugriff auf Objekte und Inhalte
 
 - 1.20 @ 27.11.2022 16:57
   - Fix: README bzgl. der Passwörter angepasst

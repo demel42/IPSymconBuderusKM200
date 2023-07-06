@@ -327,11 +327,6 @@ class BuderusKM200 extends IPSModule
             'caption' => 'Update data',
             'onClick' => 'IPS_RequestAction(' . $this->InstanceID . ', "UpdateData", "");',
         ];
-        $formActions[] = [
-            'type'    => 'Button',
-            'caption' => 'Show recordings',
-            'onClick' => 'IPS_RequestAction(' . $this->InstanceID . ', "ShowRecordings", "");',
-        ];
 
         $formActions[] = [
             'type'      => 'ExpansionPanel',
@@ -614,17 +609,27 @@ class BuderusKM200 extends IPSModule
     {
         if ($this->CheckStatus() == self::$STATUS_INVALID) {
             $this->SendDebug(__FUNCTION__, $this->GetStatusText() . ' => skip', 0);
-            $msg = $this->GetStatusText();
-            $this->PopupMessage($msg);
             return;
         }
 
-        $msg = '';
+        $serviceList = [];
+        $fields = json_decode($this->ReadPropertyString('fields'), true);
+        foreach ($fields as $field) {
+            $datapoint = $this->GetArrayElem($field, 'datapoint', '');
 
-        $serviceList = [
-            '/heatSources/hs1/actualPower',
-            '/solarCircuits/sc1/solarYield',
-        ];
+            if (strncmp($datapoint, '/heatSources/hs1/', strlen('/heatSources/hs1/')) == 0) {
+                if (in_array('/heatSources/hs1/actualPower', $serviceList) == false) {
+                    $serviceList[] = '/heatSources/hs1/actualPower';
+                }
+            }
+            if (strncmp($datapoint, '/solarCircuits/sc1/', strlen('/solarCircuits/sc1/')) == 0) {
+                if (in_array('/solarCircuits/sc1/solarYield', $serviceList) == false) {
+                    $serviceList[] = '/solarCircuits/sc1/solarYield';
+                }
+            }
+        }
+        $this->SendDebug(__FUNCTION__, 'serviceList=' . print_r($serviceList, true), 0);
+
         $now = time();
         $intervals = [
             date('Y-m-d', $now),
@@ -673,19 +678,19 @@ class BuderusKM200 extends IPSModule
                     $factor = $c > 0 ? ($c / $scale) : 1;
                     if ($c > 0) {
                         switch ($unit) {
-                        case 'kW':
-                            $y /= ($c / $scale);
-                            $_unit = 'kWh';
-                            break;
-                        case 'Wh':
-                            $y /= ($c / $scale);
-                            $y /= 1000.0;
-                            $_unit = 'kWh';
-                            break;
-                        default:
-                            $_unit = $unit;
-                            break;
-                    }
+                            case 'kW':
+                                $y /= ($c / $scale);
+                                $_unit = 'kWh';
+                                break;
+                            case 'Wh':
+                                $y /= ($c / $scale);
+                                $y /= 1000.0;
+                                $_unit = 'kWh';
+                                break;
+                            default:
+                                $_unit = $unit;
+                                break;
+                        }
                     } else {
                         $y = 0;
                     }
@@ -999,6 +1004,7 @@ class BuderusKM200 extends IPSModule
             false,
             $context
         );
+        IPS_Sleep(250);
         if ($content == false) {
             $this->SendDebug(__FUNCTION__, 'got error=' . print_r(error_get_last(), true), 0);
             $this->MaintainStatus(self::$IS_SERVERERROR);
@@ -1013,7 +1019,6 @@ class BuderusKM200 extends IPSModule
             return false;
         }
         $this->MaintainStatus(IS_ACTIVE);
-		IPS_Sleep(250);
         IPS_SemaphoreLeave($this->SemaphoreID);
 
         $this->SendDebug(__FUNCTION__, 'decrypt content=' . print_r($data, true), 0);
