@@ -199,6 +199,7 @@ GUIDs
 - 1.21 @ 06.07.2023 09:41
   - Fix: Absicherung für Geräte ohne Solarthermie
   - Fix: Zusatzpause von 250ms nach jedem Datenabruf
+  - Fix: Übersetzung vervollständigt
   - Vorbereitung auf IPS 7 / PHP 8.2
   - update submodule CommonStubs
     - Absicherung bei Zugriff auf Objekte und Inhalte

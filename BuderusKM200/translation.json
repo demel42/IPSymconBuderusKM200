@@ -3,6 +3,11 @@
 		"de": {
 			"Buderus KM 200": "Buderus KM 200",
 
+			"__function__": "CheckConfiguration",
+			"Hostname must be specified": "Host muss angegeben sein",
+			"Port must be specified": "Port muss angegeben sein",
+			"Passwords must be specified": "Passwörter müssen angegeben sein",
+
 			"__elements__": "",
 			"Disable instance": "Instanz deaktivieren",
 
