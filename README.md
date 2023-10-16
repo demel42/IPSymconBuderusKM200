@@ -196,6 +196,10 @@ GUIDs
 
 ## 7. Versions-Historie
 
+- 1.22 @ 19.09.2023 09:02
+  - Neu: Ermittlung von Speicherbedarf und Laufzeit (aktuell und für 31 Tage) und Anzeige im Panel "Information"
+  - update submodule CommonStubs
+
 - 1.21 @ 06.07.2023 09:41
   - Fix: Absicherung für Geräte ohne Solarthermie
   - Fix: Zusatzpause von 250ms nach jedem Datenabruf
