@@ -885,7 +885,7 @@ class BuderusKM200 extends IPSModule
         }
 
         $this->MaintainMedia('Datapoints', $this->Translate('Buderus KM200 Datapoints'), MEDIATYPE_DOCUMENT, '.csv', false, 1000, true);
-        $this->SetMediaContent('Datapoints', base64_encode($buf)););
+        $this->SetMediaContent('Datapoints', base64_encode($buf));
     }
 
     private function GetKey()
