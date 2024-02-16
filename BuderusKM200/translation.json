@@ -8,6 +8,9 @@
 			"Port must be specified": "Port muss angegeben sein",
 			"Passwords must be specified": "Passwörter müssen angegeben sein",
 
+			"__function__": "CheckUpdate",
+			"Set ident of media objects": "Ident der Media-Objekte setzen",
+
 			"__elements__": "",
 			"Disable instance": "Instanz deaktivieren",
 

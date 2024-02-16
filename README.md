@@ -196,6 +196,9 @@ GUIDs
 
 ## 7. Versions-Historie
 
+- 1.24 @ 17:51
+  - Fix: Zugriff auf Medien-Objekte waren z.T. noch per Name
+
 - 1.23 @ 06.02.2024 09:46
   - Verbesserung: Angleichung interner Bibliotheken anlässlich IPS 7
   - update submodule CommonStubs

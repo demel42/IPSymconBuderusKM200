@@ -87,6 +87,32 @@ class BuderusKM200 extends IPSModule
         return $r;
     }
 
+    private function CheckModuleUpdate(array $oldInfo, array $newInfo)
+    {
+        $r = [];
+
+        if ($this->version2num($oldInfo) < $this->version2num('1.24')) {
+            $r[] = $this->Translate('Set ident of media objects');
+        }
+
+        return $r;
+    }
+
+    private function CompleteModuleUpdate(array $oldInfo, array $newInfo)
+    {
+        $r = '';
+
+        if ($this->version2num($oldInfo) < $this->version2num('1.24')) {
+            $filename = 'media' . DIRECTORY_SEPARATOR . $this->InstanceID . '.csv';
+            @$mediaID = IPS_GetMediaIDByFile($filename);
+            if ($mediaID != false) {
+                IPS_SetIdent($mediaID, 'Datapoints');
+            }
+        }
+
+        return $r;
+    }
+
     public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
     {
         parent::MessageSink($TimeStamp, $SenderID, $Message, $Data);
@@ -858,17 +884,8 @@ class BuderusKM200 extends IPSModule
             $buf .= implode(';', $row) . PHP_EOL;
         }
 
-        $mediaName = $this->Translate('Buderus KM200 Datapoints');
-        @$mediaID = IPS_GetMediaIDByName($mediaName, $this->InstanceID);
-        if ($mediaID == false) {
-            $mediaID = IPS_CreateMedia(MEDIATYPE_DOCUMENT);
-            $filename = 'media' . DIRECTORY_SEPARATOR . $this->InstanceID . '.csv';
-            IPS_SetMediaFile($mediaID, $filename, false);
-            IPS_SetName($mediaID, $mediaName);
-            IPS_SetParent($mediaID, $this->InstanceID);
-        }
-        IPS_SetMediaContent($mediaID, base64_encode($buf));
-        $this->SendDebug(__FUNCTION__, 'mediaName=' . $mediaName . ', mediaID=' . $mediaID, 0);
+        $this->MaintainMedia('Datapoints', $this->Translate('Buderus KM200 Datapoints'), MEDIATYPE_DOCUMENT, '.csv', false, 1000, true);
+        $this->SetMediaContent('Datapoints', $data);
     }
 
     private function GetKey()
