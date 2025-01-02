@@ -196,7 +196,11 @@ GUIDs
 
 ## 7. Versions-Historie
 
-- 1.24 @ 17:51
+- 1.25 @ 02.01.2025 14:28
+  - Fix: Link zur Dokumentation korrigiert
+  - interne Änderung
+
+- 1.24 @ 16.02.2024 17:51
   - Fix: Zugriff auf Medien-Objekte waren z.T. noch per Name
 
 - 1.23 @ 06.02.2024 09:46
