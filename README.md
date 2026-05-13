@@ -196,6 +196,10 @@ GUIDs
 
 ## 7. Versions-Historie
 
+- 1.27 @ 13.05.2026 11:22
+  - Fix: Änderung von deprecated php code
+  - update submodule CommonStubs
+
 - 1.26 @ 27.03.2026 09:08
   - Änderung: Anpassung an IPS 9
   - update submodule CommonStubs

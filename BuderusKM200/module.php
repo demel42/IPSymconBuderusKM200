@@ -701,7 +701,7 @@ class BuderusKM200 extends IPSModule
                         break;
                 }
                 $recordingType = $jdata['recording-type'];
-                $recording = $jdata['recording'];
+                $recording = (array) $jdata['recording'];
                 $v = [];
                 for ($i = 0; $i < count($recording); $i++) {
                     $y = $recording[$i]['y'];
